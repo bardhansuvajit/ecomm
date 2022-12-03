@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
+class AuthController extends Controller
+{
+    public function check(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'username' => 'required|exists:admins,username',
+            'password' => 'required',
+        ], [
+            'username.*' => 'Invalid credential'
+        ]);
+
+        $creds = $request->only('username', 'password');
+
+        if (Auth::guard('admin')->attempt($creds)) {
+            return redirect()->route('admin.dashboard')->with('success', 'Login successfull');
+            // return redirect()->intended()->with('success', 'Login successfull');
+        } else {
+            return redirect()->back()->with('failure', 'Invalid credential')->withInputs('request');
+        }
+    }
+
+    public function dashboard()
+    {
+        if (Auth::guard('admin')->check()) {
+            return view('admin.dashboard.index');
+        } else {
+            return redirect()->route('admin.login');
+        }
+    }
+
+    public function profile()
+    {
+        if (Auth::guard('admin')->check()) {
+            return view('admin.profile.index');
+        } else {
+            return redirect()->route('admin.login');
+        }
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->intended()->with('success', 'Logout successfull');
+    }
+}
