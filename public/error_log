@@ -1,0 +1,4 @@
+[27-Mar-2023 10:27:38 America/Chicago] PHP Fatal error:  'continue' not in the 'loop' or 'switch' context in /home2/torzo4it/public_html/dev/trisala/app/Helper/helper.php on line 225
+[27-Mar-2023 10:27:40 America/Chicago] PHP Fatal error:  'continue' not in the 'loop' or 'switch' context in /home2/torzo4it/public_html/dev/trisala/app/Helper/helper.php on line 225
+[27-Mar-2023 10:28:00 America/Chicago] PHP Fatal error:  'break' not in the 'loop' or 'switch' context in /home2/torzo4it/public_html/dev/trisala/app/Helper/helper.php on line 225
+[27-Mar-2023 10:28:00 America/Chicago] PHP Fatal error:  'break' not in the 'loop' or 'switch' context in /home2/torzo4it/public_html/dev/trisala/app/Helper/helper.php on line 225
