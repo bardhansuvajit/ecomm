@@ -17,7 +17,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <h5 class="fw-light">We are processing your order... Stay tuned.</h5>
+                    <h5 class="fw-light">We will soon process your order... Stay tuned.</h5>
                     <p>Free Delivery expected by this {{ date('l F jS, Y', strtotime('+'.$applicationSetting->delivery_expect_in_days.'days')) }}</p>
                 </div>
             </div>
@@ -34,7 +34,7 @@
             <p class="mb-0">{{ $data->user_email }}</p>
             <p>{{ $data->user_phone_no }}</p>
 
-            <p class="text-muted">You were logged in with this account while placing this order. You can find order details via email in, {{ $data->user_email }}</p>
+            <p class="text-muted">You were logged in with this account while placing this order. You can find order details in, {{ $data->user_email }}</p>
         </section>
     </div>
 
