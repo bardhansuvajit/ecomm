@@ -25,15 +25,6 @@ function currentPage() {
     return location.pathname.split('/').slice(-1)[0];
 }
 
-document.onreadystatechange = function () {
-    if (getQuery('login') == 'true') {
-        loginModalEl.show();
-    }
-    if (getQuery('register') == 'true') {
-        registerModalEl.show();
-    }
-}
-
 function toastFire(type = 'success', title) {
     const Toast = Swal.mixin({
         toast: true,

@@ -231,6 +231,15 @@
             @if(Session::has('failure'))
                 toastFire('error', '{{Session::get("failure")}}');
             @endif
+
+            document.onreadystatechange = function () {
+                if (getQuery('login') == 'true') {
+                    loginModalEl.show();
+                }
+                if (getQuery('register') == 'true') {
+                    registerModalEl.show();
+                }
+            }
         </script>
 
         @yield('script')
