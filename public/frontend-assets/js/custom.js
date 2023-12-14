@@ -1,8 +1,6 @@
-const hasWord = (str, word) => str.split(/\s+/).includes(word);
-
-const baseUrl = window.location.origin;
-if (hasWord(window.location.origin, "torzo") === true) {
-    const baseUrl = window.location.origin+"/dev/ecomm/public";
+let baseUrl = window.location.origin;
+if (baseUrl.indexOf('torzo') > -1) {
+    baseUrl = "https://torzo.in/dev/ecomm-2/public";
 }
 
 const loginModalEl = new bootstrap.Modal('#loginModal')
@@ -393,7 +391,7 @@ $(document).on('change', 'input[name="global-currency"]', function(e) {
     let val = $(this).val();
 
     $.ajax({
-        url : baseUrl+'/api/currency/update/'+val,
+        url: baseUrl+'/api/currency/update/'+val,
         beforeSend: function() {
             toastFire('info', 'Please wait...');
         },
@@ -416,7 +414,7 @@ function cartAdd(type, productId, userId, route) {
     }
 
     $.ajax({
-        url : route,
+        url: route,
         method : 'post',
         data : {
             _token: $('input[name="_token"]').val(),
@@ -457,7 +455,7 @@ function cartAdd(type, productId, userId, route) {
 
 function quickCartListUpdate() {
     $.ajax({
-        url : '/cart/json',
+        url: baseUrl+'/cart/json',
         method : 'get',
         beforeSend: function() {
             let beforeContent = `
@@ -690,7 +688,7 @@ function quickCartListUpdate() {
 
 function allCouponsList() {
     $.ajax({
-        url : '/coupon/list',
+        url: baseUrl+'/coupon/list',
         success: function(result) {
             if (result.status == 200) {
                 let content = '';
@@ -763,7 +761,7 @@ function couponApply(type) {
 
     if (coupon.length > 0) {
         $.ajax({
-            url : '/coupon/check/json',
+            url: baseUrl+'/coupon/check/json',
             method : 'post',
             data: {
                 _token: $('input[name="_token"]').val(),
@@ -784,7 +782,7 @@ function couponApply(type) {
 
 function removeCartCoupon() {
     $.ajax({
-        url : '/coupon/remove',
+        url: baseUrl+'/coupon/remove',
         success: function(result) {
             if (result.status == 200) {
                 quickCartListUpdate();
@@ -798,7 +796,7 @@ function removeCartCoupon() {
 
 function saveForLater(id) {
     $.ajax({
-        url : '/cart/save-later/'+id,
+        url: baseUrl+'/cart/save-later/'+id,
         method : 'get',
         success: function(result) {
             if (result.status == 200) {
@@ -821,7 +819,7 @@ function saveForLater(id) {
 
 function removeFromCart(id) {
     $.ajax({
-        url : '/cart/remove/'+id,
+        url: baseUrl+'/cart/remove/'+id,
         method : 'get',
         success: function(result) {
             if (result.status == 200) {
@@ -842,7 +840,7 @@ function removeFromCart(id) {
 function qtyUpdate(id) {
     let qty = $('#cart-qty-'+id).val();
     $.ajax({
-        url : '/cart/qty/update',
+        url: baseUrl+'/cart/qty/update',
         method : 'post',
         data: {
             _token: $('input[name="_token"]').val(),
@@ -862,7 +860,7 @@ function qtyUpdate(id) {
 
 function makeBillingSameAsDeliveryAddr() {
     $.ajax({
-        url : '/checkout/billing-address/remove/all',
+        url: baseUrl+'/checkout/billing-address/remove/all',
         success: function(result) {
             if (result.status == 200) {
                 toastFire('success', result.message);
@@ -879,7 +877,7 @@ $('input[name="delivery-address"]').on('change', function() {
     let updatedText = $(this).attr("data-detail");
 
     $.ajax({
-        url: 'user/address/default/'+$(this).val(),
+        url: baseUrl+'user/address/default/'+$(this).val(),
         beforeSend: function() {
             $('#address-head-detail').text('Updating delivery address...');
         },
@@ -942,7 +940,7 @@ function hideAddAddress() {
 function defaultAddressSet(id) {
     event.preventDefault();
     $.ajax({
-        url: 'default/'+id,
+        url: baseUrl+'default/'+id,
         success: function(resp) {
             if (resp.status == 200) {
                 toastFire('success', 'Delivery address updated');
