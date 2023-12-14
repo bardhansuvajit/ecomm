@@ -93,7 +93,7 @@
                                         .then(response => response.json())
                                         .then(data => {
                                             if(data.status == 200) {
-                                                toastFire('success', data.message);
+                                                toastFire('success', '345'+data.message);
 
                                                 alert(data.name.split(" ")[0]);
 
