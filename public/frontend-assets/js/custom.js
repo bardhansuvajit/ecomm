@@ -487,7 +487,7 @@ function cartAdd(type, productId, userId, route) {
                     $('.add-cart').attr('disabled', false);
                     toastFire('success', result.message);
                 } else {
-                    window.location = "/checkout";
+                    window.location = baseUrl+"/checkout";
                 }
             }
         }
@@ -905,7 +905,7 @@ function makeBillingSameAsDeliveryAddr() {
         success: function(result) {
             if (result.status == 200) {
                 toastFire('success', result.message);
-                location.href = 'checkout';
+                location.href = baseUrl+'checkout';
             } else {
                 toastFire('error', result.message);
             }
