@@ -707,7 +707,7 @@ function quickCartListUpdate() {
                     if(currentPage() != "checkout") {
                         content += 
                         `<div class="goto-links">
-                            <a href="/checkout" class="btn btn-dark w-100 checkout">
+                            <a href="${baseUrl}/checkout" class="btn btn-dark w-100 checkout">
                                 Checkout
                                 <div class="icon"><i class="material-icons md-light">chevron_right</i></div>
                             </a>
