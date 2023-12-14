@@ -37,7 +37,7 @@ class SocialLoginController extends Controller
                 if($finduser) {
                     Auth::loginUsingId($finduser->id);
                 } else {
-                    $newUser  = new User();
+                    $newUser = new User();
                     $newUser->first_name = $first_name;
                     $newUser->last_name = $last_name;
                     $newUser->email = $email;
