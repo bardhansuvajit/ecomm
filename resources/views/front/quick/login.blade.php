@@ -85,7 +85,7 @@
                                         const headers = {
                                             Authorization: `Bearer ${token}`
                                         };
-                                        fetch("{{route('front.user.login.google2')}}", {
+                                        fetch("{{route('front.user.login.google')}}", {
                                             method: "POST",
                                             headers: {
                                                 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token
@@ -93,10 +93,11 @@
                                             body: JSON.stringify({ 
                                                 request_type:'user_auth', credential: response.credential 
                                             }),
-                                        })
-                                        .then(response => response.json())
+                                        }),
+                                        // .then(response => response.json()),
                                         .then(data => {
                                             alert('here 2');
+
                                             /*
                                             console.log(data);
                                             if(data.status == 200) {
