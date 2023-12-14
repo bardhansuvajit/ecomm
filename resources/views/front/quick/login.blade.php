@@ -62,7 +62,7 @@
                                     data-client_id="65139693010-fg1u8233h518asgsi08noqcefskld8bi.apps.googleusercontent.com"
                                     data-context="signin"
                                     data-ux_mode="popup"
-                                    data-callback="handleCredentialResponse22"
+                                    data-callback="handleCredentialResponse"
                                     data-auto_prompt="false">
                                 </div>
 
