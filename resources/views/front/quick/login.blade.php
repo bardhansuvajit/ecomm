@@ -92,6 +92,7 @@
                                         })
                                         .then(response => response.json())
                                         .then(data => {
+                                            alert('here');
                                             if(data.status == 200) {
                                                 toastFire('success', '345'+data.message);
 
