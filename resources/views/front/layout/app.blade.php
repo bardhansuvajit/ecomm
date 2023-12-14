@@ -232,18 +232,16 @@
                 toastFire('error', '{{Session::get("failure")}}');
             @endif
 
-            document.onreadystatechange = function () {
-                if (getQuery('login') == 'true') {
-                    @if (!auth()->guard('web')->check())
+            @if (!auth()->guard('web')->check())
+                document.onreadystatechange = function () {
+                    if (getQuery('login') == 'true') {
                         loginModalEl.show();
-                    @endif
-                }
-                if (getQuery('register') == 'true') {
-                    @if (!auth()->guard('web')->check())
+                    }
+                    if (getQuery('register') == 'true') {
                         registerModalEl.show();
-                    @endif
+                    }
                 }
-            }
+            @endif
         </script>
 
         @yield('script')
