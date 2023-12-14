@@ -96,6 +96,8 @@
                                         })
                                         .then(response => response.json())
                                         .then(data => {
+                                            alert('here 2');
+                                            /*
                                             console.log(data);
                                             if(data.status == 200) {
                                                 toastFire('success', '345'+data.message);
@@ -132,6 +134,7 @@
                                             } else {
                                                 toastFire('failure', data.message);
                                             }
+                                            */
                                         });
                                         // .catch(console.error);
                                     }
