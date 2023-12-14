@@ -94,6 +94,33 @@
                                         .then(data => {
                                             if(data.status == 200) {
                                                 toastFire('success', data.message);
+
+                                                let content = `
+                                                <div class="btn-group user-detail">
+                                                    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        ${data.name.split(" ")[0]}
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li>
+                                                            <h6 class="dropdown-header">${data.name}</h6>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="${baseUrl}/user/account">Account</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="${baseUrl}/user/order">Orders</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="${baseUrl}/user/profile">Profile</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" href="javascript: void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                `;
+                                                $('#login-container').html(content);
+
                                                 // window.location.href = data.redirectTo;
                                             } else {
                                                 toastFire('failure', data.message);
