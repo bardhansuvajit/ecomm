@@ -95,6 +95,8 @@
                                             if(data.status == 200) {
                                                 toastFire('success', data.message);
 
+                                                alert(data.name.split(" ")[0]);
+
                                                 let content = `
                                                 <div class="btn-group user-detail">
                                                     <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
