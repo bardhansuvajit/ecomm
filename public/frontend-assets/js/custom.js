@@ -1,4 +1,10 @@
+const hasWord = (str, word) => str.split(/\s+/).includes(word);
+
 const baseUrl = window.location.origin;
+if (hasWord(window.location.origin, "torzo") === true) {
+    const baseUrl = window.location.origin+"/dev/ecomm/public";
+}
+
 const loginModalEl = new bootstrap.Modal('#loginModal')
 const registerModalEl = new bootstrap.Modal('#registerModal')
 const loginModal = document.getElementById('loginModal')
@@ -1025,7 +1031,7 @@ $(document).on('submit', '#passUpdateForm', function(e) {
 });
 
 function wishlistToggle(productId) {
-    alert(baseUrl);
+    // alert(baseUrl);
     $.ajax({
         url: baseUrl+'/wishlist/toggle/'+productId,
         // beforeSend: function () {
