@@ -131,6 +131,12 @@
                                                 `;
                                                 $('#login-container').html(content);
 
+                                                loginModalEl.hide();
+
+                                                if (data.redirect.length > 0) {
+                                                    window.location = res.redirect
+                                                }
+
                                                 // window.location.href = data.redirectTo;
                                             } else {
                                                 toastFire('failure', data.message);

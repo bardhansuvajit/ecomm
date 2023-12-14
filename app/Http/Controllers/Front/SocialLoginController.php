@@ -52,7 +52,7 @@ class SocialLoginController extends Controller
                     'status' => 200,
                     'message' => 'Login successfull',
                     'name' => $first_name.' '.$last_name,
-                    'redirectTo' => $redirectTo
+                    'redirect' => $redirectTo
                 ]);
             } else {
                 return response()->json([
