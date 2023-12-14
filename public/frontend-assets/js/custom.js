@@ -752,7 +752,7 @@ function allCouponsList() {
                                                     </p>
                                                 </div>
                                                 <div class="flex-shrink-0">
-                                                    <a href="javascript: void(0)" class="apply" onclick="couponApply('${val.code}')">APPLY</a>
+                                                    <a href="javascript: void(0)" class="btn btn-sm btn-dark rounded-0" onclick="couponApply('${val.code}')">APPLY</a>
                                                 </div>
                                             </div>
                                         </div>
