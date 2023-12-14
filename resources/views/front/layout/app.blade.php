@@ -234,12 +234,12 @@
 
             document.onreadystatechange = function () {
                 if (getQuery('login') == 'true') {
-                    @if (auth()->guard('web')->check())
+                    @if (!auth()->guard('web')->check())
                         loginModalEl.show();
                     @endif
                 }
                 if (getQuery('register') == 'true') {
-                    @if (auth()->guard('web')->check())
+                    @if (!auth()->guard('web')->check())
                         registerModalEl.show();
                     @endif
                 }
