@@ -1025,6 +1025,7 @@ $(document).on('submit', '#passUpdateForm', function(e) {
 });
 
 function wishlistToggle(productId) {
+    alert(baseUrl);
     $.ajax({
         url: baseUrl+'/wishlist/toggle/'+productId,
         // beforeSend: function () {
