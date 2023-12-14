@@ -1,6 +1,6 @@
 let baseUrl = window.location.origin;
 if (baseUrl.indexOf('torzo') > -1) {
-    baseUrl = "https://torzo.in/dev/ecomm-2/public";
+    baseUrl = "https://torzo.in/dev/ecomm/public";
 }
 
 const loginModalEl = new bootstrap.Modal('#loginModal')
