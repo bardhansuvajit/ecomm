@@ -29,10 +29,10 @@
 
 
 @if (count($data->collections) > 0)
-<section id="collection">
-    <div class="collections-container">
+<section id="content">
+    <div class="contents-container">
         @foreach ($data->collections as $collection)
-        <div class="single-collection">
+        <div class="single-content">
             <div class="card">
                 <a href="{{ route('front.collection.detail', $collection->slug) }}">
                     <img class="card-img-top" src="{{ asset($collection->icon_medium) }}" alt="{{$collection->slug}}">

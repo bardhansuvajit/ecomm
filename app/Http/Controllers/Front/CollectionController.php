@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 
 use App\Interfaces\CollectionInterface;
 
-use App\Models\ProductCollection;
+// use App\Models\ProductCollection;
 
 class CollectionController extends Controller
 {

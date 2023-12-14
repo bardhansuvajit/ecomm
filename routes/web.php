@@ -83,15 +83,17 @@ Route::name('front.')->group(function() {
     Route::get('/', [IndexController::class, 'index'])->name('home');
 
     // category
-    Route::prefix('category')->name('category.')->group(function() {
-        Route::get('/{slug}', [CategoryController::class, 'detail'])->name('detail');
-    });
+    // Route::prefix('category')->name('category.')->group(function() {
+    //     Route::get('/{slug}', [CategoryController::class, 'detail'])->name('detail');
+    // });
     // Route::get('/category-detail', [CategoryController::class, 'detail'])->name('category.detail');
 
     // category
     Route::prefix('category')->name('category.')->group(function() {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('/{slug}', [CategoryController::class, 'detail'])->name('detail');
+
+        Route::get('/{slug}', [CategoryController::class, 'detail1'])->name('detail.one');
+        Route::get('/{parent}/{slug}', [CategoryController::class, 'detail2'])->name('detail.two');
     });
 
     // collection

@@ -55,6 +55,10 @@
                                     <tr class="single" id="{{ $item->id }}">
                                         <td>{{ $index + $data->firstItem() }}</td>
                                         <td>
+                                            @if ($item->icon_small)
+                                                <img src="{{ asset($item->icon_small) }}" alt="" height="50">
+                                            @endif
+
                                             {{ $item->title }}
 
                                             @if ($level != 1)

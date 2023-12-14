@@ -529,26 +529,26 @@ footer p, footer a {
     box-shadow: 4px 3px 8px #00000060;
     border-radius: 3px 0 0 3px;
 }
-#collection .collections-container {
+#content .contents-container {
     display: flex;
     justify-content: center;
 }
-#collection .collections-container .single-collection {
+#content .contents-container .single-content {
     height: 70px;
     width: 100px;
     text-align: center;
 }
-#collection .collections-container .single-collection .card {
+#content .contents-container .single-content .card {
     border: none;
 }
-#collection .collections-container .single-collection .card img {
+#content .contents-container .single-content .card img {
     height: 50px;
     width: auto;
 }
-#collection .collections-container .single-collection .card .card-body {
+#content .contents-container .single-content .card .card-body {
     padding: 0.3rem;
 }
-#collection .collections-container .single-collection .card .card-body .card-text {
+#content .contents-container .single-content .card .card-body .card-text {
     color: #000030;
     font-weight: 500;
 }
