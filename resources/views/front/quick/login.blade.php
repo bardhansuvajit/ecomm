@@ -94,7 +94,7 @@
                                                 request_type:'user_auth', credential: response.credential 
                                             }),
                                         }),
-                                        // .then(response => response.json()),
+                                        .then(response => response.json()),
                                         .then(data => {
                                             alert('here 2');
 
