@@ -87,12 +87,16 @@
                                         };
                                         fetch("{{route('front.user.login.google')}}", {
                                             method: "POST",
-                                            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': token},
-                                            body: JSON.stringify({ request_type:'user_auth', credential: response.credential }),
+                                            headers: {
+                                                'Content-Type': 'application/json', 'X-CSRF-TOKEN': token
+                                            },
+                                            body: JSON.stringify({ 
+                                                request_type:'user_auth', credential: response.credential 
+                                            }),
                                         })
                                         .then(response => response.json())
                                         .then(data => {
-                                            alert('here');
+                                            console.log(data);
                                             if(data.status == 200) {
                                                 toastFire('success', '345'+data.message);
 
