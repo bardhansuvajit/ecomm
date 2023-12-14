@@ -33,7 +33,7 @@ class SocialLoginController extends Controller
 
                 // check if user exists in db
                 $finduser = User::where('email', $email)->first();
-                $redirectTo = route('front.user.profile');
+                $redirectTo = route('front.user.profile.index');
                 if($finduser) {
                     Auth::loginUsingId($finduser->id);
                 } else {

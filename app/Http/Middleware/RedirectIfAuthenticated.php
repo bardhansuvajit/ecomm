@@ -29,7 +29,7 @@ class RedirectIfAuthenticated
                 if ($guard == "admin") {
                     return redirect()->route('admin.dashboard');
                 } elseif ($guard == "web") {
-                    return redirect()->route('front.user.profile');
+                    return redirect()->route('front.user.profile.index');
                 } else {
                     return $next($request);
                 }
