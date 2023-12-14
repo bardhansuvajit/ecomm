@@ -85,7 +85,7 @@
                                         const headers = {
                                             Authorization: `Bearer ${token}`
                                         };
-                                        fetch("{{route('front.user.login.google')}}", {
+                                        fetch("{{route('front.user.login.google2')}}", {
                                             method: "POST",
                                             headers: {
                                                 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token
