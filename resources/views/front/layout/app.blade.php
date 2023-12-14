@@ -227,7 +227,7 @@
             @if(Session::has('success'))
                 toastFire('success', '{{Session::get("success")}}');
             @endif
-    
+
             @if(Session::has('failure'))
                 toastFire('error', '{{Session::get("failure")}}');
             @endif
