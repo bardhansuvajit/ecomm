@@ -918,7 +918,7 @@ $('input[name="delivery-address"]').on('change', function() {
     let updatedText = $(this).attr("data-detail");
 
     $.ajax({
-        url: baseUrl+'user/address/default/'+$(this).val(),
+        url: baseUrl+'/user/address/default/'+$(this).val(),
         beforeSend: function() {
             $('#address-head-detail').text('Updating delivery address...');
         },
