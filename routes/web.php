@@ -94,6 +94,8 @@ Route::name('front.')->group(function() {
 
         Route::get('/{slug}', [CategoryController::class, 'detail1'])->name('detail.one');
         Route::get('/{parent}/{slug}', [CategoryController::class, 'detail2'])->name('detail.two');
+        Route::get('/{parent1}/{parent2}/{slug}', [CategoryController::class, 'detail3'])->name('detail.three');
+        Route::get('/{parent1}/{parent2}/{parent3}/{slug}', [CategoryController::class, 'detail4'])->name('detail.four');
     });
 
     // collection

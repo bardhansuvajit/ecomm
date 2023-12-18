@@ -469,6 +469,9 @@ function cartAdd(type, productId, userId, route) {
         },
         success: function(result) {
             if (result.status == 400) {
+                if (result.quickCartShow === true) {
+                    quickCartListUpdate();
+                }
                 toastFire('error', result.message);
             } else {
                 if(result.token.length > 0) {

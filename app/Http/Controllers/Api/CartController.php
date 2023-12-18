@@ -52,9 +52,12 @@ class CartController extends Controller
                 $totalQty = $productExistsInCart->qty + $request->qty;
 
                 if ($totalQty > $maxQty) {
+                    $productExistsInCart->save_for_later = 0;
+                    $productExistsInCart->save();
                     return response()->json([
                         'status' => 400,
-                        'message' => 'You can add maximum '.$maxQty.' items'
+                        'message' => 'You can add maximum '.$maxQty.' items',
+                        'quickCartShow' => true
                     ]);
                 }
 
@@ -86,9 +89,12 @@ class CartController extends Controller
                     $totalQty = $productExistsInCart->qty + $request->qty;
 
                     if ($totalQty > $maxQty) {
+                        $productExistsInCart->save_for_later = 0;
+                        $productExistsInCart->save();
                         return response()->json([
                             'status' => 400,
-                            'message' => 'You can add maximum '.$maxQty.' items'
+                            'message' => 'You can add maximum '.$maxQty.' items',
+                            'quickCartShow' => true
                         ]);
                     }
 

@@ -96,6 +96,10 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('front.home') }}">Home</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('front.category.index') }}">Categories</a></li>
+                        {{-- @if ($type == 2) --}}
+                        @if ($data->parentDetail)
+                            <li class="breadcrumb-item"><a href="{{ route('front.category.detail.one', $data->parentDetail->slug) }}">{{ $data->parentDetail->title }}</a></li>
+                        @endif
                         <li class="breadcrumb-item active" aria-current="page">{{ $data->title }}</li>
                     </ol>
                 </nav>
@@ -116,6 +120,25 @@
             <div id="detailed-description">
                 <p class="small text-muted review2 height-3 mb-0">{{ $data->detailed_desc }}</p>
                 <a href="javascript: void(0)" onclick="seeMoreText('review2', 'more-text2')" class="more-text2">See more</a>
+            </div>
+            @endif
+
+            @if (count($subs) > 0)
+            <div id="content">
+                <div class="contents-container">
+                    @foreach ($subs as $subcategory)
+                    <div class="single-content">
+                        <div class="card">
+                            <a href="{{ route('front.category.detail.two', [$data->slug, $subcategory->slug]) }}">
+                                <img class="card-img-top" src="{{ asset($subcategory->icon_medium) }}" alt="{{$subcategory->slug}}">
+                                <div class="card-body">
+                                    <p class="card-text">{{$subcategory->title}}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
             @endif
 

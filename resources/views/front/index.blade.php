@@ -43,6 +43,17 @@
             </div>
         </div>
         @endforeach
+
+        <div class="single-content">
+            <div class="card">
+                <a href="{{ route('front.collection.index') }}">
+                    <img class="card-img-top" src="{{ asset('uploads/static-svgs/all-collection.png') }}" alt="all-collections">
+                    <div class="card-body">
+                        <p class="card-text">All collections</p>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 @endif
