@@ -43,9 +43,9 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Image</th>
+                                    <th>D Image</th>
+                                    <th>M Image</th>
                                     <th>Title</th>
-                                    <th>Button</th>
                                     <th style="width: 100px">Action</th>
                                 </tr>
                             </thead>
@@ -54,8 +54,15 @@
                                     <tr class="single" id="{{ $item->id }}">
                                         <td>{{ $index + $data->firstItem() }}</td>
                                         <td>
-                                            @if (!empty($item->image_small) && file_exists(public_path($item->image_small)))
-                                                <img src="{{ asset($item->image_small) }}" alt="image" style="height: 50px" class="img-thumbnail">
+                                            @if (!empty($item->desktop_image_small) && file_exists(public_path($item->desktop_image_small)))
+                                                <img src="{{ asset($item->desktop_image_small) }}" alt="image" style="height: 50px" class="img-thumbnail">
+                                            @else
+                                                <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="">
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (!empty($item->mobile_image_small) && file_exists(public_path($item->mobile_image_small)))
+                                                <img src="{{ asset($item->mobile_image_small) }}" alt="image" style="height: 50px" class="img-thumbnail">
                                             @else
                                                 <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="">
                                             @endif
@@ -65,10 +72,6 @@
                                                 <p class="small text-muted mb-0">{{ $item->title1 }}</p>
                                                 <p class="small text-muted mb-0">{{ $item->title2 }}</p>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <p class="small text-muted mb-0">{{ $item->btn_text }}</p>
-                                            <p class="small text-muted mb-0">{{ $item->btn_link }}</p>
                                         </td>
                                         <td class="d-flex">
                                             <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">

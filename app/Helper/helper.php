@@ -605,7 +605,7 @@ if(!function_exists('imageUploadNotice')) {
     function imageUploadNotice(string $type): array {
         $data = ImageSize::where('type', $type)->first();
 
-        $respText = "Size: less than 1 mb | Extension: .webp for better SEO | Dimensions: ".$data->width.'x'.$data->height.' px (WxH)';
+        $respText = "Size: less than 1 mb | Extension: .webp for better SEO | Dimensions: <span class='text-danger'>".$data->width.'x'.$data->height.' px</span> (WxH)';
         $respHtml = '<p class="font-weight-bold small text-muted">'.$respText.'</p>';
 
         return [

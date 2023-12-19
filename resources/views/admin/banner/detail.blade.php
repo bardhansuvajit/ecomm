@@ -21,68 +21,136 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        @if (!empty($data->image_small) && file_exists(public_path($data->image_small)))
-                                            <img src="{{ asset($data->image_small) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @if (!empty($data->desktop_image_small) && file_exists(public_path($data->desktop_image_small)))
+                                            <img src="{{ asset($data->desktop_image_small) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
                                         @else
                                             <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
                                         @endif
 
-                                        <p class="small text-muted">Small Thumbnail</p>
+                                        <p class="small text-muted">Desktop Small Thumbnail</p>
                                     </td>
                                     <td>
-                                        @if (!empty($data->image_medium) && file_exists(public_path($data->image_medium)))
-                                            <img src="{{ asset($data->image_medium) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @if (!empty($data->desktop_image_medium) && file_exists(public_path($data->desktop_image_medium)))
+                                            <img src="{{ asset($data->desktop_image_medium) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
                                         @else
                                             <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
                                         @endif
 
-                                        <p class="small text-muted">Medium Thumbnail</p>
+                                        <p class="small text-muted">Desktop Medium Thumbnail</p>
                                     </td>
                                     <td>
-                                        @if (!empty($data->image_large) && file_exists(public_path($data->image_large)))
-                                            <img src="{{ asset($data->image_large) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @if (!empty($data->desktop_image_large) && file_exists(public_path($data->desktop_image_large)))
+                                            <img src="{{ asset($data->desktop_image_large) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
                                         @else
                                             <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
                                         @endif
 
-                                        <p class="small text-muted">Large Thumbnail</p>
+                                        <p class="small text-muted">Desktop Large Thumbnail</p>
                                     </td>
                                     <td>
-                                        @if (!empty($data->image_org) && file_exists(public_path($data->image_org)))
-                                            <img src="{{ asset($data->image_org) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @if (!empty($data->desktop_image_org) && file_exists(public_path($data->desktop_image_org)))
+                                            <img src="{{ asset($data->desktop_image_org) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
                                         @else
                                             <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
                                         @endif
 
-                                        <p class="small text-muted">Original Thumbnail</p>
+                                        <p class="small text-muted">Desktop Original Thumbnail</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-sm mb-4">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @if (!empty($data->mobile_image_small) && file_exists(public_path($data->mobile_image_small)))
+                                            <img src="{{ asset($data->mobile_image_small) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @else
+                                            <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
+                                        @endif
+
+                                        <p class="small text-muted">Mobile Small Thumbnail</p>
+                                    </td>
+                                    <td>
+                                        @if (!empty($data->mobile_image_medium) && file_exists(public_path($data->mobile_image_medium)))
+                                            <img src="{{ asset($data->mobile_image_medium) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @else
+                                            <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
+                                        @endif
+
+                                        <p class="small text-muted">Mobile Medium Thumbnail</p>
+                                    </td>
+                                    <td>
+                                        @if (!empty($data->mobile_image_large) && file_exists(public_path($data->mobile_image_large)))
+                                            <img src="{{ asset($data->mobile_image_large) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @else
+                                            <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
+                                        @endif
+
+                                        <p class="small text-muted">Mobile Large Thumbnail</p>
+                                    </td>
+                                    <td>
+                                        @if (!empty($data->mobile_image_org) && file_exists(public_path($data->mobile_image_org)))
+                                            <img src="{{ asset($data->mobile_image_org) }}" alt="image" class="img-thumbnail mb-3" style="height: 100px">
+                                        @else
+                                            <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mb-3">
+                                        @endif
+
+                                        <p class="small text-muted">Mobile Original Thumbnail</p>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <p class="small text-muted mb-0">Web link</p>
-                        <p class="text-dark">{{ $data->web_link ? $data->web_link : 'NA' }}</p>
+                        @if ($data->web_link)
+                            <p class="text-dark">{{ $data->web_link }}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">App link</p>
-                        <p class="text-dark">{{ $data->app_link ? $data->app_link : 'NA' }}</p>
+                        @if ($data->app_link)
+                            <p class="text-dark">{{ $data->app_link }}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">Title 1</p>
-                        <p class="text-dark">{{ $data->title1 ? $data->title1 : 'NA' }}</p>
+                        @if ($data->title1)
+                            <p class="text-dark">{{ $data->title1 }}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">Title 2</p>
-                        <p class="text-dark">{{ $data->title2 ? $data->title2 : 'NA' }}</p>
+                        @if ($data->title2)
+                            <p class="text-dark">{{ $data->title2 }}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">Short description</p>
-                        <p class="text-dark">{!! $data->short_description ? nl2br($data->short_description) : 'NA' !!}</p>
+                        @if ($data->short_description)
+                            <p class="text-dark">{!! nl2br($data->short_description) !!}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">Detailed description</p>
-                        <p class="text-dark">{!! $data->detailed_description ? nl2br($data->detailed_description) : 'NA' !!}</p>
+                        @if ($data->detailed_description)
+                            <p class="text-dark">{!! nl2br($data->detailed_description) !!}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
 
                         <p class="small text-muted mb-0">Button text</p>
-                        <p class="text-dark">{{ $data->btn_text ? $data->btn_text : 'NA' }}</p>
-
-                        <p class="small text-muted mb-0">Button link</p>
-                        <p class="text-dark">{{ $data->btn_link ? $data->btn_link : 'NA' }}</p>
+                        @if ($data->btn_text)
+                            <p class="text-dark">{{ $data->btn_text }}</p>
+                        @else
+                            <p class="text-danger font-weight-bold">NA</p>
+                        @endif
                     </div>
                 </div>
             </div>

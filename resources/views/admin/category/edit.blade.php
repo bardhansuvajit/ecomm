@@ -59,7 +59,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {!! imageUploadNotice('category-icon')['html'] !!}
+
+                                    <p>{!! imageUploadNotice('category-icon')['html'] !!}</p>
+
                                     @error('icon') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
 
@@ -82,7 +84,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {!! imageUploadNotice('category-banner')['html'] !!}
+
+                                    <p>{!! imageUploadNotice('category-banner')['html'] !!}</p>
+
                                     @error('banner') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>

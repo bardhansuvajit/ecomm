@@ -42,7 +42,8 @@ class BannerController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+            'desktop_image' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+            'mobile_image' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
             'web_link' => 'required|url',
             'app_link' => 'nullable|string',
             'title1' => 'nullable|string|min:1|max:25',
@@ -50,9 +51,9 @@ class BannerController extends Controller
             'short_description' => 'nullable|string|min:1|max:200',
             'detailed_description' => 'nullable|string|min:1|max:1000',
             'btn_text' => 'nullable|string|max:25',
-            'btn_link' => 'nullable|string',
         ], [
-            'image.max' => 'The image must not be greater than 1MB.',
+            'desktop_image.max' => 'The image must not be greater than 1MB.',
+            'mobile_image.max' => 'The image must not be greater than 1MB.',
         ]);
 
         $banner = new Banner();
@@ -63,16 +64,25 @@ class BannerController extends Controller
         $banner->short_description = $request->short_description ? $request->short_description : '';
         $banner->detailed_description = $request->detailed_description ? $request->detailed_description : '';
         $banner->btn_text = $request->btn_text ? $request->btn_text : '';
-        $banner->btn_link = $request->btn_link ? $request->btn_link : '';
 
         // image upload
-        if (isset($request->image)) {
-            $fileUpload = fileUpload($request->image, 'banner');
+        if (isset($request->desktop_image)) {
+            $fileUpload = fileUpload($request->desktop_image, 'banner');
 
-            $banner->image_small = $fileUpload['file'][0];
-            $banner->image_medium = $fileUpload['file'][1];
-            $banner->image_large = $fileUpload['file'][2];
-            $banner->image_org = $fileUpload['file'][3];
+            $banner->desktop_image_small = $fileUpload['file'][0];
+            $banner->desktop_image_medium = $fileUpload['file'][1];
+            $banner->desktop_image_large = $fileUpload['file'][2];
+            $banner->desktop_image_org = $fileUpload['file'][3];
+        }
+
+        // image upload
+        if (isset($request->mobile_image)) {
+            $fileUpload = fileUpload($request->mobile_image, 'banner');
+
+            $banner->mobile_image_small = $fileUpload['file'][0];
+            $banner->mobile_image_medium = $fileUpload['file'][1];
+            $banner->mobile_image_large = $fileUpload['file'][2];
+            $banner->mobile_image_org = $fileUpload['file'][3];
         }
 
         $banner->position = positionSet('banners');
@@ -96,7 +106,8 @@ class BannerController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+            'desktop_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+            'mobile_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
             'web_link' => 'required|url',
             'app_link' => 'nullable|string',
             'title1' => 'nullable|string|min:1|max:25',
@@ -104,9 +115,9 @@ class BannerController extends Controller
             'short_description' => 'nullable|string|min:1|max:200',
             'detailed_description' => 'nullable|string|min:1|max:1000',
             'btn_text' => 'nullable|string|max:25',
-            'btn_link' => 'nullable|string',
         ], [
-            'image.max' => 'The image must not be greater than 1MB.',
+            'desktop_image.max' => 'The image must not be greater than 1MB.',
+            'mobile_image.max' => 'The image must not be greater than 1MB.',
         ]);
 
         $banner = Banner::findOrFail($request->id);
@@ -117,16 +128,25 @@ class BannerController extends Controller
         $banner->short_description = $request->short_description ? $request->short_description : '';
         $banner->detailed_description = $request->detailed_description ? $request->detailed_description : '';
         $banner->btn_text = $request->btn_text ? $request->btn_text : '';
-        $banner->btn_link = $request->btn_link ? $request->btn_link : '';
 
         // image upload
-        if (isset($request->image)) {
-            $fileUpload = fileUpload($request->image, 'banner');
+        if (isset($request->desktop_image)) {
+            $fileUpload = fileUpload($request->desktop_image, 'banner');
 
-            $banner->image_small = $fileUpload['file'][0];
-            $banner->image_medium = $fileUpload['file'][1];
-            $banner->image_large = $fileUpload['file'][2];
-            $banner->image_org = $fileUpload['file'][3];
+            $banner->desktop_image_small = $fileUpload['file'][0];
+            $banner->desktop_image_medium = $fileUpload['file'][1];
+            $banner->desktop_image_large = $fileUpload['file'][2];
+            $banner->desktop_image_org = $fileUpload['file'][3];
+        }
+
+        // image upload
+        if (isset($request->mobile_image)) {
+            $fileUpload = fileUpload($request->mobile_image, 'banner');
+
+            $banner->mobile_image_small = $fileUpload['file'][0];
+            $banner->mobile_image_medium = $fileUpload['file'][1];
+            $banner->mobile_image_large = $fileUpload['file'][2];
+            $banner->mobile_image_org = $fileUpload['file'][3];
         }
 
         $banner->save();

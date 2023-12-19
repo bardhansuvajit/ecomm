@@ -18,18 +18,29 @@
                         <form action="{{ route('admin.content.banner.store') }}" method="post" enctype="multipart/form-data">@csrf
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    <label for="image">Image <span class="text-muted">*</span></label>
-                                    <input type="file" class="form-control" name="image" id="image">
-                                    {!! imageUploadNotice('banner')['html'] !!}
-                                    @error('image') <p class="small text-danger">{{ $message }}</p> @enderror
+                                    <label for="desktop_image">Desktop Image <span class="text-muted">*</span></label>
+                                    <input type="file" class="form-control" name="desktop_image" id="desktop_image">
+                                    {!! imageUploadNotice('desktop_banner')['html'] !!}
+                                    @error('desktop_image') <p class="small text-danger">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="mobile_image">Mobile Image <span class="text-muted">*</span></label>
+                                    <input type="file" class="form-control" name="mobile_image" id="mobile_image">
+                                    {!! imageUploadNotice('mobile_banner')['html'] !!}
+                                    @error('mobile_image') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
+
+                            <hr>
 
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="web_link">Web link <span class="text-muted">*</span></label>
                                     <input type="text" class="form-control" name="web_link" id="web_link" placeholder="Enter web link" value="{{ old('web_link') }}" maxlength="255">
                                     @error('web_link') <p class="small text-danger">{{ $message }}</p> @enderror
+
+                                    
                                 </div>
                                 <div class="col-md-6">
                                     <label for="app_link">App link <span class="text-muted">(Optional)</span></label>
@@ -37,6 +48,8 @@
                                     @error('app_link') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
+
+                            <hr>
 
                             <div class="form-group row">
                                 <div class="col-md-6">
@@ -68,11 +81,6 @@
                                     <label for="btn_text">Button text <span class="text-muted">(Optional - within 25 characters)</span></label>
                                     <input type="text" class="form-control" name="btn_text" id="btn_text" placeholder="Enter button text" value="{{ old('btn_text') }}" maxlength="25">
                                     @error('btn_text') <p class="small text-danger">{{ $message }}</p> @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="btn_link">Button link <span class="text-muted">(Optional)</span></label>
-                                    <input type="text" class="form-control" name="btn_link" id="btn_link" placeholder="Enter button link" value="{{ old('btn_link') }}">
-                                    @error('btn_link') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
 

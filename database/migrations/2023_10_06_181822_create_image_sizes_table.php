@@ -26,7 +26,8 @@ class CreateImageSizesTable extends Migration
         });
 
         $data = [
-            ['type' => 'banner', 'width' => 1015, 'height' => 250],
+            ['type' => 'desktop_banner', 'width' => 1015, 'height' => 250],
+            ['type' => 'mobile_banner', 'width' => 640, 'height' => 250],
             ['type' => 'notice', 'width' => 500, 'height' => 500],
             ['type' => 'category-icon', 'width' => 500, 'height' => 500],
             ['type' => 'category-banner', 'width' => 1400, 'height' => 300],

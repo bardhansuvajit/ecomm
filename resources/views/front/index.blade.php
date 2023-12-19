@@ -14,7 +14,8 @@
                 <div class="swiper-slide">
                     <a href="{{ $banner->web_link }}">
                         {{-- <img src="https://placehold.in/1015x250.webp/dark" alt=""> --}}
-                        <img src="{{ asset($banner->image_org) }}" alt="banner">
+                        <img src="{{ asset($banner->desktop_image_large) }}" alt="banner" class="desktop-banner">
+                        <img src="{{ asset($banner->mobile_image_large) }}" alt="banner" class="mobile-banner">
                     </a>
                 </div>
             @endforeach

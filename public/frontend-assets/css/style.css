@@ -15,7 +15,7 @@
     /* color: #495057; */
 }
 p, a, li {
-    font-size: 12px;
+    font-size: 10px;
 }
 body {
     background-color: #f5f5f5;
@@ -499,6 +499,12 @@ footer p, footer a {
     width: 100%;
     border-radius: inherit;
     height: inherit
+}
+#banner .swiper-slide .desktop-banner {
+    display: none;
+}
+#banner .swiper-slide .mobile-banner {
+    display: block;
 }
 .swiper-button-prev, .swiper-button-next {
     display: none;
@@ -1102,6 +1108,9 @@ footer p, footer a {
     :root {
         --banner-height: 250px
     }
+    p, a, li {
+        font-size: 12px;
+    }
     #banner .swiper-button-prev, #banner .swiper-button-next {
         display: block;
     }
@@ -1109,12 +1118,17 @@ footer p, footer a {
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
     }
+    #banner .swiper-slide .desktop-banner {
+        display: block;
+    }
+    #banner .swiper-slide .mobile-banner {
+        display: none;
+    }
 }
 #access_blocked {
     display: none;
-  }
-  
-  @media only screen and (min-width: 768px) and (max-width: 991px) {
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     #access_blocked {
         display: block;
         position: fixed;

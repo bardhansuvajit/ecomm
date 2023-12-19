@@ -18,21 +18,57 @@
                         <form action="{{ route('admin.content.banner.update') }}" method="post" enctype="multipart/form-data">@csrf
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    @if (!empty($data->image_small))
-                                        @if (!empty($data->image_small) && file_exists(public_path($data->image_small)))
-                                            <img src="{{ asset($data->image_small) }}" alt="image" class="img-thumbnail mr-3" style="height: 50px">
-                                        @else
-                                            <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" style="height: 50px" class="mr-2">
-                                        @endif
-                                        <br>
-                                    @endif
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @if (!empty($data->desktop_image_small) && file_exists(public_path($data->desktop_image_small)))
+                                                <img src="{{ asset($data->desktop_image_small) }}" alt="image" class="img-thumbnail edit-image">
+                                            @else
+                                                <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" class="img-thumbnail edit-image">
+                                            @endif
+                                        </div>
+                                        <div class="col-md-9">
+                                            <label for="desktop_image">Desktop Image <span class="text-muted">(Optional)</span></label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" name="desktop_image" id="desktop_image">
+                                                    <label class="custom-file-label" for="desktop_image">Choose file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <label for="image">Image</label>
-                                    <input type="file" class="form-control" name="image" id="image">
-                                    {!! imageUploadNotice('banner')['html'] !!}
-                                    @error('image') <p class="small text-danger">{{ $message }}</p> @enderror
+                                    <p>{!! imageUploadNotice('desktop_banner')['html'] !!}</p>
+
+                                    @error('desktop_image') <p class="small text-danger">{{ $message }}</p> @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @if (!empty($data->mobile_image_small) && file_exists(public_path($data->mobile_image_small)))
+                                                <img src="{{ asset($data->mobile_image_small) }}" alt="image" class="img-thumbnail edit-image">
+                                            @else
+                                                <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" class="img-thumbnail edit-image">
+                                            @endif
+                                        </div>
+                                        <div class="col-md-9">
+                                            <label for="mobile_image">Mobile Image <span class="text-muted">(Optional)</span></label>
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" name="mobile_image" id="mobile_image">
+                                                    <label class="custom-file-label" for="mobile_image">Choose file</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p>{!! imageUploadNotice('mobile_banner')['html'] !!}</p>
+
+                                    @error('mobile_image') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
+
+                            <hr>
 
                             <div class="form-group row">
                                 <div class="col-md-6">
@@ -47,6 +83,8 @@
                                 </div>
                             </div>
 
+                            <hr>
+
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="title1">Title 1 <span class="text-muted">(Optional - within 25 characters)</span></label>
@@ -60,13 +98,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group">
                                 <label for="short_description">Short description <span class="text-muted">(Optional - within 200 characters)</span></label>
                                 <textarea name="short_description" id="short_description" class="form-control" placeholder="Enter short description" rows="4">{{ old('short_description') ? old('short_description') : $data->short_description }}</textarea>
                                 @error('short_description') <p class="small text-danger">{{ $message }}</p> @enderror
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group">
                                 <label for="detailed_description">Detailed description <span class="text-muted">(Optional - within 1000 characters)</span></label>
                                 <textarea name="detailed_description" id="detailed_description" class="form-control" placeholder="Enter detailed description" rows="4">{{ old('detailed_description') ? old('detailed_description') : $data->detailed_description }}</textarea>
                                 @error('detailed_description') <p class="small text-danger">{{ $message }}</p> @enderror
@@ -77,11 +115,6 @@
                                     <label for="btn_text">Button text <span class="text-muted">(Optional - within 25 characters)</span></label>
                                     <input type="text" class="form-control" name="btn_text" id="btn_text" placeholder="Enter button text" value="{{ old('btn_text') ? old('btn_text') : $data->btn_text }}" maxlength="25">
                                     @error('btn_text') <p class="small text-danger">{{ $message }}</p> @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="btn_link">Button link <span class="text-muted">(Optional)</span></label>
-                                    <input type="text" class="form-control" name="btn_link" id="btn_link" placeholder="Enter button link" value="{{ old('btn_link') ? old('btn_link') : $data->btn_link }}">
-                                    @error('btn_link') <p class="small text-danger">{{ $message }}</p> @enderror
                                 </div>
                             </div>
 

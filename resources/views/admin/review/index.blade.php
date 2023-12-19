@@ -67,9 +67,9 @@
                                                     </div>
                                                     <div class="other-details">
                                                         @if ($item->productDetails->title)
-                                                            <p class="text-muted mb-1"><a href="{{ route('admin.product.detail', $item->productDetails->id) }}">{{ $item->productDetails->title }}</a></p>
+                                                            <p class="small text-muted mb-1"><a href="{{ route('admin.product.detail', $item->productDetails->id) }}">{{ $item->productDetails->title }}</a></p>
                                                         @endif
-                                                        {!! productCategories($item->productDetails->id, 1, 'horizontal') !!}
+                                                        <small>{!! productCategories($item->productDetails->id, 1, 'horizontal') !!}</small>
                                                     </div>
                                                 </div>
                                             @endif
