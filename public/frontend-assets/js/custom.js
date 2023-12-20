@@ -282,12 +282,18 @@ const swiperBanner = new Swiper('.swiper-banner', {
     slidesPerView: 1.1,
     spaceBetween: 10,
     pagination: {
-        el: '.swiper-pagination',
+        el: ".swiper-pagination",
+        clickable: true
     },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
+    breakpoints: {
+        // when window width is >= 768px
+        768: {
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        },
+    }
 });
 
 const swiperDeals = new Swiper('.swiper-deals', {
@@ -316,7 +322,7 @@ const swiperDeals = new Swiper('.swiper-deals', {
             slidesPerView: 5,
             spaceBetween: 10
         }
-      }
+    }
 });
 
 const swiperSimilar = new Swiper('.swiper-similar', {

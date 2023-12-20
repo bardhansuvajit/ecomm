@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="{{ asset('frontend-assets/css/swiper-bundle.min.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="{{ asset('frontend-assets/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontend-assets/css/responsive.css') }}">
 
         <meta name="title" content="@yield('meta-title')">
         <meta name="description" content="@yield('meta-description')"/>
@@ -23,131 +22,110 @@
     </head>
     <body>
         @if (!request()->is('checkout'))
-        <nav class="navbar bg-body-tertiary" id="onscroll-nav">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" id="onscroll-nav">
             <div class="container">
-                <div class="nav-logo">
-                    <div class="nav-toggler">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarMobileOnly" aria-controls="offcanvasNavbarMobileOnlyLabel" aria-label="Mobile sidebar">
-                            <i class="material-icons">menu</i>
-                        </button>
-                    </div>
+                <div class="nav-toggler">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <i class="material-icons">menu</i>
+                    </button>
+                </div>
 
+                <div class="nav-logo">
                     <a class="navbar-brand" href="{{ route('front.home') }}">
                         <img src="{{ asset($officeInfo->primary_logo) }}" alt="">
                     </a>
                 </div>
 
-                <div class="nav-search">
-                    <div class="search-section">
-                        <form action="search" method="GET">
-                            <div class="input-group">
-                                <input type="search" class="form-control" name="q" placeholder="What are you looking for..." autocomplete="off" id="search-bar">
-
-                                <span class="input-group-text">
-                                    <button type="submit" id="search-icon">
-                                        <i class="material-icons">search</i>
-                                    </button>
-                                </span>
-                            </div>
-                            <div id="search-result-holder">
-                                <div class="search-result">
-                                    <p class="small text-muted mb-2 ms-3">Trending</p>
-                                    <div class="list-group">
-                                        <a href="#" class="list-group-item list-group-item-action"> 
-                                            <i class="material-icons">youtube_searched_for</i> 
-                                            Mobiles
-                                        </a>
-                                        <a href="#" class="list-group-item list-group-item-action"> 
-                                            <i class="material-icons">youtube_searched_for</i> 
-                                            Mobile under 10000
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="nav-quick">
-                    <div class="icons-holder">
-                        <a href="javascript: void(0)" class="btn btn-circle" onclick="quickCartListUpdate()">
-                            <i class="material-icons">shopping_cart</i>
-                            <span class="highlight" id="cartCountShow">
-                                @if ($cartCount > 0)
-                                <span id="user_cartCountHeader">
-                                    {{ ($cartCount > 0) ? $cartCount : '' }}
-                                </span>
-                                @endif
-                            </span>
-                        </a>
-
-                        <a href="javascript: void(0)" data-bs-toggle="offcanvas" data-bs-target="#locationBackdrop" class="btn btn-circle d-des">
-                            <i class="material-icons">location_on</i>
-                        </a>
-
-                        <div id="login-container" class="d-inline-block">
-                            @if (auth()->guard('web')->check())
-                                <div class="btn-group user-detail">
-                                    <a class="dropdown-toggle" href="javascript: void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{ auth()->guard('web')->user()->first_name ? auth()->guard('web')->user()->first_name : 'Profile' }}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <h6 class="dropdown-header">
-                                                {{ auth()->guard('web')->user()->first_name.' '.auth()->guard('web')->user()->last_name }}
-                                            </h6>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('front.user.account') }}">Account</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('front.user.order.index') }}">Orders</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('front.user.profile.index') }}">Profile</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="javascript: void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            @else
-                                <a href="#loginModal" data-bs-toggle="modal" class="btn btn-dark d-des">
-                                    Login
-                                </a>
-                                <a href="#loginModal" data-bs-toggle="modal" class="btn btn-circle m-des">
-                                    <i class="material-icons">account_circle</i>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarMobileOnly" aria-labelledby="offcanvasNavbarMobileOnlyLabel">
-                    <div class="offcanvas-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
-                            <li class="list-group-item">A fourth item</li>
-                            <li class="list-group-item">And a fifth one</li>
-                        </ul>
-                    </div>
-                </div>
-
-                {{-- <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarMobileOnly">
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body d-block">
                         <div class="row">
-                            here
+                            <div class="col-md-8">
+                                <div class="search-section">
+                                    <form action="search" method="GET">
+                                        <div class="input-group">
+                                            <input type="search" class="form-control" name="q" placeholder="What are you looking for..." autocomplete="off" id="search-bar">
+
+                                            <span class="input-group-text">
+                                                <button type="submit" id="search-icon">
+                                                    <i class="material-icons">search</i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <div id="search-result-holder">
+                                            <div class="search-result">
+                                                <p class="small text-muted mb-2 ms-3">Trending</p>
+                                                <div class="list-group">
+                                                    <a href="#" class="list-group-item list-group-item-action"> 
+                                                        <i class="material-icons">youtube_searched_for</i> 
+                                                        Mobiles
+                                                    </a>
+                                                    <a href="#" class="list-group-item list-group-item-action"> 
+                                                        <i class="material-icons">youtube_searched_for</i> 
+                                                        Mobile under 10000
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 text-end">
+                                <div class="icons-holder">
+                                    <a href="javascript: void(0)" class="btn btn-circle" onclick="quickCartListUpdate()">
+                                        <i class="material-icons">shopping_cart</i>
+                                        {{-- <span id="user_cartCountHeader" style="display: none;"></span> --}}
+                                        <span class="highlight" id="cartCountShow">
+                                            @if ($cartCount > 0)
+                                            <span id="user_cartCountHeader">
+                                                {{ ($cartCount > 0) ? $cartCount : '' }}
+                                            </span>
+                                            @endif
+                                        </span>
+                                    </a>
+
+                                    <a href="javascript: void(0)" data-bs-toggle="offcanvas" data-bs-target="#locationBackdrop" class="btn btn-circle">
+                                        <i class="material-icons">location_on</i>
+                                    </a>
+
+                                    <div id="login-container" class="d-inline-block">
+                                        @if (auth()->guard('web')->check())
+                                            <div class="btn-group user-detail">
+                                                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ auth()->guard('web')->user()->first_name ? auth()->guard('web')->user()->first_name : 'Profile' }}
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li>
+                                                        <h6 class="dropdown-header">
+                                                            {{ auth()->guard('web')->user()->first_name.' '.auth()->guard('web')->user()->last_name }}
+                                                        </h6>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('front.user.account') }}">Account</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('front.user.order.index') }}">Orders</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('front.user.profile.index') }}">Profile</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript: void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        @else
+                                            <a href="#loginModal" data-bs-toggle="modal" class="btn btn-dark">Login</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </nav>
         @endif
