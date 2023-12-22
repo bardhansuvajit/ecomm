@@ -20,8 +20,6 @@ class SocialMediaController extends Controller
 
         $query->when($keyword, function($query) use ($keyword) {
             $query->where('type', 'like', '%'.$keyword.'%')
-            ->orWhere('icon_type', 'like', '%'.$keyword.'%')
-            ->orWhere('icon_class', 'like', '%'.$keyword.'%')
             ->orWhere('link', 'like', '%'.$keyword.'%');
         });
         $query->when($status, function($query) use ($status) {
@@ -44,15 +42,11 @@ class SocialMediaController extends Controller
 
         $request->validate([
             'type' => 'required|string|min:2|max:255',
-            'icon_type' => 'required|string|min:2|max:255',
-            'icon_class' => 'required|string|min:2|max:255',
             'link' => 'required|url|min:2',
         ]);
 
         $socialMedia = new SocialMedia();
         $socialMedia->type = $request->type;
-        $socialMedia->icon_type = $request->icon_type;
-        $socialMedia->icon_class = $request->icon_class;
         $socialMedia->link = $request->link;
         $socialMedia->position = positionSet('social_media');
         $socialMedia->save();
@@ -76,15 +70,11 @@ class SocialMediaController extends Controller
     {
         $request->validate([
             'type' => 'required|string|min:2|max:255',
-            'icon_type' => 'required|string|min:2|max:255',
-            'icon_class' => 'required|string|min:2|max:255',
             'link' => 'required|url|min:2',
         ]);
 
         $socialMedia = SocialMedia::findOrFail($request->id);
         $socialMedia->type = $request->type;
-        $socialMedia->icon_type = $request->icon_type;
-        $socialMedia->icon_class = $request->icon_class;
         $socialMedia->link = $request->link;
         $socialMedia->save();
 

@@ -367,6 +367,15 @@ nav.navbar {
     position: relative;
     top: 4px;
 }
+#onscroll-nav #offcanvasNavbarMobileOnly .offcanvas-header {
+    padding: 9.5px 7px;
+}
+#onscroll-nav #offcanvasNavbarMobileOnly .offcanvas-header .btn-close {
+    font-size: 13px;
+}
+#onscroll-nav #offcanvasNavbarMobileOnly .offcanvas-body {
+    padding: 0;
+}
 #cart-status .cart-exists .quick-cart-single-product {
     padding: 15px 0;
     border-bottom: 1px solid #e1e1e1;

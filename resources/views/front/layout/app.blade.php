@@ -158,67 +158,80 @@
             <div class="container main-container">
         @endif
 
-        @yield('content')
-
+            @yield('content')
         </div>
 
         <footer>
             <div class="container">
-                <div class="row">
-                    <div class="col-2">
-                        <h5 class="text-light">Section</h5>
-                        <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Pricing</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">About</a></li>
-                        </ul>
-                    </div>
-    
-                    <div class="col-2">
-                        <h5 class="text-light">Section</h5>
-                        <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Pricing</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">About</a></li>
-                        </ul>
-                    </div>
-    
-                    <div class="col-2">
-                        <h5 class="text-light">Section</h5>
-                        <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="">Home</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Features</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">Pricing</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="">About</a></li>
-                        </ul>
-                    </div>
-    
-                    <div class="col-4 offset-1">
-                        <form>
+                <div class="row mb-4">
+                    <div class="col-md-4 text-center text-md-start mb-4">
+                        <form method="get" action="">
                             <h5 class="text-light">Subscribe to our newsletter</h5>
                             <p class="text-light">Monthly digest of whats new and exciting from us.</p>
                             <div class="d-flex w-100 gap-2">
-                                <label for="newsletter1" class="visually-hidden">Email address</label>
-                                <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-                                <button class="btn btn-primary" type="button">Subscribe</button>
+                                <label for="newsletter" class="visually-hidden">Email address</label>
+                                <input id="newsletter" type="email" class="form-control" placeholder="Email address" maxlength="50">
+                                <button class="btn btn-sm btn-primary rounded-0" type="button">Subscribe</button>
                             </div>
                         </form>
                     </div>
+
+                    <div class="col-md-4"></div>
+
+                    <div class="col-md-4 text-center text-md-end mb-4">
+                        <h5 class="text-light">Contact us</h5>
+                        <p class="text-light">You can get in touch with us from the followings</p>
+                        <ul class="nav flex-column">
+                            <li>
+                                <a href="">
+                                    <span class="icon"><i class="material-icons">mail</i></span>    
+                                    <span class="text">support@torzo.in</span>    
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon"><i class="material-icons">mail</i></span>    
+                                    <span class="text">support@torzo.in</span>    
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-    
-                <div class="bottom-part d-flex justify-content-between pt-4 mt-4 border-top">
+
+                <div class="row border-top pt-4">
+                    <div class="col-md-12 text-center">
+                        <ul class="list-unstyled d-flex justify-content-center">
+                            <li class="me-3">
+                                <a class="" href="#">Terms &amp; Conditions</a>
+                            </li>
+                            <li class="me-3">
+                                <a class="" href="#">Cancellation &amp; Return</a>
+                            </li>
+                            <li class="me-3">
+                                <a class="" href="#">Terms of usage</a>
+                            </li>
+                            <li class="me-3">
+                                <a class="" href="#">Privacy policy</a>
+                            </li>
+                            <li class="me-3">
+                                <a class="" href="#">Security</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <p class="mb-0">&copy; {{ date('Y') }} Company, Inc. All rights reserved.</p>
+                    </div>
+                </div>
+
+                {{-- <div class="bottom-part d-flex justify-content-between pt-4 mt-4 border-top">
                     <p class="small mb-0">&copy; {{ date('Y') }} Company, Inc. All rights reserved.</p>
                     <ul class="list-unstyled d-flex">
                         <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
                         <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
                         <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
                     </ul>
-                </div>
+                </div> --}}
             </div>
         </footer>
 
