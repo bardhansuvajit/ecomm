@@ -76,6 +76,7 @@
                                 <li class="breadcrumb-item"><a href="{{ route('front.category.detail.one', $category->c1_slug) }}">{{ $category->c1_title }}</a></li>
                             @endif
                             @if ($category->level == 2)
+                            {{ dd($categories[0]->c1_slug, $category->c2_slug) }}
                                 <li class="breadcrumb-item"><a href="{{ route('front.category.detail.two', [$categories[0]->c1_slug, $category->c2_slug]) }}">{{ $category->c2_title }}</a></li>
                             @endif
                         @endforeach
