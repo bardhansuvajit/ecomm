@@ -34,7 +34,8 @@ class ProductController extends Controller
             LEFT JOIN product_category3s AS c3
             ON pc.category_id = c3.id AND pc.level = 3
             LEFT JOIN product_category4s AS c4
-            ON pc.category_id = c4.id AND pc.level = 4");
+            ON pc.category_id = c4.id AND pc.level = 4
+            ORDER BY pc.level");
 
             // add to watchlist
             $watchlist = new ProductWatchlist();
