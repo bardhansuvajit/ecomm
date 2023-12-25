@@ -1171,4 +1171,11 @@ footer p, footer a {
     font-size: 18px;
     color: #607D8B;
 }
-
+footer .tags-holder .icon i.material-icons {
+    font-size: 16px;
+    position: relative;
+    bottom: -3px;
+}
+footer .tags-holder .text {
+    font-size: 16px;
+}

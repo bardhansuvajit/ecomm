@@ -165,13 +165,13 @@
             <div class="container">
                 <div class="row mb-4">
                     <div class="col-md-4 text-center text-md-start mb-4">
-                        <form method="get" action="">
+                        <form method="get" action="{{ route('front.newsletter.subscribe') }}" id="newsletterSubscribeForm">@csrf
                             <h5 class="text-light">Subscribe to our newsletter</h5>
                             <p class="text-light">Monthly digest of whats new and exciting from us.</p>
                             <div class="d-flex w-100 gap-2">
                                 <label for="newsletter" class="visually-hidden">Email address</label>
                                 <input id="newsletter" type="email" class="form-control" placeholder="Email address" maxlength="50">
-                                <button class="btn btn-sm btn-primary rounded-0" type="button">Subscribe</button>
+                                <button class="btn btn-sm btn-primary rounded-0" type="submit">Subscribe</button>
                             </div>
                         </form>
                     </div>
@@ -184,14 +184,18 @@
                         <ul class="nav flex-column">
                             <li>
                                 <a href="">
-                                    <span class="icon"><i class="material-icons">mail</i></span>    
-                                    <span class="text">support@torzo.in</span>    
+                                    <div class="tags-holder">
+                                        <span class="icon"><i class="material-icons">mail</i></span>
+                                        <span class="text">support@torzo.in</span>
+                                    </div>
                                 </a>
                             </li>
                             <li>
                                 <a href="">
-                                    <span class="icon"><i class="material-icons">mail</i></span>    
-                                    <span class="text">support@torzo.in</span>    
+                                    <div class="tags-holder">
+                                        <span class="icon"><i class="material-icons">call</i></span>
+                                        <span class="text">9876543210</span>
+                                    </div>
                                 </a>
                             </li>
                         </ul>
@@ -206,9 +210,6 @@
                             </li>
                             <li class="me-3">
                                 <a class="" href="#">Cancellation &amp; Return</a>
-                            </li>
-                            <li class="me-3">
-                                <a class="" href="#">Terms of usage</a>
                             </li>
                             <li class="me-3">
                                 <a class="" href="#">Privacy policy</a>

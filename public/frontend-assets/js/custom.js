@@ -1114,3 +1114,29 @@ function wishlistToggle(productId) {
         }
     });
 }
+
+$(document).on('submit', '#newsletterSubscribeForm', function(e) {
+// $('#newsletterSubscribeForm').on('submit', function(e) {
+    e.preventDefault();
+
+    let mail = $('#newsletter').val();
+
+    if (mail.length > 0) {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: {
+                _token: $('input[name="_token"]').val(),
+                mail: mail,
+            },
+            success: function(resp) {
+                if (resp.status == 200) {
+                    $('#newsletter').val('')
+                    toastFire('success', resp.message);
+                } else {
+                    toastFire('error', resp.message);
+                }
+            }
+        })
+    }
+});

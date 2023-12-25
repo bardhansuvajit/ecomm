@@ -135,6 +135,11 @@ Route::name('front.')->group(function() {
         Route::get('toggle/{productId}', [WishlistController::class, 'toggle'])->name('toggle');
     });
 
+    // newsletter
+    Route::prefix('newsletter')->name('newsletter.')->group(function() {
+        Route::get('subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
+    });
+
     // error
     Route::prefix('error')->name('error.')->group(function() {
         Route::get('404', [ErrorController::class, 'err404'])->name('404');
