@@ -13,9 +13,10 @@ use App\Models\OfficeAddress;
 use App\Models\Currency;
 use App\Models\Notice;
 use App\Models\SocialMedia;
-use App\Models\ProductCategory1;
+// use App\Models\ProductCategory1;
 use App\Models\Cart;
 use App\Models\IpCountry;
+use App\Models\ContentPage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -68,6 +69,11 @@ class AppServiceProvider extends ServiceProvider
                 $currencies = Currency::where('status', 1)->orderBy('position')->get();
             }
 
+            $contentPageTableExists = Schema::hasTable('content_pages');
+            if ($contentPageTableExists) {
+                $contentPages = ContentPage::orderBy('position')->get();
+            }
+
             // cart count
             $cartExists = Schema::hasTable('carts');
             if ($cartExists) {
@@ -112,6 +118,7 @@ class AppServiceProvider extends ServiceProvider
             view()->share('currencies', $currencies);
             view()->share('existingCurrencyId', $existingCurrencyId);
             view()->share('cartCount', $cartCount);
+            view()->share('contentPages', $contentPages);
             /*
             view()->share('cartContent', $cartContent);
             view()->share('officeAddress', $officeAddress);

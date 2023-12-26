@@ -307,30 +307,14 @@
                                         <p>Banner</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.content.cancellation') }}" class="nav-link {{ (request()->is('admin/content/cancellation*')) ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Cancellation &amp; Return</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.content.usage') }}" class="nav-link {{ (request()->is('admin/content/usage*')) ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Terms of usage</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.content.privacy') }}" class="nav-link {{ (request()->is('admin/content/privacy*')) ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Privacy policy</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.content.security') }}" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Security</p>
-                                    </a>
-                                </li>
+                                @foreach ($contentPages as $page)
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.content.edit', $page->page) }}" class="nav-link {{ (request()->is('admin/content/page/'.$page->page.'*')) ? 'active' : '' }}">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>{!! $page->title !!}</p>
+                                        </a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </li>
                         <li class="nav-item {{ (request()->is('admin/management*')) ? 'menu-open' : '' }}">
@@ -358,25 +342,25 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.content.security') }}" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
+                                    <a href="#" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Event</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.content.security') }}" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
+                                    <a href="#" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Service</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.content.security') }}" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
+                                    <a href="#" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Portfolio</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.content.security') }}" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
+                                    <a href="#" class="nav-link {{ (request()->is('admin/content/security*')) ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Gallery</p>
                                     </a>

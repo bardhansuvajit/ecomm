@@ -205,23 +205,18 @@
                 <div class="row border-top pt-4">
                     <div class="col-md-12 text-center">
                         <ul class="list-unstyled d-flex justify-content-center">
-                            <li class="me-3">
-                                <a class="" href="#">Terms &amp; Conditions</a>
-                            </li>
-                            <li class="me-3">
-                                <a class="" href="#">Cancellation &amp; Return</a>
-                            </li>
-                            <li class="me-3">
-                                <a class="" href="#">Privacy policy</a>
-                            </li>
-                            <li class="me-3">
-                                <a class="" href="#">Security</a>
-                            </li>
+                            @foreach ($contentPages as $page)
+                                @if ($page->status != 1) @continue @endif
+
+                                <li class="me-3">
+                                    <a class="" href="{{ route('front.page.'.$page->page) }}">{!! $page->title !!}</a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
 
                     <div class="col-md-12 text-center">
-                        <p class="mb-0">&copy; {{ date('Y') }} Company, Inc. All rights reserved.</p>
+                        <p class="mb-0">&copy; {{ date('Y') }} {{ $officeInfo->full_name }} All rights reserved.</p>
                     </div>
                 </div>
 

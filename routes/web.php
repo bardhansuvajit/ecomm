@@ -146,6 +146,16 @@ Route::name('front.')->group(function() {
         Route::get('401', [ErrorController::class, 'err401'])->name('401');
     });
 
+    // contents
+    Route::name('page.')->group(function() {
+        Route::get('terms-and-conditions', [PageContentController::class, 'terms'])->name('terms');
+        Route::get('privacy-policy', [PageContentController::class, 'privacy'])->name('privacy');
+        Route::get('security', [PageContentController::class, 'security'])->name('security');
+        Route::get('return-and-cancellation', [PageContentController::class, 'return'])->name('cancellation');
+        Route::get('customer-support', [PageContentController::class, 'support'])->name('support');
+        Route::get('service', [PageContentController::class, 'service'])->name('service');
+    });
+
     // product
     Route::name('product.')->group(function() {
         Route::get('{slug}', [ProductController::class, 'detail'])->name('detail');

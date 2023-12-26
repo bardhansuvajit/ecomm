@@ -286,16 +286,20 @@ Route::name('admin.')->group(function() {
                 Route::post('/position', [BannerController::class, 'position'])->name('position');
             });
 
-            // cancellation
-            Route::get('/cancellation', [ContentController::class, 'cancellation'])->name('cancellation');
-            // usage
-            Route::get('/usage', [ContentController::class, 'usage'])->name('usage');
-            // privacy
-            Route::get('/privacy', [ContentController::class, 'privacy'])->name('privacy');
-            // security
-            Route::get('/security', [ContentController::class, 'security'])->name('security');
+            Route::get('/page/{page}', [ContentController::class, 'edit'])->name('edit');
+            Route::get('/page/status/{id}', [ContentController::class, 'status'])->name('status');
+            Route::post('/page/update', [ContentController::class, 'update'])->name('page.update');
 
-            Route::post('/content/page/update', [ContentController::class, 'contentPageUpdate'])->name('page.update');
+            // // cancellation
+            // Route::get('/cancellation', [ContentController::class, 'cancellation'])->name('cancellation');
+            // // terms
+            // Route::get('/terms', [ContentController::class, 'terms'])->name('terms');
+            // // privacy
+            // Route::get('/privacy', [ContentController::class, 'privacy'])->name('privacy');
+            // // security
+            // Route::get('/security', [ContentController::class, 'security'])->name('security');
+
+            // Route::post('/content/page/update', [ContentController::class, 'contentPageUpdate'])->name('page.update');
         });
 
         // management
