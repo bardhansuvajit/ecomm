@@ -49,62 +49,8 @@
                         </div>
                     </form>
 
-                    <div class="social-login-container mt-2 mb-3">
-                        <div class="login-heading text-center">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12"><hr></div>
-                            </div>
-                            <p class="small">Or Continue</p>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-6">
-                                <div id="g_id_onload"
-                                    data-client_id="65139693010-fg1u8233h518asgsi08noqcefskld8bi.apps.googleusercontent.com"
-                                    data-context="signin"
-                                    data-ux_mode="popup"
-                                    data-callback="handleCredentialResponse"
-                                    data-auto_prompt="false">
-                                </div>
+                    @include('front.quick.social-login')
 
-                                <div class="g_id_signin"
-                                    {{-- data-type="icon" --}}
-                                    data-type="standard"
-                                    {{-- data-shape="circle" --}}
-                                    data-shape="rectangular"
-                                    data-theme="filled_blue"
-                                    data-text="signin_with"
-                                    data-size="medium"
-                                    data-logo_alignment="left">
-                                </div>
-
-                                <script src="https://accounts.google.com/gsi/client" async></script>
-
-                                <script>
-                                    function handleCredentialResponse(response) {
-                                        let token = '{{ csrf_token() }}';
-                                        const headers = {
-                                            Authorization: `Bearer ${token}`
-                                        };
-                                        fetch("{{route('front.user.login.google')}}", {
-                                            method: "POST",
-                                            headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': token},
-                                            body: JSON.stringify({ request_type:'user_auth', credential: response.credential }),
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if(data.status == 200) {
-                                                toastFire('success', data.message);
-                                                // window.location.href = data.redirectTo;
-                                            } else {
-                                                toastFire('failure', data.message);
-                                            }
-                                        });
-                                        // .catch(console.error);
-                                    }
-                                </script>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
