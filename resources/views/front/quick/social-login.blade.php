@@ -92,7 +92,7 @@
                             toastFire('failure', data.message);
                         }
                     });
-                    // .catch(console.error);
+                    .catch(console.error);
                 }
             </script>
         </div>
