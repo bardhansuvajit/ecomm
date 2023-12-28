@@ -17,6 +17,7 @@ use App\Models\SocialMedia;
 use App\Models\Cart;
 use App\Models\IpCountry;
 use App\Models\ContentPage;
+use App\Models\UserSocialLogin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -74,6 +75,11 @@ class AppServiceProvider extends ServiceProvider
                 $contentPages = ContentPage::orderBy('position')->get();
             }
 
+            $socialLoginTableExists = Schema::hasTable('user_social_logins');
+            if ($socialLoginTableExists) {
+                $socialLoginLists = UserSocialLogin::where('status', 1)->orderBy('position')->get();
+            }
+
             // cart count
             $cartExists = Schema::hasTable('carts');
             if ($cartExists) {
@@ -119,6 +125,7 @@ class AppServiceProvider extends ServiceProvider
             view()->share('existingCurrencyId', $existingCurrencyId);
             view()->share('cartCount', $cartCount);
             view()->share('contentPages', $contentPages);
+            view()->share('socialLoginLists', $socialLoginLists);
             /*
             view()->share('cartContent', $cartContent);
             view()->share('officeAddress', $officeAddress);
