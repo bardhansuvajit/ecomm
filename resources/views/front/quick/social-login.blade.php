@@ -7,7 +7,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-md-5">
             <div id="g_id_onload"
                 data-client_id="65139693010-fg1u8233h518asgsi08noqcefskld8bi.apps.googleusercontent.com"
                 data-context="signin"
