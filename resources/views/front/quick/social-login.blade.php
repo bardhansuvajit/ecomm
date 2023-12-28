@@ -47,13 +47,9 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        alert('here 2');
-
                         console.log(data);
                         if(data.status == 200) {
-                            toastFire('success', '345'+data.message);
-
-                            alert(data.name.split(" ")[0]);
+                            toastFire('success', data.message);
 
                             let content = `
                             <div class="btn-group user-detail">
