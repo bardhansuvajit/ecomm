@@ -161,6 +161,16 @@
         margin-bottom: 0.5rem;
         font-size: calc(1.275rem + .3vw);
     }
+    #primary-detail #purchase {
+        margin: 15px 0;
+        position: initial;
+    }
+    .info-container {
+        margin-top: 0;
+    }
+    #primary-detail #title {
+        margin-bottom: 1rem;
+    }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     #access_blocked {

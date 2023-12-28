@@ -793,6 +793,9 @@ footer p, footer a {
     top: 0px;
     left: 0px;
 }
+.info-container {
+    margin-top: 20px;
+}
 #primary-detail .quick-container .sticky-section {
     position: sticky;
     top: 70px;
@@ -835,7 +838,7 @@ footer p, footer a {
     margin: auto;
 }
 #primary-detail #title {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 #primary-detail #title h5 {
     font-weight: 400;
@@ -895,7 +898,13 @@ footer p, footer a {
     line-height: 1.6;
 }
 #primary-detail #purchase {
-    margin: 15px 0;
+    margin: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 9;
 }
 #primary-detail #purchase a {
     font-size: 1.2rem;
