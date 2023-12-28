@@ -77,6 +77,7 @@
                             $('#login-container').html(content);
 
                             loginModalEl.hide();
+                            registerModalEl.hide();
 
                             if (data.redirect.length > 0) {
                                 window.location = res.redirect
