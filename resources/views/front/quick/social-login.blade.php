@@ -31,6 +31,7 @@
 
             <script>
                 function handleCredentialResponse(response) {
+                    alert('heree');
                     let token = '{{ csrf_token() }}';
                     const headers = {
                         Authorization: `Bearer ${token}`
