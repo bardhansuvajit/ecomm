@@ -80,7 +80,7 @@
                             registerModalEl.hide();
 
                             if (data.redirect.length > 0) {
-                                window.location = res.redirect
+                                window.location = data.redirect
                             }
 
                             // window.location.href = data.redirectTo;
