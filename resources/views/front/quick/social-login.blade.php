@@ -91,7 +91,7 @@
                         } else {
                             toastFire('failure', data.message);
                         }
-                    });
+                    })
                     .catch(console.error);
                 }
             </script>
