@@ -50,7 +50,7 @@ class SocialLoginController extends Controller
 
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Login successfull',
+                    'message' => 'Login successfull 2',
                     'name' => $first_name.' '.$last_name,
                     'redirect' => $redirectTo
                 ]);
