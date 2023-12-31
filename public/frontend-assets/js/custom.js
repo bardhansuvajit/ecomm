@@ -1140,3 +1140,18 @@ $(document).on('submit', '#newsletterSubscribeForm', function(e) {
         })
     }
 });
+
+$('#state').on('change', function() {
+    let stateId = $(this).find(':selected').data('id');
+
+    $.ajax({
+        url: baseUrl+'/city/list/'+stateId,
+        success: function(resp) {
+            if (resp.status == 200) {
+                toastFire('success', resp.message);
+            } else {
+                toastFire('error', resp.message);
+            }
+        }
+    })
+});

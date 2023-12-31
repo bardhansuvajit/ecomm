@@ -41,6 +41,19 @@ if(!function_exists('ipToCurrency')) {
     }
 }
 
+// Match country while adding address
+if(!function_exists('countryMatch')) {
+    function countryMatch($country): bool {
+        $ipCountry = ipToCurrency()->country;
+
+        if ($country == $ipCountry) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 // generate slug
 if (!function_exists('slugGenerate')) {
     function slugGenerate($title, $tableName) {

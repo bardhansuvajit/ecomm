@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Interfaces\UserAddressInterface;
+use App\Interfaces\CountryInterface;
 use App\Interfaces\StateInterface;
 
 class AddressController extends Controller
 {
     private UserAddressInterface $userAddressRepository;
+    private CountryInterface $countryRepository;
     private StateInterface $stateRepository;
 
-    public function __construct(UserAddressInterface $userAddressRepository, StateInterface $stateRepository)
+    public function __construct(UserAddressInterface $userAddressRepository, CountryInterface $countryRepository, StateInterface $stateRepository)
     {
         $this->userAddressRepository = $userAddressRepository;
+        $this->countryRepository = $countryRepository;
         $this->stateRepository = $stateRepository;
     }
 
@@ -27,7 +30,19 @@ class AddressController extends Controller
 
             $data->deliveryAddresses = $this->userAddressRepository->fetchDeliveryAddressesByUser(auth()->guard('web')->user()->id);
             $data->billingAddresses = $this->userAddressRepository->fetchBillingAddressesByUser(auth()->guard('web')->user()->id);
-            $data->states = $this->stateRepository->stateListByCountry(101)['data'];
+            $data->shippingCountries = $this->countryRepository->listShippingOnly();
+
+            // fetch states as per country
+            $ipCountry = ipToCurrency()->country;
+            $defaultCountryID = 101;
+            foreach($data->shippingCountries['data'] as $country) {
+                if ($country->name == $ipCountry) {
+                    $defaultCountryID = $country->id;
+                    break;
+                }
+            }
+
+            $data->states = $this->stateRepository->stateListByCountry($defaultCountryID)['data'];
 
             return view('front.profile.address.index', compact('data'));
         } else {

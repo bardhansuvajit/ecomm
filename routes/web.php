@@ -140,6 +140,11 @@ Route::name('front.')->group(function() {
         Route::get('subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
     });
 
+    // city
+    Route::prefix('city')->name('city.')->group(function() {
+        Route::get('/list/{stateId}', [CityController::class, 'listByState'])->name('list');
+    });
+
     // error
     Route::prefix('error')->name('error.')->group(function() {
         Route::get('404', [ErrorController::class, 'err404'])->name('404');

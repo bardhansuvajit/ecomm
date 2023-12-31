@@ -51,7 +51,9 @@
                     <label for="country"><h6 class="mb-1">Country <span class="text-muted">*</span></h6></label>
 
                     <select name="country" id="country" class="form-select" required>
-                        <option value="India" selected>India</option>
+                        @foreach ($data->shippingCountries['data'] as $country)
+                            <option value="{{ $country->name }}" {{ countryMatch($country->name) ? 'selected' : '' }}>{{ $country->name }}</option>
+                        @endforeach
                     </select>
 
                     @error('country') <p class="text-danger">{{ $message }}</p> @enderror
@@ -65,7 +67,7 @@
                     <select name="state" id="state" class="form-select" required>
                         <option value="" selected disabled>Select...</option>
                         @foreach ($data->states as $state)
-                            <option value="{{ $state['name'] }}" {{ (old('state') == $state['name']) ? 'selected' : '' }}>{{ $state['name'] }}</option>
+                            <option value="{{ $state['name'] }}" {{ (old('state') == $state['name']) ? 'selected' : '' }} data-id="{{ $state['id'] }}">{{ $state['name'] }}</option>
                         @endforeach
                     </select>
 
