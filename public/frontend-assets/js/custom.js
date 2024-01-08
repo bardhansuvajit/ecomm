@@ -1141,17 +1141,60 @@ $(document).on('submit', '#newsletterSubscribeForm', function(e) {
     }
 });
 
-$('#state').on('change', function() {
-    let stateId = $(this).find(':selected').data('id');
+$('#country, #billing_country').on('change', function() {
+    let countryId = $(this).find(':selected').data('id');
+    stateChangeFunc(countryId);
+});
 
+function stateChangeFunc(countryId) {
     $.ajax({
-        url: baseUrl+'/city/list/'+stateId,
+        url: baseUrl+'/state/list/'+countryId,
+        beforeSend: function() {
+            $('#state, #billing_state').attr('disabled', true).html('<option value="" disabled selected>Please wait...</option>');
+        },
         success: function(resp) {
             if (resp.status == 200) {
-                toastFire('success', resp.message);
+
+                let content = '<option value="" selected disabled>Select...</option>';
+
+                $.each(resp.data, (key, val) => {
+                    content += `<option value="${val.name}" data-id="${val.id}">${val.name}</option>`;
+                });
+
+                $('#state, #billing_state').attr('disabled', false).html(content);
+                // toastFire('success', resp.message);
             } else {
                 toastFire('error', resp.message);
             }
         }
     })
+}
+
+$('#state, #billing_state').on('change', function() {
+    let stateId = $(this).find(':selected').data('id');
+    cityChangeFunc(stateId);
 });
+
+function cityChangeFunc(stateId) {
+    $.ajax({
+        url: baseUrl+'/city/list/'+stateId,
+        beforeSend: function() {
+            $('#city, #billing_city').attr('disabled', true).html('<option value="" disabled selected>Please wait...</option>');
+        },
+        success: function(resp) {
+            if (resp.status == 200) {
+
+                let content = '<option value="" selected disabled>Select...</option>';
+
+                $.each(resp.data, (key, val) => {
+                    content += `<option value="${val.name}">${val.name}</option>`;
+                });
+
+                $('#city, #billing_city').attr('disabled', false).html(content);
+                // toastFire('success', resp.message);
+            } else {
+                toastFire('error', resp.message);
+            }
+        }
+    })
+}

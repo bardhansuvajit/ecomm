@@ -671,6 +671,25 @@ if (!function_exists('indianMoneyFormat')) {
     }
 }
 
+// 
+function makeUniqueMultidimensionalArray($array, $key) {
+    $uniqueValues = [];
+    $resultArray = [];
+
+    foreach ($array as $item) {
+        $value = $item[$key];
+        $qty = $item['qty'];
+
+        if (!isset($uniqueValues[$value]) || $uniqueValues[$value]['qty'] < $qty) {
+            $uniqueValues[$value] = $item;
+        }
+    }
+
+    $resultArray = array_values($uniqueValues);
+
+    return $resultArray;
+}
+
 // datetime x mins ago
 if (!function_exists('minsAgo')) {
     function minsAgo($dateTime) {

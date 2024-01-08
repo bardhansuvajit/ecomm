@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Interfaces\CityInterface;
+use App\Interfaces\StateInterface;
 
-class CityController extends Controller
+class StateController extends Controller
 {
-    private CityInterface $cityRepository;
+    private StateInterface $stateRepository;
 
-    public function __construct(CityInterface $cityRepository)
+    public function __construct(StateInterface $stateRepository)
     {
-        $this->cityRepository = $cityRepository;
+        $this->stateRepository = $stateRepository;
     }
 
-    public function listByState(Request $request, $stateId)
+    public function listByCountry(Request $request, $countryId)
     {
-        $resp = $this->cityRepository->cityListByState($stateId);
+        $resp = $this->stateRepository->stateListByCountry($countryId);
 
         if ($resp['status'] == 'success') {
             return response()->json([

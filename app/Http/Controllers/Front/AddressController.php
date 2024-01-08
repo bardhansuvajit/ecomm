@@ -9,18 +9,21 @@ use Illuminate\Support\Facades\Validator;
 use App\Interfaces\UserAddressInterface;
 use App\Interfaces\CountryInterface;
 use App\Interfaces\StateInterface;
+use App\Interfaces\CityInterface;
 
 class AddressController extends Controller
 {
     private UserAddressInterface $userAddressRepository;
     private CountryInterface $countryRepository;
     private StateInterface $stateRepository;
+    private CityInterface $cityRepository;
 
-    public function __construct(UserAddressInterface $userAddressRepository, CountryInterface $countryRepository, StateInterface $stateRepository)
+    public function __construct(UserAddressInterface $userAddressRepository, CountryInterface $countryRepository, StateInterface $stateRepository, CityInterface $cityRepository)
     {
         $this->userAddressRepository = $userAddressRepository;
         $this->countryRepository = $countryRepository;
         $this->stateRepository = $stateRepository;
+        $this->cityRepository = $cityRepository;
     }
 
     public function index(Request $request)
@@ -232,7 +235,18 @@ class AddressController extends Controller
         if ($resp['status'] == 'success') {
             $data = (object) [];
             $data->content = $resp['data'];
-            $data->states = $this->stateRepository->stateListByCountry(101)['data'];
+            $data->shippingCountries = $this->countryRepository->listShippingOnly();
+
+            // fetch states as per country
+            $countryID = $resp['data']->countryDetails->id;
+            $data->states = $this->stateRepository->stateListByCountry($countryID)['data'];
+
+            // fetch cities as per states
+            $data->cities = [];
+            if (!empty($resp['data']->city)) {
+                $stateID = $resp['data']->stateDetails->id;
+                $data->cities = $this->cityRepository->cityListByState($stateID)['data'];
+            }
 
             return view('front.profile.address.edit', compact('data'));
         } else {

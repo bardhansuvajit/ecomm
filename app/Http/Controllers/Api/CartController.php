@@ -56,7 +56,8 @@ class CartController extends Controller
                     $productExistsInCart->save();
                     return response()->json([
                         'status' => 400,
-                        'message' => 'You can add maximum '.$maxQty.' items',
+                        // 'message' => 'You can add maximum '.$maxQty.' items',
+                        'message' => 'You cannot add anymore item',
                         'quickCartShow' => true
                     ]);
                 }
@@ -93,7 +94,8 @@ class CartController extends Controller
                         $productExistsInCart->save();
                         return response()->json([
                             'status' => 400,
-                            'message' => 'You can add maximum '.$maxQty.' items',
+                            // 'message' => 'You can add maximum '.$maxQty.' items',
+                            'message' => 'You cannot add anymore item',
                             'quickCartShow' => true
                         ]);
                     }

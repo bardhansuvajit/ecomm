@@ -38,5 +38,9 @@
         @if (request()->input('delivery-address-error'))
             addAddress();
         @endif
+
+        @if (count($data->cities) == 0)
+            cityChangeFunc({{$address->stateDetails->id}});
+        @endif
     </script>
 @endsection

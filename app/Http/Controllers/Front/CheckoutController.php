@@ -72,6 +72,7 @@ class CheckoutController extends Controller
             if (auth()->guard('web')->check()) {
                 $data->deliveryAddresses = $this->userAddressRepository->fetchDeliveryAddressesByUser(auth()->guard('web')->user()->id);
                 $data->billingAddresses = $this->userAddressRepository->fetchBillingAddressesByUser(auth()->guard('web')->user()->id);
+                $data->shippingCountries = $this->countryRepository->listShippingOnly();
             }
             $data->states = $this->stateRepository->stateListByCountry(101)['data'];
 

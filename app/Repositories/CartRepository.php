@@ -214,9 +214,33 @@ class CartRepository implements CartInterface
         $response = [];
 
         if (auth()->guard('web')->check()) {
+            $user_id = auth()->guard('web')->user()->id;
+
+            // 1. update use id
             Cart::where('guest_token', $token)->update([
-                'user_id' => auth()->guard('web')->user()->id
+                'user_id' => $user_id
             ]);
+
+            // 2. check if same product already exists
+            $productChkArray = Cart::select('id', 'product_id', 'qty', 'ip')->where('user_id', $user_id)->get()->toArray();
+
+            // 2.1 make the result unique & where the quantity is greater
+            $newCartData = makeUniqueMultidimensionalArray($productChkArray, 'product_id');
+
+            // 3. remove data, which were added with smae product but lower qty
+            Cart::where('user_id', $user_id)->delete();
+
+            foreach($newCartData as $cartData) {
+                $cart = new Cart();
+                $cart->user_id = $user_id;
+                $cart->product_id = $cartData['product_id'];
+                $cart->save_for_later = 0;
+                $cart->qty = $cartData['qty'];
+                $cart->ip = $cartData['ip'];
+                $cart->guest_token = $token;
+                $cart->coupon_code = 0;
+                $cart->save();
+            }
 
             // remove cookie - dont remove because, after logout multiple sessions are created
             // unset($_COOKIE['_cart-token']);

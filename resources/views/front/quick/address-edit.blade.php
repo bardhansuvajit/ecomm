@@ -51,10 +51,18 @@
                     <label for="country"><h6 class="mb-1">Country <span class="text-muted">*</span></h6></label>
 
                     <select name="country" id="country" class="form-select" required>
+                        @foreach ($data->shippingCountries['data'] as $country)
+                            <option value="{{ $country->name }}" {{ countryMatch($country->name) ? 'selected' : '' }} data-id="{{ $country->id }}" 
+                            {{ old('country') ? ( (old('country') == $country->name) ? 'selected' : '' ) : ( ($address->country == $country->name) ? 'selected' : '' ) }}
+                            >{{ $country->name }}</option>
+                        @endforeach
+                    </select>
+
+                    {{-- <select name="country" id="country" class="form-select" required>
                         <option value="India" 
                         {{ old('country') ? ( (old('country') == 'India') ? 'selected' : '' ) : ( ($address->country == 'India') ? 'selected' : '' ) }}
                         >India</option>
-                    </select>
+                    </select> --}}
 
                     @error('country') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>
@@ -67,8 +75,8 @@
                     <select name="state" id="state" class="form-select" required>
                         <option value="" selected disabled>Select...</option>
                         @foreach ($data->states as $state)
-                            <option value="{{ $state['name'] }}" 
-                            {{ old('state') ? ( (old('state') == $state['name']) ? 'selected' : '' ) : ( ($address->state == $state['name']) ? 'selected' : '' ) }}
+                            <option value="{{ $state['name'] }}" data-id="{{ $state['id'] }}"
+                            {{ old('state') ? ( (old('state') == $state['name']) ? 'selected' : '' ) : ( ($address->state == $state['name']) ? 'selected' : '' ) }} 
                             >{{ $state['name'] }}</option>
                         @endforeach
                     </select>
@@ -83,9 +91,20 @@
                 <div class="data-holder mb-3">
                     <label for="city"><h6 class="mb-1">City <span class="text-muted">*</span></h6></label>
 
-                    <select name="city" id="city" class="form-select" disabled>
-                        <option value="" selected>Select state first...</option>
-                    </select>
+                    @if (count($data->cities) > 0)
+                        <select name="city" id="city" class="form-select">
+                            <option value="" selected disabled>Select...</option>
+                            @foreach ($data->cities as $city)
+                                <option value="{{ $city['name'] }}" 
+                                {{ old('city') ? ( (old('city') == $city['name']) ? 'selected' : '' ) : ( ($address->city == $city['name']) ? 'selected' : '' ) }} 
+                                >{{ $city['name'] }}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <select name="city" id="city" class="form-select" disabled>
+                            <option value="" selected>Select state first...</option>
+                        </select>
+                    @endif
 
                     @error('city') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>

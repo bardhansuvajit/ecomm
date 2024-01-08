@@ -52,7 +52,7 @@
 
                     <select name="country" id="country" class="form-select" required>
                         @foreach ($data->shippingCountries['data'] as $country)
-                            <option value="{{ $country->name }}" {{ countryMatch($country->name) ? 'selected' : '' }}>{{ $country->name }}</option>
+                            <option value="{{ $country->name }}" {{ countryMatch($country->name) ? 'selected' : '' }} data-id="{{ $country->id }}">{{ $country->name }}</option>
                         @endforeach
                     </select>
 

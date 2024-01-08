@@ -140,6 +140,11 @@ Route::name('front.')->group(function() {
         Route::get('subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
     });
 
+    // state
+    Route::prefix('state')->name('state.')->group(function() {
+        Route::get('/list/{countryId}', [StateController::class, 'listByCountry'])->name('list');
+    });
+
     // city
     Route::prefix('city')->name('city.')->group(function() {
         Route::get('/list/{stateId}', [CityController::class, 'listByState'])->name('list');

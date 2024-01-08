@@ -43,10 +43,6 @@ class AuthController extends Controller
         $creds = $request->only(['mobile_no', 'password', 'redirect']);
         $resp = $this->authRepository->check($creds);
 
-        // $resp = $this->authRepository->check($request);
-
-        // dd($resp);
-
         if ($resp['status'] == 'success') {
             return response()->json([
                 'status' => 200,
