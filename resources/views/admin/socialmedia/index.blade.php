@@ -43,7 +43,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Media</th>
+                                    <th>Title</th>
                                     <th>Link</th>
                                     <th style="width: 100px">Action</th>
                                 </tr>
@@ -53,8 +53,10 @@
                                     <tr class="single" id="{{ $item->id }}">
                                         <td>{{ $index + $data->firstItem() }}</td>
                                         <td>
-                                            <i class="{{ $item->icon_class }}"></i>
-                                            <p class="small text-muted mb-0">{{ $item->type }}</p>
+                                            <div class="d-flex">
+                                                <img src="{{ asset($item->svg_image) }}" alt="" height="50" class="mr-3">
+                                                <p class="text-muted mb-0">{{ strtoupper($item->type) }}</p>
+                                            </div>
                                         </td>
                                         <td>
                                             @if ($item->link)
