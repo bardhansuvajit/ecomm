@@ -35,6 +35,7 @@ Route::name('admin.')->group(function() {
             Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
             Route::get('/status/{id}', [ProductController::class, 'status'])->name('status');
             Route::get('/save/draft/{id}', [ProductController::class, 'saveDraft'])->name('save.draft');
+            Route::post('product/fetch', [ProductController::class, 'fetch'])->name('featured.fetch');
 
             Route::prefix('setup')->name('setup.')->group(function() {
                 Route::get('/category', [ProductSetupController::class, 'category'])->name('category');

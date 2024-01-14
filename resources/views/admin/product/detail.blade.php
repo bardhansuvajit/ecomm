@@ -25,11 +25,9 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <select name="status" id="status" class="form-control form-control-sm mb-4 w-50" data-route="{{ route('admin.product.status', $data->id) }}">
-                                    <option value="0" {{ ($data->status == 0) ? 'selected' : '' }}>Draft</option>
-                                    <option value="1" {{ ($data->status == 1) ? 'selected' : '' }}>Show</option>
-                                    <option value="2" {{ ($data->status == 2) ? 'selected' : '' }}>Hide</option>
-                                    <option value="3" {{ ($data->status == 3) ? 'selected' : '' }}>Out of Stock</option>
-                                    <option value="4" {{ ($data->status == 4) ? 'selected' : '' }}>Coming Soon</option>
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status->id }}" {{ ($data->status == $status->id) ? 'selected' : '' }}>{{ $status->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

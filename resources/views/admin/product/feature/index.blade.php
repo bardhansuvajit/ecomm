@@ -128,7 +128,8 @@
     <script>
         function fetchFeaturedProducts() {
             $.ajax({
-                url: "{{route('product.featured.fetch')}}",
+                // url: "{{route('product.featured.fetch')}}",
+                url: "{{route('admin.product.featured.fetch')}}",
                 method: 'post',
                 data: {
                     _token: "{{csrf_token()}}",

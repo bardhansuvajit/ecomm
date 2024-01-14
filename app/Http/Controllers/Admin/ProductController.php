@@ -13,6 +13,8 @@ use App\Models\ProductBoxItem;
 use App\Models\ProductManual;
 use App\Models\ProductDatasheet;
 use App\Models\ProductImage;
+use App\Models\ProductFeature;
+use App\Models\ProductStatus;
 
 class ProductController extends Controller
 {
@@ -37,11 +39,43 @@ class ProductController extends Controller
         });
 
         $data = $query->latest('id')->paginate(25);
-        
+
         // active products only
         $activeProducts = Product::where('status', 1)->orderBy('title')->get();
+        $statuses = ProductStatus::get();
 
-        return view('admin.product.index', compact('data', 'activeCategories', 'activeProducts'));
+        return view('admin.product.index', compact('data', 'statuses', 'activeCategories', 'activeProducts'));
+    }
+
+    public function fetch(Request $request)
+    {
+        $data = ProductFeature::orderBy('position')->get();
+
+        if (!empty($data) && count($data) > 0) {
+            $resp = [];
+            foreach($data as $product) {
+                $resp[] = [
+                    'feature_id' => $product->id,
+                    'id' => $product->product_id,
+                    'title' => $product->productDetail->title,
+                    'short_desc' => $product->productDetail->short_description,
+                    'link' => route('admin.product.detail', $product->product_id),
+                    'image' => ( count($product->productDetail->frontImageDetails) > 0 ) ? asset($product->productDetail->frontImageDetails[0]->img_medium) : asset('backend-assets/images/placeholder.jpg'),
+                    // 'image' => $product->img_medium ? asset($product->img_medium) : asset('backend-assets/images/placeholder.jpg'),
+                ];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Featured products found',
+                'data' => $resp,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Data not found'
+            ]);
+        }
     }
 
     /*
@@ -196,8 +230,9 @@ class ProductController extends Controller
     public function detail(Request $request, $id)
     {
         $data = Product::findOrFail($id);
+        $statuses = ProductStatus::get();
 
-        return view('admin.product.detail', compact('data'));
+        return view('admin.product.detail', compact('data', 'statuses'));
     }
 
     /*

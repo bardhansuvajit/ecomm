@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
 
             // $table->bigInteger('listing_by')->nullable();
             $table->tinyInteger('type')->default(1)->comment('1: product | 2: service');
-            $table->tinyInteger('status')->default(0)->comment('0: draft | 1: active | 2: hide | 3: out of stock | 4: coming soon');
+            $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

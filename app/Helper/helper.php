@@ -17,6 +17,7 @@ use App\Models\ImageSize;
 use App\Models\BlogCategorySetup;
 use App\Models\MailLog;
 use App\Models\MailFileSetup;
+use App\Models\ProductStatus;
 
 // Fetch application settings
 if(!function_exists('applicationSettings')) {
@@ -671,23 +672,25 @@ if (!function_exists('indianMoneyFormat')) {
     }
 }
 
-// 
-function makeUniqueMultidimensionalArray($array, $key) {
-    $uniqueValues = [];
-    $resultArray = [];
+// return unique multidimensional array
+if (!function_exists('makeUniqueMultidimensionalArray')) {
+    function makeUniqueMultidimensionalArray($array, $key) {
+        $uniqueValues = [];
+        $resultArray = [];
 
-    foreach ($array as $item) {
-        $value = $item[$key];
-        $qty = $item['qty'];
+        foreach ($array as $item) {
+            $value = $item[$key];
+            $qty = $item['qty'];
 
-        if (!isset($uniqueValues[$value]) || $uniqueValues[$value]['qty'] < $qty) {
-            $uniqueValues[$value] = $item;
+            if (!isset($uniqueValues[$value]) || $uniqueValues[$value]['qty'] < $qty) {
+                $uniqueValues[$value] = $item;
+            }
         }
+
+        $resultArray = array_values($uniqueValues);
+
+        return $resultArray;
     }
-
-    $resultArray = array_values($uniqueValues);
-
-    return $resultArray;
 }
 
 // datetime x mins ago
@@ -714,6 +717,14 @@ if (!function_exists('minsAgo')) {
         }
 
         return $resp;
+    }
+}
+
+// product status
+if (!function_exists('showInFrontendProductStatusID')) {
+    function showInFrontendProductStatusID() {
+        $data = ProductStatus::where('show_in_frontend', 1)->pluck('id')->toArray();
+        return $data;
     }
 }
 

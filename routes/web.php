@@ -166,8 +166,14 @@ Route::name('front.')->group(function() {
         Route::get('service', [PageContentController::class, 'service'])->name('service');
     });
 
+    // products
+    // Route::prefix('products')->name('products.')->group(function() {
+    //     Route::get('/', [ProductController::class, 'index'])->name('index');
+    // });
+
     // product
     Route::name('product.')->group(function() {
+        Route::get('/products', [ProductController::class, 'index'])->name('index');
         Route::get('{slug}', [ProductController::class, 'detail'])->name('detail');
     });
 

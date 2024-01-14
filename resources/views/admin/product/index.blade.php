@@ -99,17 +99,10 @@
                                             <a href="{{ route('admin.product.review.index', $item->id) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor(ratingCalculation(json_decode($item->activeReviewDetails, true))) }}">{{ ratingCalculation(json_decode($item->activeReviewDetails, true)) }} <i class="fas fa-star"></i> </a>
                                         </td>
                                         <td>
-                                            {{-- @if($item->status == 3)
-                                                @if($item->redirectProductDetails)
-                                                    <a class="small text-muted mb-1" href="{{ route('admin.product.detail', $item->redirectProductDetails->id) }}">{{$item->redirectProductDetails->title}}</a>
-                                                @endif
-                                            @endif --}}
                                             <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.product.status', $item->id) }}">
-                                                <option value="0" {{ ($item->status == 0) ? 'selected' : '' }}>Draft</option>
-                                                <option value="1" {{ ($item->status == 1) ? 'selected' : '' }}>Show</option>
-                                                <option value="2" {{ ($item->status == 2) ? 'selected' : '' }}>Hide</option>
-                                                <option value="3" {{ ($item->status == 3) ? 'selected' : '' }}>Out of Stock</option>
-                                                <option value="4" {{ ($item->status == 4) ? 'selected' : '' }}>Coming Soon</option>
+                                                @foreach ($statuses as $status)
+                                                    <option value="{{ $status->id }}" {{ ($item->status == $status->id) ? 'selected' : '' }}>{{ $status->name }}</option>
+                                                @endforeach
                                             </select>
                                         </td>
                                         <td class="d-flex">
