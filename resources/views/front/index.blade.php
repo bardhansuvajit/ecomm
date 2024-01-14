@@ -70,6 +70,7 @@
 
                     @php
                         $product = $featuredProduct->productDetail;
+                        if (!in_array($product->status, showInFrontendProductStatusID())) continue;
                     @endphp
 
                     <div class="swiper-slide">

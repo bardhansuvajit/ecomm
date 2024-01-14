@@ -22,6 +22,7 @@
                                     <div class="d-flex justify-content-end">
                                         <div class="form-group ml-2">
                                             <input type="search" class="form-control form-control-sm" name="featuredProductKeyword" id="featuredProductKeyword" value="" placeholder="Search something..." onkeyup="fetchFeaturedProducts()">
+                                            <p class="small text-muted mt-3">Drag &amp; drop content to re-order their position</p>
                                         </div>
                                     </div>
                                 </form>
