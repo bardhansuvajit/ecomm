@@ -100,4 +100,9 @@ class Product extends Model
     {
         return $this->hasOne('App\Models\ProductWishlist', 'product_id', 'id')->where('user_id', auth()->guard('web')->user()->id);
     }
+
+    public function statusDetail()
+    {
+        return $this->hasOne('App\Models\ProductStatus', 'id', 'status');
+    }
 }

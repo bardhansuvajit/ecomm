@@ -42,26 +42,41 @@
                 </div>
 
                 @if (count($pricing) > 0)
-                    <div id="purchase">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <div class="d-grid">
-                                    <a href="javascript: void(0)" class="btn btn-lg btn-light buy-now" onclick="cartAdd('buy-now', {{$data->id}}, {{auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0}}, '{{ route('cart.add') }}')">
-                                        <div class="icon"><i class="material-icons">shopping_bag</i></div>
-                                        Buy now
-                                    </a>
+                    @if ($data->statusDetail->purchase == 1)
+                        <div id="purchase">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="d-grid">
+                                        <a href="javascript: void(0)" class="btn btn-lg btn-light buy-now" onclick="cartAdd('buy-now', {{$data->id}}, {{auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0}}, '{{ route('cart.add') }}')">
+                                            <div class="icon"><i class="material-icons">shopping_bag</i></div>
+                                            Buy now
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-grid">
-                                    <a href="javascript: void(0)" class="btn btn-lg btn-dark add-cart" onclick="cartAdd('add-to-cart', {{$data->id}}, {{auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0}}, '{{ route('cart.add') }}')">
-                                        Add to Cart
-                                        <div class="icon"><i class="material-icons md-light">shopping_cart</i></div>
-                                    </a>
+                                <div class="col-6">
+                                    <div class="d-grid">
+                                        <a href="javascript: void(0)" class="btn btn-lg btn-dark add-cart" onclick="cartAdd('add-to-cart', {{$data->id}}, {{auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0}}, '{{ route('cart.add') }}')">
+                                            Add to Cart
+                                            <div class="icon"><i class="material-icons md-light">shopping_cart</i></div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div id="purchase">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="d-grid">
+                                        <a href="javascript: void(0)" class="btn btn-lg btn-light buy-now disabled">
+                                            <div class="icon text-danger"><i class="material-icons fw-bolder">block</i></div>
+                                            {{ $data->statusDetail->name }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>
