@@ -196,6 +196,8 @@ class CartRepository implements CartInterface
             $cart->save_for_later = $updatedSaved;
             // removing any coupon
             $cart->coupon_code = 0;
+            // updating qty to 1
+            $cart->qty = 1;
             $cart->save();
 
             $response = [

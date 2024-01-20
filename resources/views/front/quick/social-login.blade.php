@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12"><hr></div>
         </div>
-        <p class="small">Or Continue</p>
+        <p class="small">OR</p>
     </div>
 
     <div class="row justify-content-center">

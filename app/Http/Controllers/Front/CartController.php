@@ -231,10 +231,6 @@ class CartController extends Controller
                 $sellingPrice = $pricingDetails['selling_price'];
                 $mrp = $pricingDetails['mrp'];
                 $discount = discountCalculate($sellingPrice, $mrp);
-                $purchase = 0;
-                if (in_array($cartItem->productDetails->status, showInFrontendProductStatusID())) {
-                    $purchase = 1;
-                }
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
@@ -248,7 +244,7 @@ class CartController extends Controller
                     'sellingPrice' => $sellingPrice,
                     'mrp' => $mrp,
                     'discount' => $discount,
-                    'purchase' => $purchase,
+                    'purchase' => $cartItem->productDetails->statusDetail->purchase,
                     'status' => $cartItem->productDetails->statusDetail->name
                 ];
             }

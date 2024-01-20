@@ -821,8 +821,10 @@ function quickSavedProductsListUpdate() {
 
                     $.each(result.data, (key, value) => {
                         let unavailabilityStatus = ``;
+                        let unavailableOpacity = ``;
                         if (value.purchase == 0) {
-                            unavailabilityStatus = `<p class="text-center">${value.status}</p>`;
+                            unavailabilityStatus = `<p class="saved-product-status">${value.status}</p>`;
+                            unavailableOpacity = 'opacityHalf';
                         }
 
                         content += 
@@ -831,9 +833,9 @@ function quickSavedProductsListUpdate() {
                                 <div class="image-part flex-shrink-0">
                                     <a href="${value.link}" target="_blank">
                                         <div class="image-holder">
-                                            <img src="${value.image}" alt="${value.slug}">
+                                            <img src="${value.image}" alt="${value.slug}" class="${unavailableOpacity}">
+                                            ${unavailabilityStatus}
                                         </div>
-                                        ${unavailabilityStatus}
                                     </a>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -864,13 +866,8 @@ function quickSavedProductsListUpdate() {
                                         <div class="single-variation">
                                             <div class="title">Qty:</div>
                                             <div class="quantity">
-                                                <select class="form-select form-select-sm" name="cart-qty-${value.cartId}" id="cart-qty-${value.cartId}" onchange="qtyUpdate(${value.cartId})">
-                                                    <option value="" selected disabled>${value.qty}</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
+                                                <select class="form-select form-select-sm" disabled>
+                                                    <option value="" selected>${value.qty}</option>
                                                 </select>
                                             </div>
                                         </div>

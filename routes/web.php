@@ -176,6 +176,7 @@ Route::name('front.')->group(function() {
     // product
     Route::name('product.')->group(function() {
         Route::get('/products', [ProductController::class, 'index'])->name('index');
+        Route::get('/product/subscribe', [ProductController::class, 'subscribe'])->name('subscribe');
         Route::get('{slug}', [ProductController::class, 'detail'])->name('detail');
     });
 

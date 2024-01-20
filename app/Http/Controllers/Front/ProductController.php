@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Interfaces\ProductInterface;
+use App\Interfaces\ProductSubscriptionInterface;
 
 use App\Models\Product;
 
 class ProductController extends Controller
 {
     private ProductInterface $productRepository;
+    private ProductSubscriptionInterface $productSubscriptionRepository;
 
-    public function __construct(ProductInterface $productRepository)
+    public function __construct(ProductInterface $productRepository, ProductSubscriptionInterface $productSubscriptionRepository)
     {
         $this->productRepository = $productRepository;
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
     public function index(Request $request) {
@@ -34,54 +37,29 @@ class ProductController extends Controller
         } else {
             return redirect()->route('front.error.404');
         }
+    }
 
-        /*
-        $cartRedirectTo = $wishlistToggle = '';
-        $data = Product::where('slug', $slug)->where('status', 1)->first();
+    public function subscribe(Request $request)
+    {
+        // dd($request->all());
 
-        // if product exists
-        if (!empty($data)) {
-            Product::where('slug', $slug)->update([
-                'view_count' => $data->view_count + 1
-            ]);
+        $request->validate([
+            'product_id' => 'required|integer|min:1',
+            'product_status' => 'required|string|min:1|max:20|exists:product_statuses,name',
+            'prod_sub_mail' => 'required|email|min:5|max:70'
+        ], [
+            'prod_sub_mail.*' => 'Please enter a valid email address'
+        ]);
 
-            $allCategories = $data->categoryDetails;
-            $related_products = [];
+        $user_id = auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0;
 
-            foreach ($allCategories as $index => $category) {
-                $related_products[] = ProductProductCategory1::where('category_id', $category->category_id)->where('product_id', '!=', $data->id)->get();
-            }
+        $data = $this->productSubscriptionRepository->create([
+            'product_id' => (int) $request->product_id, 
+            'user_id' => $user_id, 
+            'email_id' => $request->prod_sub_mail, 
+            'current_product_status' => $request->product_status
+        ]);
 
-            // if user is logged in
-            if (auth()->guard('web')->check()) {
-                $productExistsInCart = Cart::where('user_id', auth()->guard()->user()->id)->where('product_id', $data->id)->first();
-
-                if (!empty($productExistsInCart)) {
-                    $cartRedirectTo = 'cart';
-                }
-
-                $wishlistCheck = ProductWishlist::where('user_id', auth()->guard()->user()->id)->where('product_id', $data->id)->first();
-
-                if (!empty($wishlistCheck)) {
-                    $wishlistToggle = 'active';
-                }
-            }
-            // if user not logged in
-            else {
-                if (!empty($_COOKIE['_cart-token'])) {
-                    $token = $_COOKIE['_cart-token'];
-                    $productExistsInCart = Cart::where('guest_token', $token)->where('product_id', $data->id)->first();
-
-                    if (!empty($productExistsInCart)) {
-                        $cartRedirectTo = 'cart';
-                    }
-                }
-            }
-
-            return view('front.product.detail', compact('data', 'related_products', 'cartRedirectTo', 'wishlistToggle'));
-        } else {
-            return redirect()->route('front.error.404');
-        }
-        */
+        return redirect()->back()->with($data['status'], $data['message']);
     }
 }

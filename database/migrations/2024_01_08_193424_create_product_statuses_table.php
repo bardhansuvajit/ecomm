@@ -18,8 +18,8 @@ class CreateProductStatusesTable extends Migration
             $table->id();
 
             $table->string('name', 100);
-            $table->tinyInteger('show_in_frontend')->default(0);
-            $table->tinyInteger('show_email_alert')->default(1);
+            $table->tinyInteger('show_in_frontend')->default(0)->comment('1: active | 0: inactive');
+            $table->tinyInteger('show_email_alert')->default(1)->comment('1: active | 0: inactive');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

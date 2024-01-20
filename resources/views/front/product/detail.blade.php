@@ -141,23 +141,75 @@
             @endif
 
 
-            @if (count($pricing) > 0)
-            <div id="pricing">
-                <div class="price-details">
-                    <h4 class="selling-price display-4">
-                        <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
-                        <span class="amount">{{ indianMoneyFormat($pricing['selling_price']) }}</span>
-                    </h4>
-                    <h6 class="mrp">
-                        <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
-                        <span class="amount">{{ indianMoneyFormat($pricing['mrp']) }}</span>
-                    </h6>
-                    <div class="discount display-6">
-                        <span>{{discountCalculate($pricing['selling_price'], $pricing['mrp'])}}</span>
-                        <span>off</span>
+            @if ($data->statusDetail->show_price_in_detail_page == 1)
+                @if (count($pricing) > 0)
+                <div id="pricing">
+                    <div class="price-details">
+                        <h4 class="selling-price display-4">
+                            <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
+                            <span class="amount">{{ indianMoneyFormat($pricing['selling_price']) }}</span>
+                        </h4>
+                        <h6 class="mrp">
+                            <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
+                            <span class="amount">{{ indianMoneyFormat($pricing['mrp']) }}</span>
+                        </h6>
+                        <div class="discount display-6">
+                            <span>{{discountCalculate($pricing['selling_price'], $pricing['mrp'])}}</span>
+                            <span>off</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+                @endif
+            @else
+
+                @php
+                    $subscriptionContent = 'd-none';
+                @endphp
+
+                @if ($data->statusDetail->show_email_alert == 1)
+                    @if (auth()->guard('web')->check())
+                        @if (count($data->subscriptionData) > 0)
+                            <div class="subscribed-content">
+                                <h6 class="small text-success">
+                                    <i class="material-icons">check</i>
+                                    You have subscribed to this product. We will send you an email once it becomes available.
+                                </h6>
+                            </div>
+                        @else
+                            @php
+                                $subscriptionContent = 'd-block';
+                            @endphp
+                        @endif
+                    @else
+                        @php
+                            $subscriptionContent = 'd-block';
+                        @endphp
+                    @endif
+
+                    <div class="alert-by-email {{$subscriptionContent}}">
+                        <form action="{{ route('front.product.subscribe') }}" method="get">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="email-field">
+                                        <input type="email" class="form-control" name="prod_sub_mail" id="prod_sub_mail" placeholder="Enter email address" maxlength="70" value="{{ old('prod_sub_mail') ? old('prod_sub_mail') : (auth()->guard('web')->check() ? auth()->guard('web')->user()->email : '') }}" required>
+
+                                        @error('prod_sub_mail') <p class="text-danger mt-2 mb-0">{{ $message }}</p> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="hidden" name="product_id" value="{{ $data->id }}">
+                                    <input type="hidden" name="product_status" value="{{ $data->statusDetail->name }}">
+                                    <button type="submit" class="btn btn-dark rounded-0 product-mail-subscribe">Subscribe</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-muted mt-2">This product is {{ $data->statusDetail->name }}. Subscribe to get notification about when it becomes available &amp; more</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             @endif
 
 
@@ -194,7 +246,7 @@
             @endif
 
 
-            @if ($data->activeReviewDetails)
+            @if (count($data->activeReviewDetails) > 0)
             <div id="rating-details">
                 <p class="section-title text-muted">Rating</p>
 

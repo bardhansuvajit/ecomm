@@ -15,16 +15,15 @@ class AddColumnsToProductStatuses extends Migration
     {
         Schema::table('product_statuses', function (Blueprint $table) {
             $table->tinyInteger('purchase')->after('show_in_frontend')->default('0')->comment('1: active | 0: inactive');
+            $table->tinyInteger('show_price_in_detail_page')->after('purchase')->default('0')->comment('1: active | 0: inactive');
+            $table->tinyInteger('show_price_in_out_page')->after('show_price_in_detail_page')->default('0')->comment('1: active | 0: inactive');
         });
 
-        // $data = DB::table('product_statuses')->get();
-        // foreach($data as $item) {
-        //     if($item->name == 'Active') {
-                DB::table('product_statuses')->where('name', 'Active')->update([
-                    'purchase' => 1
-                ]);
-        //     }
-        // }
+        DB::table('product_statuses')->where('name', 'Active')->update([
+            'purchase' => 1,
+            'show_price_in_detail_page' => 1,
+            'show_price_in_out_page' => 1
+        ]);
     }
 
     /**

@@ -57,6 +57,9 @@ input[type=number] {
 .pagination {
     justify-content: end;
 }
+.opacityHalf {
+    opacity: 0.5;
+}
 .active>.page-link, .page-link.active {
     z-index: 3;
     color: var(--bs-pagination-active-color);
@@ -1187,4 +1190,26 @@ footer .tags-holder .icon i.material-icons {
 }
 footer .tags-holder .text {
     font-size: 16px;
+}
+.product-mail-subscribe {
+    height: 42px;
+}
+.subscribed-content h6 {
+    margin: 10px 0 15px;
+}
+.subscribed-content i.material-icons {
+    position: relative;
+    top: 6px;
+}
+.saved-product-status {
+    text-align: center;
+    margin-bottom: 0;
+    width: 100%;
+    background: #d1d1d1;
+    color: #1e1d1d;
+    font-weight: 500;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

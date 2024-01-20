@@ -105,4 +105,9 @@ class Product extends Model
     {
         return $this->hasOne('App\Models\ProductStatus', 'id', 'status');
     }
+
+    public function subscriptionData()
+    {
+        return $this->hasMany('App\Models\ProductSubscription', 'product_id', 'id')->where('user_id', auth()->guard('web')->user()->id);
+    }
 }
