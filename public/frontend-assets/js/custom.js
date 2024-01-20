@@ -1039,23 +1039,27 @@ function saveForLater(id) {
 }
 
 function removeFromCart(id) {
-    $.ajax({
-        url: baseUrl+'/cart/remove/'+id,
-        method : 'get',
-        success: function(result) {
-            if (result.status == 200) {
-                quickCartListUpdate();
-                if (result.data == 0) {
-                    $('#cartCountShow').html('<span id="user_cartCountHeader"></span>');
+    var removeConfirm = confirm("Are you sure ?");
+
+    if (removeConfirm === true) {
+        $.ajax({
+            url: baseUrl+'/cart/remove/'+id,
+            method : 'get',
+            success: function(result) {
+                if (result.status == 200) {
+                    quickCartListUpdate();
+                    if (result.data == 0) {
+                        $('#cartCountShow').html('<span id="user_cartCountHeader"></span>');
+                    } else {
+                        $('#cartCountShow').html('<span id="user_cartCountHeader">'+result.data+'</span>');
+                    }
+                    toastFire('success', result.message);
                 } else {
-                    $('#cartCountShow').html('<span id="user_cartCountHeader">'+result.data+'</span>');
+                    toastFire('error', result.message);
                 }
-                toastFire('success', result.message);
-            } else {
-                toastFire('error', result.message);
             }
-        }
-    });
+        });
+    }
 }
 
 function qtyUpdate(id) {
