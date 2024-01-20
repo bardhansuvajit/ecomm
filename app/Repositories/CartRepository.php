@@ -61,16 +61,36 @@ class CartRepository implements CartInterface
         $response = [];
 
         if ($userId != 0) {
-            $data = Cart::where('user_id', $userId)->where('save_for_later', 0)->get();
+            // $data = Cart::where('user_id', $userId)->where('save_for_later', 0)->get();
+            $data = Cart::where('user_id', $userId)->get();
 
             if (!empty($data) && count($data) > 0) {
-                $response = [
-                    'status' => 'success',
-                    'message' => 'Cart data fetch',
-                    'type' => 'logged-in user',
-                    'data' => $data,
-                ];
-                return $response;
+                // check if product can be purchased/ product status
+                foreach($data as $item) {
+                    // status
+                    $status = $item->productDetails->statusDetail->purchase;
+                    if ($status == 0) {
+                        Cart::where('user_id', $userId)->where('product_id', $item->product_id)->update(['save_for_later' => 1]);
+                    }
+                }
+
+                $newData = Cart::where('user_id', $userId)->where('save_for_later', 0)->get();
+
+                if (!empty($newData) && count($newData) > 0) {
+                    $response = [
+                        'status' => 'success',
+                        'message' => 'Cart data fetch',
+                        'type' => 'logged-in user',
+                        'data' => $newData,
+                    ];
+                    return $response;
+                } else {
+                    $response = [
+                        'status' => 'failure',
+                        'message' => 'Cart is empty',
+                    ];
+                    return $response;
+                }
             }
 
             $response = [
@@ -81,16 +101,36 @@ class CartRepository implements CartInterface
         } else {
             if (!empty($_COOKIE['_cart-token'])) {
                 $token = $_COOKIE['_cart-token'];
-                $data = Cart::where('guest_token', $token)->where('save_for_later', 0)->get();
+                // $data = Cart::where('guest_token', $token)->where('save_for_later', 0)->get();
+                $data = Cart::where('guest_token', $token)->get();
 
                 if (!empty($data) && count($data) > 0) {
-                    $response = [
-                        'status' => 'success',
-                        'message' => 'Cart data fetch',
-                        'type' => 'guest user',
-                        'data' => $data,
-                    ];
-                    return $response;
+                    // check if product can be purchased/ product status
+                    foreach($data as $item) {
+                        // status
+                        $status = $item->productDetails->statusDetail->purchase;
+                        if ($status == 0) {
+                            Cart::where('user_id', $userId)->where('product_id', $item->product_id)->update(['save_for_later' => 1]);
+                        }
+                    }
+
+                    $newData = Cart::where('guest_token', $token)->where('save_for_later', 0)->get();
+
+                    if (!empty($newData) && count($newData) > 0) {
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Cart data fetch',
+                            'type' => 'guest user',
+                            'data' => $newData,
+                        ];
+                        return $response;
+                    } else {
+                        $response = [
+                            'status' => 'failure',
+                            'message' => 'Cart is empty',
+                        ];
+                        return $response;
+                    }
                 }
             }
 
@@ -154,6 +194,8 @@ class CartRepository implements CartInterface
             }
 
             $cart->save_for_later = $updatedSaved;
+            // removing any coupon
+            $cart->coupon_code = 0;
             $cart->save();
 
             $response = [
@@ -307,5 +349,52 @@ class CartRepository implements CartInterface
             return $response;
         }
 
+    }
+
+    public function savedItemsFetch($userId) : array
+    {
+        $response = [];
+
+        if ($userId != 0) {
+            $data = Cart::where('user_id', $userId)->where('save_for_later', 1)->get();
+
+            if (!empty($data) && count($data) > 0) {
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Saved data fetch',
+                    'type' => 'logged-in user',
+                    'data' => $data,
+                ];
+                return $response;
+            }
+
+            $response = [
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+            return $response;
+        } else {
+            if (!empty($_COOKIE['_cart-token'])) {
+                $token = $_COOKIE['_cart-token'];
+                $data = Cart::where('guest_token', $token)->where('save_for_later', 1)->get();
+
+                if (!empty($data) && count($data) > 0) {
+                    $response = [
+                        'status' => 'success',
+                        'message' => 'Saved data fetch',
+                        'type' => 'guest user',
+                        'data' => $newData,
+                    ];
+                    return $response;
+                }
+            }
+
+            $response = [
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+            return $response;
+
+        }
     }
 }

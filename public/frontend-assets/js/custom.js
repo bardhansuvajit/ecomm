@@ -521,10 +521,21 @@ function quickCartListUpdate() {
             $('#quickCart #cart-status').html(beforeContent);
         },
         success: function(result) {
-            let content = '';
+            let content = purchaseContent = '';
             if (result.status == 400) {
                 content += 
                 `<div class="empty text-center">
+                    <div id="cart-and-saved-items">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item cart-content">
+                                <a class="nav-link active" aria-current="page" href="javascript: void(0)">Cart</a>
+                            </li>
+                            <li class="nav-item saved-content">
+                                <a class="nav-link" href="javascript: void(0)" onclick="quickSavedProductsListUpdate()">Saved for later</a>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="image">
                         <img src="${baseUrl}/uploads/static-svgs/undraw_empty_cart_co35.svg" alt="empty-cart" class="w-100">
                     </div>
@@ -534,13 +545,23 @@ function quickCartListUpdate() {
                 `;
 
                 $('#quickCart #cart-status').html(content);
-
                 // toastFire('error', result.message);
             } else {
                 if (result.data.length > 0) {
                     content += `
                     <div class="cart-exists">
                         <div class="c-content">
+                            <div id="cart-and-saved-items">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item cart-content">
+                                        <a class="nav-link active" aria-current="page" href="javascript: void(0)">Cart</a>
+                                    </li>
+                                    <li class="nav-item saved-content">
+                                        <a class="nav-link" href="javascript: void(0)" onclick="quickSavedProductsListUpdate()">Saved for later</a>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <div class="products">
                     `;
 
@@ -723,6 +744,156 @@ function quickCartListUpdate() {
                         </div>
                         `;
                     }
+
+                    content+= `</div>`;
+                }
+
+                $('#quickCart #cart-status').html(content);
+            }
+            if(currentPage() != "checkout") {
+                quickCartEl.show();
+            }
+        }
+    });
+}
+
+function quickSavedProductsListUpdate() {
+    $.ajax({
+        url: baseUrl+'/cart/saved/json',
+        method : 'get',
+        beforeSend: function() {
+            let beforeContent = `
+            <div class="empty text-center">
+                <div class="image">
+                    <img src="${baseUrl}/uploads/static-svgs/undraw_dog_walking_re_l61p.svg" alt="loading-cart" class="w-100">
+                </div>
+                <h6>Please wait...</h6>
+                <p class="small text-muted">We are getting your cart content</p>
+            </div>
+            `;
+
+            $('#quickCart #cart-status').html(beforeContent);
+        },
+        success: function(result) {
+            let content = purchaseContent = '';
+            if (result.status == 400) {
+                content += 
+                `<div class="empty text-center">
+                    <div id="cart-and-saved-items">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item cart-content">
+                                <a class="nav-link" aria-current="page" href="javascript: void(0)" onclick="quickCartListUpdate()">Cart</a>
+                            </li>
+                            <li class="nav-item saved-content">
+                                <a class="nav-link active" href="javascript: void(0)">Saved for later</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="image">
+                        <img src="${baseUrl}/uploads/static-svgs/undraw_empty_cart_co35.svg" alt="empty-cart" class="w-100">
+                    </div>
+                    <h6>It&apos;s empty in here</h6>
+                    <p class="small text-muted">Add items in cart. Keep shopping &amp; Earn cashbacks !</p>
+                </div>
+                `;
+
+                $('#quickCart #cart-status').html(content);
+                // toastFire('error', result.message);
+            } else {
+                if (result.data.length > 0) {
+                    content += `
+                    <div class="cart-exists">
+                        <div class="c-content">
+                            <div id="cart-and-saved-items">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item cart-content">
+                                        <a class="nav-link" aria-current="page" href="javascript: void(0)" onclick="quickCartListUpdate()">Cart</a>
+                                    </li>
+                                    <li class="nav-item saved-content">
+                                        <a class="nav-link active" href="javascript: void(0)">Saved for later</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="products">
+                    `;
+
+                    $.each(result.data, (key, value) => {
+                        let unavailabilityStatus = ``;
+                        if (value.purchase == 0) {
+                            unavailabilityStatus = `<p class="text-center">${value.status}</p>`;
+                        }
+
+                        content += 
+                        `<div class="quick-cart-single-product">
+                            <div class="d-flex">
+                                <div class="image-part flex-shrink-0">
+                                    <a href="${value.link}" target="_blank">
+                                        <div class="image-holder">
+                                            <img src="${value.image}" alt="${value.slug}">
+                                        </div>
+                                        ${unavailabilityStatus}
+                                    </a>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="title">
+                                        <a href="${value.link}" target="_blank">
+                                            <p class="text-dark height-2 small">${value.title}</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="pricing">
+                                        <div class="price-details">
+                                            <h5 class="selling-price">
+                                                <span class="currency-icon">${value.currencyEntity}</span>
+                                                <span class="amount">${value.sellingPrice}</span>
+                                            </h5>
+                                            <h6 class="mrp">
+                                                <span class="currency-icon">${value.currencyEntity}</span>
+                                                <span class="amount">${value.mrp}</span>
+                                            </h6>
+                                            <h6 class="discount">
+                                                <span>${value.discount}</span>
+                                                <span>off</span>
+                                            </h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="variation-details">
+                                        <div class="single-variation">
+                                            <div class="title">Qty:</div>
+                                            <div class="quantity">
+                                                <select class="form-select form-select-sm" name="cart-qty-${value.cartId}" id="cart-qty-${value.cartId}" onchange="qtyUpdate(${value.cartId})">
+                                                    <option value="" selected disabled>${value.qty}</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                                    if(currentPage() != "checkout") {
+                                        let purchase = '';
+                                        if (value.purchase == 1) {
+                                            purchase = `<a href="javascript: void(0)" class="me-2" onclick="saveForLater(${value.cartId})">Move to cart</a>`;
+                                        }
+                                        content += 
+                                        `<div class="remove">
+                                            ${purchase}
+                                            <a href="javascript: void(0)" onclick="removeFromCart(${value.cartId})">Remove</a>
+                                        </div>`;
+                                    }
+
+                                content += `</div>
+                            </div>
+                        </div>
+                        `;
+                    });
+                    content += `</div>`;
 
                     content+= `</div>`;
                 }

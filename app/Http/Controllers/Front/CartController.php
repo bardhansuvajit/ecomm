@@ -57,7 +57,7 @@ class CartController extends Controller
 
         $resp = $this->cartRepository->fetchAjax($userId);
 
-        // if data
+        // if cart data found
         if ($resp['status'] == "success") {
             // coupon validation check
             if ($resp['data'][0]->coupon_code != 0) {
@@ -95,7 +95,7 @@ class CartController extends Controller
                     'currencyEntity' => $currencyEntity,
                     'sellingPrice' => $sellingPrice,
                     'mrp' => $mrp,
-                    'discount' => $discount,
+                    'discount' => $discount
                 ];
             }
 
@@ -202,5 +202,69 @@ class CartController extends Controller
         }
 
         // return redirect()->route('front.cart.index')->with($resp['status'], $resp['message'])->withInput($request->all());
+    }
+
+    public function savedIndexJson(Request $request)
+    {
+        $userId = 0;
+        if (auth()->guard('web')->check()) {
+            $userId = auth()->guard('web')->user()->id;
+        }
+
+        $resp = $this->cartRepository->savedItemsFetch($userId);
+
+        // if data found
+        if ($resp['status'] == "success") {
+            $cartProductsList = [];
+            foreach ($resp['data'] as $key => $cartItem) {
+                if (count($cartItem->productDetails->frontImageDetails) > 0) {
+                    $imgPath = asset($cartItem->productDetails->frontImageDetails[0]->img_large);
+                } else {
+                    $imgPath = asset('uploads/static-front-missing-image/product.svg');
+                }
+
+                // checking status to show in frontend option - Hide/ Draft
+                if($cartItem->productDetails->statusDetail->show_in_frontend == 0) continue;
+
+                $pricingDetails = productPricing($cartItem->productDetails);
+                $currencyEntity = $pricingDetails['currency_entity'];
+                $sellingPrice = $pricingDetails['selling_price'];
+                $mrp = $pricingDetails['mrp'];
+                $discount = discountCalculate($sellingPrice, $mrp);
+                $purchase = 0;
+                if (in_array($cartItem->productDetails->status, showInFrontendProductStatusID())) {
+                    $purchase = 1;
+                }
+
+                $cartProductsList[] = [
+                    'cartId' => $cartItem->id,
+                    'image' => $imgPath,
+                    'title' => $cartItem->productDetails->title,
+                    'slug' => $cartItem->productDetails->slug,
+                    'link' => route('front.product.detail', $cartItem->productDetails->slug),
+                    'removeLink' => route('front.cart.remove', $cartItem->id),
+                    'qty' => $cartItem->qty,
+                    'currencyEntity' => $currencyEntity,
+                    'sellingPrice' => $sellingPrice,
+                    'mrp' => $mrp,
+                    'discount' => $discount,
+                    'purchase' => $purchase,
+                    'status' => $cartItem->productDetails->statusDetail->name
+                ];
+            }
+
+            if (count($cartProductsList) > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => $resp['message'],
+                    'data' => $cartProductsList
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => 400,
+            'message' => $resp['message']
+        ]);
     }
 }

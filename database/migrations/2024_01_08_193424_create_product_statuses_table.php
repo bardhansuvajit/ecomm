@@ -31,7 +31,8 @@ class CreateProductStatusesTable extends Migration
             ['name' => 'Hide', 'show_in_frontend' => 0, 'show_email_alert' => 0],
             ['name' => 'Out of Stock', 'show_in_frontend' => 1, 'show_email_alert' => 1],
             ['name' => 'Coming Soon', 'show_in_frontend' => 1, 'show_email_alert' => 1],
-            ['name' => 'Unavailable', 'show_in_frontend' => 1, 'show_email_alert' => 1]
+            ['name' => 'Unavailable', 'show_in_frontend' => 1, 'show_email_alert' => 1],
+            ['name' => 'Sold Out', 'show_in_frontend' => 1, 'show_email_alert' => 1]
         ];
 
         DB::table('product_statuses')->insert($data);

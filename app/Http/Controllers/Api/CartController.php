@@ -41,6 +41,17 @@ class CartController extends Controller
             ]);
         }
 
+        // check if product can be purchsed/ product's status
+        $product = Product::findOrFail($request->product_id);
+        $productStatus = $product->statusDetail->purchase;
+
+        if($productStatus != 1) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'This product can not be purchased'
+            ]);
+        }
+
         $token = '';
 
         // if user is logged in

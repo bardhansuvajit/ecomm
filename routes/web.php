@@ -120,6 +120,8 @@ Route::name('front.')->group(function() {
         Route::get('remove/{id}', [CartController::class, 'remove'])->name('remove');
         Route::get('save-later/{id}', [CartController::class, 'save'])->name('save');
         Route::post('qty/update', [CartController::class, 'qtyUpdate'])->name('qty.update');
+
+        Route::get('saved/json', [CartController::class, 'savedIndexJson'])->name('saved.index.json');
     });
 
     // coupon
