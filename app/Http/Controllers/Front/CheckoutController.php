@@ -158,7 +158,8 @@ class CheckoutController extends Controller
         $request->validate([
             'first_name' => 'required|string|min:2|max:50',
             'last_name' => 'required|string|min:2|max:50',
-            'email' => 'required|email|min:2|max:130|unique:users,email',
+            'email' => 'required|email|min:2|max:130',
+            // 'email' => 'required|email|min:2|max:130|unique:users,email',
         ]);
 
         if (auth()->guard('web')->check()) {

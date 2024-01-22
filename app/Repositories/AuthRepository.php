@@ -206,13 +206,13 @@ class AuthRepository implements AuthInterface
         $user = User::findOrFail($id);
 
         if ($user) {
-            if($data['first_name']) {
+            if(!empty($data['first_name'])) {
                 $user->first_name = $data['first_name'];
             }
-            if($data['last_name']) {
+            if(!empty($data['last_name'])) {
                 $user->last_name = $data['last_name'];
             }
-            if($data['email']) {
+            if(!empty($data['email'])) {
                 if ($user->email != $data['email']) {
                     // check for other users with the email address
                     $checkUserEmail = User::where('email', $data['email'])->first();
@@ -229,7 +229,7 @@ class AuthRepository implements AuthInterface
                     }
                 }
             }
-            if($data['mobile_no']) {
+            if(!empty($data['mobile_no'])) {
                 if ($user->mobile_no != $data['mobile_no']) {
                     // check for other users with the mobile number
                     $checkUserMobileNo = User::where('mobile_no', $data['mobile_no'])->first();

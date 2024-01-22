@@ -1326,7 +1326,6 @@ function stateChangeFunc(countryId) {
         },
         success: function(resp) {
             if (resp.status == 200) {
-
                 let content = '<option value="" selected disabled>Select...</option>';
 
                 $.each(resp.data, (key, val) => {

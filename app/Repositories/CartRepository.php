@@ -139,7 +139,6 @@ class CartRepository implements CartInterface
                 'message' => 'Something happened',
             ];
             return $response;
-
         }
     }
 
