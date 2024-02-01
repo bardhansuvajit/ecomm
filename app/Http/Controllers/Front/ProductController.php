@@ -62,4 +62,5 @@ class ProductController extends Controller
 
         return redirect()->back()->with($data['status'], $data['message']);
     }
+
 }

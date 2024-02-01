@@ -2,33 +2,22 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-9">
-        <section id="orders">
-            <div class="row mb-5">
-                <div class="col-12">
-                    <div class="page-head">
-                        <div class="redirect me-3">
-                            {{-- <a href="javascript: void(0)" onclick="history.back(-1)"> --}}
-                            <a href="{{ route('front.user.account') }}">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                            </a>
-                        </div>
-                        <div class="text">
-                            <h5>My wishlist</h5>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-12">
+        <section id="content-lists">
+            <div id="breadcrumb">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('front.home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('front.product.detail', $product->slug) }}">{{ $product->title }}</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('front.product.review.index', $product->slug) }}">Reviews</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Write Review</li>
+                    </ol>
+                </nav>
             </div>
 
-            <div class="row">
-                @if (count($resp['data']) > 0)
-                    @foreach ($resp['data'] as $wishlishProduct)
-
-                    @php
-                        $product = $wishlishProduct->productDetails;
-                    @endphp
-
-                    <div class="col-md-3">
+            <div class="row mt-5">
+                <div class="col-md-2">
+                    <div id="product">
                         <div class="single-product">
                             <div class="card">
                                 <a href="{{ route('front.product.detail', $product->slug) }}">
@@ -46,7 +35,7 @@
                                             <div class="product-title">
                                                 <h5>{{ $product->title }}</h5>
                                             </div>
-
+        
                                             @if ($product->activeReviewDetails)
                                             @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
                                                 <div class="rating">
@@ -60,11 +49,11 @@
                                                 </div>
                                             @endif
                                             @endif
-
+        
                                             @php
                                                 $pricing = productPricing($product);
                                             @endphp
-
+        
                                             @if (!empty($pricing))
                                                 <div class="pricing">
                                                     <h4 class="selling-price">
@@ -84,7 +73,7 @@
                                         </div>
                                     </div>
                                 </a>
-
+        
                                 <div class="wishlist-container">
                                     @if (auth()->guard('web')->check())
                                         <button class="wishlist-btn wish-product-{{$product->id}} {{ ($product->wishlistDetail) ? 'active' : '' }}" onclick="wishlistToggle({{$product->id}})">
@@ -103,25 +92,44 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                </div>
 
-                    <div class="col-12">
-                        <div id="pagination" class="mt-4">
-                            {{ $resp['data']->links() }}
-                        </div>
-                    </div>
-                @else
-                    <div class="col-12">
-                        <div class="empty text-center">
-                            <div class="image">
-                                <img src="{{ asset('uploads/static-svgs/undraw_product_tour_re_8bai.svg') }}" alt="loading-cart" class="w-100">
+                <div class="col-md-10">
+                    <div id="write-review-container">
+                        <form action="{{ route('front.product.review.upload') }}" method="post">@csrf
+                            <div class="form-group mb-3">
+                                <label for="rating"><p class="text-muted mb-2">Overall rating</p></label>
+
+                                <div class="star-rating star-5">
+                                    <input type="radio" name="rating" value="1" {{ (old('rating') == 1) ? 'checked' : '' }}><i></i>
+                                    <input type="radio" name="rating" value="2" {{ (old('rating') == 2) ? 'checked' : '' }}><i></i>
+                                    <input type="radio" name="rating" value="3" {{ (old('rating') == 3) ? 'checked' : '' }}><i></i>
+                                    <input type="radio" name="rating" value="4" {{ (old('rating') == 4) ? 'checked' : '' }}><i></i>
+                                    <input type="radio" name="rating" value="5" {{ (old('rating') == 5) ? 'checked' : '' }}><i></i>
+                                </div>
+                                @error('rating') <p class="text-danger">{{ $message }}</p> @enderror
                             </div>
-                            <h6>No products found...</h6>
-                            <p class="small text-muted">You can check our collections &amp; wishlist products</p>
-                            <a href="{{ route('front.collection.index') }}" class="btn btn-sm rounded-0 btn-dark">Go to collections</a>
-                        </div>
+
+                            <div class="form-group mb-3">
+                                <label for="heading"><p class="text-muted mb-2">Heading</p></label>
+                                <textarea name="heading" id="heading" class="form-control" placeholder="Enter heading" rows="1">{{ old('heading') }}</textarea>
+                                @error('heading') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="heading"><p class="text-muted mb-2">Detailed review</p></label>
+                                <textarea name="review" id="review" class="form-control" placeholder="Enter review" rows="4">{{ old('review') }}</textarea>
+                                @error('review') <p class="text-danger">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-dark btn-sm rounded-0">Submit</button>
+                                <p class="text-muted mt-2">After submission your review will be verified. Once verified it will be approved.</p>
+                            </div>
+                        </form>
                     </div>
-                @endif
+                </div>
             </div>
         </section>
     </div>

@@ -4,63 +4,74 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+
+use App\Interfaces\ProductInterface;
+use App\Interfaces\ProductReviewInterface;
+
 use App\Models\ProductReview;
 
 class ProductReviewController extends Controller
 {
-    public function create(Request $request)
+    private ProductInterface $productRepository;
+    private ProductReviewInterface $productReviewRepository;
+
+    public function __construct(ProductInterface $productRepository, ProductReviewInterface $productReviewRepository)
     {
-        // dd($request->all());
+        $this->productRepository = $productRepository;
+        $this->productReviewRepository = $productReviewRepository;
+    }
 
-        $request->validate([
-            'product_id' => 'required|integer|min:1',
-            'rating' => 'required|integer|min:1|max:5',
-            'first_name' => 'required|string|min:2|max:200',
-            'last_name' => 'required|string|min:2|max:200',
-            'review' => 'required|string|min:2',
-        ]);
+    public function index(Request $request, $slug)
+    {
+        $data = $this->productRepository->detailFrontend($slug);
 
-        $data = new ProductReview();
-        $data->product_id = $request->product_id;
-        $data->rating = $request->rating;
-        $data->name = $request->first_name.' '.$request->last_name;
-        $data->review = $request->review;
-        $data->save();
+        if (!empty($data['data'])) {
+            $product = $data['data'];
+            $activeReviews = $this->productReviewRepository->paginatedActiveReviewsByProduct($product->id);
 
-        return redirect()->back()->with('success', 'Product review submitted');
-
-
-        // check if user is logged in
-        if (!auth()->guard('web')->check()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'You have to login to wishlist product'
-            ]);
+            if ($activeReviews['status'] == 'success') {
+                return view('front.review.index', compact('product', 'activeReviews'));
+            } else {
+                return redirect()->route('front.error.404');
+            }
+        } else {
+            return redirect()->route('front.error.404');
         }
+    }
 
-        // check if product is already wishlisted
-        $wishlistCheck = ProductWishlist::where('user_id', auth()->guard('web')->user()->id)->where('product_id', $id)->first();
+    public function create(Request $request, $slug)
+    {
+        $data = $this->productRepository->detailFrontend($slug);
 
-        if (!empty($wishlistCheck)) {
-            ProductWishlist::where('id', $wishlistCheck->id)->delete();
+        if (!empty($data['data'])) {
+            $product = $data['data'];
 
-            return response()->json([
-                'status' => 200,
-                'message' => 'Product removed from wishlist',
-            ]);
+            if (auth()->guard('web')->check()) {
+                return view('front.review.create', compact('product'));
+            } else {
+                return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.product.review.create', $slug)]);
+            }
+        } else {
+            return redirect()->route('front.error.404');
         }
+    }
 
-        $data = new ProductWishlist();
-        $data->user_id = auth()->guard('web')->user()->id;
-        $data->product_id = $id;
-        $data->save();
+    public function upload(Request $request)
+    {
+        if (auth()->guard('web')->check()) {
+            $request->validate([
+                'product_id' => 'required|integer|min:1',
+                'rating' => 'required|integer|min:1|max:5',
+                'heading' => 'required|string|min:2|max:200',
+                'review' => 'required|string|min:2',
+            ]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Product added to wishlist',
-        ]);
+            $data = $this->productReviewRepository->create(array_merge($request->all(), ['user_id' => auth()->guard('web')->user()->id]));
+
+            return redirect()->back()->with('success', $data['message']);
+        } else {
+            return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.product.review.create', $slug)]);
+        }
     }
 
 }

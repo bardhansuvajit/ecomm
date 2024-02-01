@@ -20,7 +20,7 @@ class WishlistController extends Controller
             $resp = $this->wishlistRepository->findByUser(auth()->guard('web')->user()->id);
             return view('front.profile.wishlist.index', compact('resp'));
         } else {
-            return redirect()->route('front.error.401');
+            return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.user.wishlist.index')]);
         }
     }
 

@@ -195,7 +195,7 @@
                                             @endif
                                         </button>
                                     @else
-                                        <button class="wishlist-btn" onclick="wishlistToggle({{$data->id}})">
+                                        <button class="wishlist-btn" onclick="wishlistToggle({{$product->id}})">
                                             <i class="material-icons">favorite_border</i>
                                         </button>
                                     @endif

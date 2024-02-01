@@ -270,13 +270,13 @@
                                 <p class="mb-0 text-light">Top 3 reviews</p>
                             </a>
                             @endif
-                            <a href="" class="badge text-bg-light rounded-0">
+                            <a href="{{ route('front.product.review.index', $data->slug) }}" class="badge text-bg-light rounded-0">
                                 <p class="mb-0">View all reviews</p>
                             </a>
                         </div>
 
                         <div class="top-reviews">
-                            @foreach ($data->activeReviewDetails as $reviewIndex => $review)
+                            @foreach ($data->activeTopReviewDetails as $reviewIndex => $review)
                             <div class="single-review">
                                 <div class="quick-section">
                                     <div class="rating">
@@ -585,7 +585,6 @@
 
 @section('script')
     <script>
-        // let line = getRows('.review-shows');
-        // console.log(line);
+        
     </script>
 @endsection

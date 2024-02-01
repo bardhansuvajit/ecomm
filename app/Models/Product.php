@@ -71,6 +71,11 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductReview', 'product_id', 'id')->where('status', 1);
     }
 
+    public function activeTopReviewDetails()
+    {
+        return $this->hasMany('App\Models\ProductReview', 'product_id', 'id')->where('status', 1)->limit(3);
+    }
+
     public function pricing()
     {
         return $this->hasMany('App\Models\ProductPricing', 'product_id', 'id');

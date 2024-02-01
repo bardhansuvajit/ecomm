@@ -291,7 +291,7 @@ if (!function_exists('ratingCalculation')) {
             $average = $totalStars / $numberOfReviews;
             if ($average > 5) $average = 5;
         }
-        return round($average, 2);
+        return round($average, 1);
     }
 }
 

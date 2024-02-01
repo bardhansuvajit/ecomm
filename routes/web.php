@@ -176,7 +176,18 @@ Route::name('front.')->group(function() {
     // product
     Route::name('product.')->group(function() {
         Route::get('/products', [ProductController::class, 'index'])->name('index');
+
+        // subscribe
         Route::get('/product/subscribe', [ProductController::class, 'subscribe'])->name('subscribe');
+
+        // review
+        Route::name('review.')->group(function() {
+            Route::get('{slug}/product-reviews', [ProductReviewController::class, 'index'])->name('index');
+            Route::get('{slug}/write-review', [ProductReviewController::class, 'create'])->name('create');
+            Route::post('review/post', [ProductReviewController::class, 'upload'])->name('upload');
+        });
+
+        // detail by slug
         Route::get('{slug}', [ProductController::class, 'detail'])->name('detail');
     });
 

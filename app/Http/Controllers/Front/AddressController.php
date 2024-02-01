@@ -49,7 +49,7 @@ class AddressController extends Controller
 
             return view('front.profile.address.index', compact('data'));
         } else {
-            return redirect()->route('front.error.401');
+            return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.user.address.index')]);
         }
     }
 

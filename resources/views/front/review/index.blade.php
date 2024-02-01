@@ -2,33 +2,21 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-9">
-        <section id="orders">
-            <div class="row mb-5">
-                <div class="col-12">
-                    <div class="page-head">
-                        <div class="redirect me-3">
-                            {{-- <a href="javascript: void(0)" onclick="history.back(-1)"> --}}
-                            <a href="{{ route('front.user.account') }}">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                            </a>
-                        </div>
-                        <div class="text">
-                            <h5>My wishlist</h5>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-12">
+        <section id="content-lists">
+            <div id="breadcrumb">
+                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('front.home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('front.product.detail', $product->slug) }}">{{ $product->title }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Reviews</li>
+                    </ol>
+                </nav>
             </div>
 
-            <div class="row">
-                @if (count($resp['data']) > 0)
-                    @foreach ($resp['data'] as $wishlishProduct)
-
-                    @php
-                        $product = $wishlishProduct->productDetails;
-                    @endphp
-
-                    <div class="col-md-3">
+            <div class="row mt-5">
+                <div class="col-md-2">
+                    <div id="product">
                         <div class="single-product">
                             <div class="card">
                                 <a href="{{ route('front.product.detail', $product->slug) }}">
@@ -46,7 +34,7 @@
                                             <div class="product-title">
                                                 <h5>{{ $product->title }}</h5>
                                             </div>
-
+        
                                             @if ($product->activeReviewDetails)
                                             @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
                                                 <div class="rating">
@@ -60,11 +48,11 @@
                                                 </div>
                                             @endif
                                             @endif
-
+        
                                             @php
                                                 $pricing = productPricing($product);
                                             @endphp
-
+        
                                             @if (!empty($pricing))
                                                 <div class="pricing">
                                                     <h4 class="selling-price">
@@ -84,7 +72,7 @@
                                         </div>
                                     </div>
                                 </a>
-
+        
                                 <div class="wishlist-container">
                                     @if (auth()->guard('web')->check())
                                         <button class="wishlist-btn wish-product-{{$product->id}} {{ ($product->wishlistDetail) ? 'active' : '' }}" onclick="wishlistToggle({{$product->id}})">
@@ -103,25 +91,94 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                </div>
 
-                    <div class="col-12">
-                        <div id="pagination" class="mt-4">
-                            {{ $resp['data']->links() }}
+                <div class="col-md-10">
+                    <div id="breakdown">
+                        <div class="heading">
+                            <h6 class="text-muted">Rating Breakdown</h6>
                         </div>
-                    </div>
-                @else
-                    <div class="col-12">
-                        <div class="empty text-center">
-                            <div class="image">
-                                <img src="{{ asset('uploads/static-svgs/undraw_product_tour_re_8bai.svg') }}" alt="loading-cart" class="w-100">
+
+                        <div class="rating-container">
+                            <div class="original-rating">
+                                <div class="badge bg-success">
+                                    4.1
+                                    <i class="material-icons">star</i>
+                                </div>
                             </div>
-                            <h6>No products found...</h6>
-                            <p class="small text-muted">You can check our collections &amp; wishlist products</p>
-                            <a href="{{ route('front.collection.index') }}" class="btn btn-sm rounded-0 btn-dark">Go to collections</a>
+                            <div class="divider">
+                                /
+                            </div>
+                            <div class="out-of">
+                                5
+                            </div>
+                        </div>
+
+                        <div class="quick-ratings">
+                            <h6 class="text-muted">8,11,895 Ratings & 8,11,895 reviews</h6>
                         </div>
                     </div>
-                @endif
+
+                    <div id="create-review">
+                        <a href="{{ route('front.product.review.create', $product->slug) }}" class="btn btn-sm btn-dark rounded-0">
+                            Review Product
+                            <i class="material-icons">thumbs_up_down</i>
+                        </a>
+                    </div>
+
+                    <hr>
+
+                    @if (count($activeReviews['data']) > 0)
+                    <div id="rating-details">
+                        @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
+                            <div class="reviewed">
+                                <div class="top-reviews">
+                                    @foreach ($activeReviews['data'] as $reviewIndex => $review)
+                                    <div class="single-review">
+                                        <div class="quick-section">
+                                            <div class="rating">
+                                                <div class="rating-count">
+                                                    <h5 class="digit">{{ $review->rating }}</h5> 
+                                                    <div class="icon">
+                                                        <i class="material-icons md-light">star</i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="user">
+                                                <p class="text-muted">{{ $review->name }}</p>
+                                            </div>
+                                            <div class="datetime">
+                                                <div class="icon">
+                                                    <i class="material-icons">history</i>
+                                                </div>
+                                                <div class="time">
+                                                    <p class="text-muted">{{ minsAgo($review->created_at) }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="review-section">
+                                            <div class="review-title">
+                                                <h5>{{ $review->heading }}</h5>
+                                            </div>
+                                            <p class="review{{$reviewIndex + 1}} height-3 mb-0 review-shows">
+                                                {!! nl2br($review->review) !!}
+                                            </p>
+                                            <a href="javascript: void(0)" onclick="seeMoreText('review{{$reviewIndex + 1}}', 'more-text{{$reviewIndex + 1}}')" class="more-text{{$reviewIndex + 1}}">See more</a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+
+                                <div class="pagination justify-content-center mt-5">
+                                    {{ $activeReviews['data']->links() }}
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    @endif
+
+
+                </div>
             </div>
         </section>
     </div>

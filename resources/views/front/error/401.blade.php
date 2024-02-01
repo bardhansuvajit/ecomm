@@ -11,7 +11,7 @@
         <div class="col-md-4 text-center">
             <h6 class="mb-4">Login to access</h6>
 
-            <a href="javascript: void(0)" onclick="history.back(-1)" class="btn btn-sm btn-dark rounded-0">Login now</a>
+            <a href="#loginModal" data-bs-toggle="modal" class="btn btn-sm btn-dark rounded-0">Login now</a>
         </div>
     </div>
 </section>

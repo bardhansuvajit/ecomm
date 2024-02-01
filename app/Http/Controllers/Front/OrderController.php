@@ -20,7 +20,7 @@ class OrderController extends Controller
             $resp = $this->orderRepository->findByUserId(auth()->guard('web')->user()->id);
             return view('front.profile.order.index', compact('resp'));
         } else {
-            return redirect()->route('front.error.401');
+            return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.user.order.index')]);
         }
     }
 
@@ -35,9 +35,8 @@ class OrderController extends Controller
             } else {
                 return redirect()->route('front.error.404');
             }
-
         } else {
-            return redirect()->route('front.error.401');
+            return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.user.order.detail', $orderNo)]);
         }
 
         /*
