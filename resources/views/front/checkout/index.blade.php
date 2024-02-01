@@ -252,60 +252,28 @@
                             <div class="accordion-body">
                                 @auth
                                     @if (!empty($data->deliveryAddresses['status']) && $data->deliveryAddresses['status'] == 'success')
-                                    <div id="address-exists">
-                                        @if (count($data->deliveryAddresses['data']) == 1)
-                                            <p>Delivery address</p>
-                                        @else
-                                            <p>Select delivery address</p>
-                                        @endif
+                                        <div id="address-exists">
+                                            @if (count($data->deliveryAddresses['data']) == 1)
+                                                <p>Delivery address</p>
+                                            @else
+                                                <p>Select delivery address</p>
+                                            @endif
 
-                                        <div class="address-list">
-                                            @foreach ($data->deliveryAddresses['data'] as $addressIndex => $address)
-                                                <div class="single-address">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="delivery-address" id="address{{$addressIndex}}" value="{{ $address->id }}" {{ ($addressIndex == 0) ? 'checked' : '' }} data-detail="{{ $address->street_address }}, {{ $address->zipcode }}, {{ $address->state }}">
-                                                        <label class="form-check-label" for="address{{$addressIndex}}">
-                                                            <h6 class="mb-0">
-                                                                {{ $address->full_name }} 
-                                                                <strong>{{ $address->contact_no1 }}</strong>
-                                                            </h6>
-                                                            <p class="text-muted">
-                                                                {{ $address->street_address }},
-                                                                {{ $address->city }}
-                                                                {{ $address->zipcode }},
-                                                                {{ $address->state }}
-                                                            </p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-
-
-                                        <div id="change-delivery-address" style="{!! (request()->input('billing-address-error') == "true") ? 'display: none' : 'display: block' !!}">
-                                            <p><a data-bs-toggle="collapse" href="#addDeliveryAddress" aria-expanded="false" aria-controls="addDeliveryAddress">Change Delivery address</a></p>
-                                        </div>
-
-                                        <div id="billing-address" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none' : 'display: block' !!}">
-                                        @if (!empty($data->billingAddresses['status']) && $data->billingAddresses['status'] == 'success')
-                                            <p>Billing address</p>
-
-                                            <div class="billing-address-list">
-                                                @foreach ($data->billingAddresses['data'] as $b_addressIndex => $b_address)
+                                            <div class="address-list">
+                                                @foreach ($data->deliveryAddresses['data'] as $addressIndex => $address)
                                                     <div class="single-address">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="billing-address" id="billing-address{{$b_addressIndex}}" value="{{ $b_address->id }}" {{ ($b_addressIndex == 0) ? 'checked' : '' }}>
-
-                                                            <label class="form-check-label" for="billing-address{{$b_addressIndex}}">
+                                                            <input class="form-check-input" type="radio" name="delivery-address" id="address{{$addressIndex}}" value="{{ $address->id }}" {{ ($addressIndex == 0) ? 'checked' : '' }} data-detail="{{ $address->street_address }}, {{ $address->zipcode }}, {{ $address->state }}">
+                                                            <label class="form-check-label" for="address{{$addressIndex}}">
                                                                 <h6 class="mb-0">
-                                                                    {{ $b_address->full_name }} 
-                                                                    <strong>{{ $b_address->contact_no1 }}</strong>
+                                                                    {{ $address->full_name }} 
+                                                                    <strong>{{ $address->contact_no1 }}</strong>
                                                                 </h6>
                                                                 <p class="text-muted">
-                                                                    {{ $b_address->street_address }},
-                                                                    {{ $b_address->city }}
-                                                                    {{ $b_address->zipcode }},
-                                                                    {{ $b_address->state }}
+                                                                    {{ $address->street_address }},
+                                                                    {{ $address->city }}
+                                                                    {{ $address->zipcode }},
+                                                                    {{ $address->state }}
                                                                 </p>
                                                             </label>
                                                         </div>
@@ -313,55 +281,88 @@
                                                 @endforeach
                                             </div>
 
-                                            <div id="change-billing-address" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none' : 'display: block' !!}">
-                                                <p>
-                                                    <a href="{{ route('front.checkout.billing.address.remove.all') }}">Make Billing address same as Delivery address</a>
-                                                    {{-- <a href="javascript: void(0)" onclick="makeBillingSameAsDeliveryAddr()">Make Billing address same as Delivery address</a> --}}
 
-                                                    <span class="mx-2">|</span>
-
-                                                    <a data-bs-toggle="collapse" href="#addBillingAddress" aria-expanded="false" aria-controls="addBillingAddress" title="Current Billing address will be removed">Change Billing address</a>
-                                                </p>
+                                            <div id="change-delivery-address" style="{!! (request()->input('billing-address-error') == "true") ? 'display: none' : 'display: block' !!}">
+                                                <p><a data-bs-toggle="collapse" href="#addDeliveryAddress" aria-expanded="false" aria-controls="addDeliveryAddress">Change Delivery address</a></p>
                                             </div>
 
-                                            <div id="delivery-billing-address">
-                                                <p>Delivery address &amp; Billing address are different. </p>
+                                            <div id="billing-address" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none' : 'display: block' !!}">
+                                            @if (!empty($data->billingAddresses['status']) && $data->billingAddresses['status'] == 'success')
+                                                <p>Billing address</p>
+
+                                                <div class="billing-address-list">
+                                                    @foreach ($data->billingAddresses['data'] as $b_addressIndex => $b_address)
+                                                        <div class="single-address">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="billing-address" id="billing-address{{$b_addressIndex}}" value="{{ $b_address->id }}" {{ ($b_addressIndex == 0) ? 'checked' : '' }}>
+
+                                                                <label class="form-check-label" for="billing-address{{$b_addressIndex}}">
+                                                                    <h6 class="mb-0">
+                                                                        {{ $b_address->full_name }} 
+                                                                        <strong>{{ $b_address->contact_no1 }}</strong>
+                                                                    </h6>
+                                                                    <p class="text-muted">
+                                                                        {{ $b_address->street_address }},
+                                                                        {{ $b_address->city }}
+                                                                        {{ $b_address->zipcode }},
+                                                                        {{ $b_address->state }}
+                                                                    </p>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                                <div id="change-billing-address" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none' : 'display: block' !!}">
+                                                    <p>
+                                                        <a href="{{ route('front.checkout.billing.address.remove.all') }}">Make Billing address same as Delivery address</a>
+                                                        {{-- <a href="javascript: void(0)" onclick="makeBillingSameAsDeliveryAddr()">Make Billing address same as Delivery address</a> --}}
+
+                                                        <span class="mx-2">|</span>
+
+                                                        <a data-bs-toggle="collapse" href="#addBillingAddress" aria-expanded="false" aria-controls="addBillingAddress" title="Current Billing address will be removed">Change Billing address</a>
+                                                    </p>
+                                                </div>
+
+                                                <div id="delivery-billing-address">
+                                                    <p>Delivery address &amp; Billing address are different. </p>
+                                                </div>
+                                            @else
+                                                <div id="change-billing-address">
+                                                    <p>Delivery address is same as Billing address. <a data-bs-toggle="collapse" href="#addBillingAddress" aria-expanded="false" aria-controls="addBillingAddress">Want to add a different Billing address ?</a></p>
+                                                </div>
+                                            @endif
                                             </div>
-                                        @else
-                                            <div id="change-billing-address">
-                                                <p>Delivery address is same as Billing address. <a data-bs-toggle="collapse" href="#addBillingAddress" aria-expanded="false" aria-controls="addBillingAddress">Want to add a different Billing address ?</a></p>
+
+                                            <div id="new-delivery-address">
+                                                <div class="collapse {{ (request()->input('delivery-address-error') == "true") ? 'show' : '' }}" id="addDeliveryAddress">
+                                                    @include('front.quick.delivery-address-add')
+                                                </div>
                                             </div>
-                                        @endif
-                                        </div>
 
-                                        <div id="new-delivery-address">
-                                            <div class="collapse {{ (request()->input('delivery-address-error') == "true") ? 'show' : '' }}" id="addDeliveryAddress">
-                                                @include('front.quick.delivery-address-add')
+                                            <div id="new-billing-address">
+                                                <div class="collapse {{ (request()->input('billing-address-error') == "true") ? 'show' : '' }}" id="addBillingAddress">
+                                                    @include('front.quick.billing-address-add')
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div id="new-billing-address">
-                                            <div class="collapse {{ (request()->input('billing-address-error') == "true") ? 'show' : '' }}" id="addBillingAddress">
-                                                @include('front.quick.billing-address-add')
-                                            </div>
-                                        </div>
+                                            <div class="address-redirect-buttons" id="confirmedAddress" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none;' : 'display: block;' !!}{!! (request()->input('billing-address-error') == "true") ? 'display: none' : 'display: block' !!}">
+                                                <p>Free Delivery expected by this {{ date('l F jS, Y', strtotime('+'.$applicationSetting->delivery_expect_in_days.'days')) }}</p>
 
-                                        <div class="address-redirect-buttons" id="confirmedAddress" style="{!! (request()->input('delivery-address-error') == "true") ? 'display: none;' : 'display: block;' !!}{!! (request()->input('billing-address-error') == "true") ? 'display: none' : 'display: block' !!}">
-                                            <p>Free Delivery expected by this {{ date('l F jS, Y', strtotime('+'.$applicationSetting->delivery_expect_in_days.'days')) }}</p>
+                                                <div class="redirect-buttons">
+                                                    <div class="d-flex">
+                                                        <a data-bs-toggle="collapse" href="#collapseAccount" aria-controls="collapseAccount" class="btn btn-sm btn-light rounded-0">Account</a>
 
-                                            <div class="redirect-buttons">
-                                                <div class="d-flex">
-                                                    <a data-bs-toggle="collapse" href="#collapseAccount" aria-controls="collapseAccount" class="btn btn-sm btn-light rounded-0">Account</a>
-
-                                                    <a data-bs-toggle="collapse" href="#collapsePayment" aria-controls="collapsePayment" class="btn btn-sm btn-dark rounded-0">Payment</a>
+                                                        <a data-bs-toggle="collapse" href="#collapsePayment" aria-controls="collapsePayment" class="btn btn-sm btn-dark rounded-0">Payment</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     @else
-                                    <div id="address-not-found">
-                                        @include('front.quick.delivery-address-add')
-                                    </div>
+                                        <div id="addDeliveryAddress">
+                                            @include('front.quick.delivery-address-add')
+                                        </div>
+                                        <div id="addBillingAddress"></div>
                                     @endif
                                 @endauth
                             </div>
