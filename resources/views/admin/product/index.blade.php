@@ -96,7 +96,10 @@
                                             <a href="{{ route('admin.product.setup.usage', $item->id) }}" class="btn btn-sm btn-primary">Usage</a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.product.review.index', $item->id) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor(ratingCalculation(json_decode($item->activeReviewDetails, true))) }}">{{ ratingCalculation(json_decode($item->activeReviewDetails, true)) }} <i class="fas fa-star"></i> </a>
+                                            @php
+                                                $rating = ratingCalculation(json_decode($item->activeReviewDetails, true));
+                                            @endphp
+                                            <a href="{{ route('admin.product.review.index', $item->id) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor($rating) }}">{{ $rating }} <i class="fas fa-star"></i> </a>
                                         </td>
                                         <td>
                                             <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.product.status', $item->id) }}">

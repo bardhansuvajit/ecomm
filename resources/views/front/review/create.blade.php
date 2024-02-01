@@ -37,17 +37,21 @@
                                             </div>
         
                                             @if ($product->activeReviewDetails)
-                                            @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
-                                                <div class="rating">
-                                                    <div class="rating-count">
-                                                        <h5 class="digit">{{ ratingCalculation(json_decode($product->activeReviewDetails, true)) }}</h5> 
-                                                        <div class="icon">
-                                                            <i class="material-icons md-light">star</i>
+                                                @php
+                                                    $rating = ratingCalculation(json_decode($product->activeReviewDetails, true));
+                                                @endphp
+
+                                                @if ($rating)
+                                                    <div class="rating">
+                                                        <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                                            <h5 class="digit">{{ $rating }}</h5> 
+                                                            <div class="icon">
+                                                                <i class="material-icons md-light">star</i>
+                                                            </div>
                                                         </div>
+                                                        <div class="review-count">({{ indianMoneyFormat(count($product->activeReviewDetails)) }})</div>
                                                     </div>
-                                                    <div class="review-count">({{ indianMoneyFormat(count($product->activeReviewDetails)) }})</div>
-                                                </div>
-                                            @endif
+                                                @endif
                                             @endif
         
                                             @php
@@ -95,40 +99,95 @@
                 </div>
 
                 <div class="col-md-10">
-                    <div id="write-review-container">
-                        <form action="{{ route('front.product.review.upload') }}" method="post">@csrf
-                            <div class="form-group mb-3">
-                                <label for="rating"><p class="text-muted mb-2">Overall rating</p></label>
+                    @if ($check['status'] == 'failure')
+                        <div id="write-review-container">
+                            <form action="{{ route('front.product.review.upload') }}" method="post">@csrf
+                                <div class="form-group mb-3">
+                                    <label for="rating"><p class="text-muted mb-2">Overall rating</p></label>
 
-                                <div class="star-rating star-5">
-                                    <input type="radio" name="rating" value="1" {{ (old('rating') == 1) ? 'checked' : '' }}><i></i>
-                                    <input type="radio" name="rating" value="2" {{ (old('rating') == 2) ? 'checked' : '' }}><i></i>
-                                    <input type="radio" name="rating" value="3" {{ (old('rating') == 3) ? 'checked' : '' }}><i></i>
-                                    <input type="radio" name="rating" value="4" {{ (old('rating') == 4) ? 'checked' : '' }}><i></i>
-                                    <input type="radio" name="rating" value="5" {{ (old('rating') == 5) ? 'checked' : '' }}><i></i>
+                                    <div class="star-rating star-5">
+                                        <input type="radio" name="rating" value="1" {{ (old('rating') == 1) ? 'checked' : '' }}><i></i>
+                                        <input type="radio" name="rating" value="2" {{ (old('rating') == 2) ? 'checked' : '' }}><i></i>
+                                        <input type="radio" name="rating" value="3" {{ (old('rating') == 3) ? 'checked' : '' }}><i></i>
+                                        <input type="radio" name="rating" value="4" {{ (old('rating') == 4) ? 'checked' : '' }}><i></i>
+                                        <input type="radio" name="rating" value="5" {{ (old('rating') == 5) ? 'checked' : '' }}><i></i>
+                                    </div>
+                                    @error('rating') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
-                                @error('rating') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
 
-                            <div class="form-group mb-3">
-                                <label for="heading"><p class="text-muted mb-2">Heading</p></label>
-                                <textarea name="heading" id="heading" class="form-control" placeholder="Enter heading" rows="1">{{ old('heading') }}</textarea>
-                                @error('heading') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
+                                <div class="form-group mb-3">
+                                    <label for="heading"><p class="text-muted mb-2">Heading</p></label>
+                                    <textarea name="heading" id="heading" class="form-control" placeholder="Enter heading" rows="1">{{ old('heading') }}</textarea>
+                                    @error('heading') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
 
-                            <div class="form-group mb-4">
-                                <label for="heading"><p class="text-muted mb-2">Detailed review</p></label>
-                                <textarea name="review" id="review" class="form-control" placeholder="Enter review" rows="4">{{ old('review') }}</textarea>
-                                @error('review') <p class="text-danger">{{ $message }}</p> @enderror
-                            </div>
+                                <div class="form-group mb-4">
+                                    <label for="heading"><p class="text-muted mb-2">Detailed review</p></label>
+                                    <textarea name="review" id="review" class="form-control" placeholder="Enter review" rows="4">{{ old('review') }}</textarea>
+                                    @error('review') <p class="text-danger">{{ $message }}</p> @enderror
+                                </div>
 
-                            <div class="form-group">
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="btn btn-dark btn-sm rounded-0">Submit</button>
-                                <p class="text-muted mt-2">After submission your review will be verified. Once verified it will be approved.</p>
+                                <div class="form-group">
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <button type="submit" class="btn btn-dark btn-sm rounded-0">Submit</button>
+                                    <p class="text-muted mt-2">After submission your review will be verified. Once verified it will be approved.</p>
+                                </div>
+                            </form>
+                        </div>
+                    @else
+                        <div id="already-reviewed">
+                            <div class="row justify-content-center">
+                                <div class="col-md-4 text-center">
+                                    <div class="alert bg-success text-light">
+                                        <h6 class="mb-2">You already reviewed !</h6>
+
+                                        <p class="mb-2">You have already reviewed this product. </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div id="rating-details">
+                                        <div class="reviewed">
+                                            <div class="top-reviews">
+                                                <div class="single-review">
+                                                    <div class="quick-section">
+                                                        <div class="rating">
+                                                            <div class="rating-count">
+                                                                <h5 class="digit">{{ $check['data']->rating }}</h5> 
+                                                                <div class="icon">
+                                                                    <i class="material-icons md-light">star</i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="user">
+                                                            <p class="text-muted">{{ $check['data']->name }}</p>
+                                                        </div>
+                                                        <div class="datetime">
+                                                            <div class="icon">
+                                                                <i class="material-icons">history</i>
+                                                            </div>
+                                                            <div class="time">
+                                                                <p class="text-muted">{{ minsAgo($check['data']->created_at) }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-section">
+                                                        <div class="review-title">
+                                                            <h5>{{ $check['data']->heading }}</h5>
+                                                        </div>
+                                                        <p class="review1 height-3 mb-0 review-shows">
+                                                            {!! nl2br($check['data']->review) !!}
+                                                        </p>
+                                                        <a href="javascript: void(0)" onclick="seeMoreText('review1', 'more-text1')" class="more-text1">See more</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>

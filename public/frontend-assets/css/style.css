@@ -745,7 +745,7 @@ footer p, footer a {
     color: #495057;
 }
 .single-product .rating .rating-count {
-    background-color: #6c757d;
+    /* background-color: #6c757d; */
     color: #fff;
     padding: 0 3px;
     border-radius: 3px;

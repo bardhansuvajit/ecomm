@@ -14,6 +14,10 @@
                 </nav>
             </div>
 
+            @php
+                $rating = ratingCalculation(json_decode($product->activeReviewDetails, true));
+            @endphp
+
             <div class="row mt-5">
                 <div class="col-md-2">
                     <div id="product">
@@ -36,10 +40,10 @@
                                             </div>
         
                                             @if ($product->activeReviewDetails)
-                                            @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
+                                            @if ($rating)
                                                 <div class="rating">
-                                                    <div class="rating-count">
-                                                        <h5 class="digit">{{ ratingCalculation(json_decode($product->activeReviewDetails, true)) }}</h5> 
+                                                    <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                                        <h5 class="digit">{{ $rating }}</h5> 
                                                         <div class="icon">
                                                             <i class="material-icons md-light">star</i>
                                                         </div>
@@ -101,8 +105,8 @@
 
                         <div class="rating-container">
                             <div class="original-rating">
-                                <div class="badge bg-success">
-                                    4.1
+                                <div class="badge bg-{{bootstrapRatingTypeColor($rating)}}">
+                                    {{ $rating }}
                                     <i class="material-icons">star</i>
                                 </div>
                             </div>
@@ -130,7 +134,7 @@
 
                     @if (count($activeReviews['data']) > 0)
                     <div id="rating-details">
-                        @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
+                        @if ($rating)
                             <div class="reviewed">
                                 <div class="top-reviews">
                                     @foreach ($activeReviews['data'] as $reviewIndex => $review)

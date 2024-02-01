@@ -119,15 +119,18 @@
                 </div>
             </div>
 
+            @php
+                $rating = ratingCalculation(json_decode($data->activeReviewDetails, true));
+            @endphp
 
             @if ($data->activeReviewDetails)
-            @if (ratingCalculation(json_decode($data->activeReviewDetails, true)))
+            @if ($rating)
                 <div id="rating">
                     <div class="ratings">
                         <div class="ratings-container">
                             <a href="#rating-details">
-                                <div class="rating-count">
-                                    <h5 class="digit">{{ ratingCalculation(json_decode($data->activeReviewDetails, true)) }}</h5> 
+                                <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                    <h5 class="digit">{{ $rating }}</h5> 
                                     <div class="icon">
                                         <i class="material-icons md-light">star</i>
                                     </div>
@@ -250,12 +253,12 @@
             <div id="rating-details">
                 <p class="section-title text-muted">Rating</p>
 
-                @if (ratingCalculation(json_decode($data->activeReviewDetails, true)))
+                @if ($rating)
                     <div class="reviewed">
                         <div class="rating-details">
                             <div class="ratings-container">
-                                <div class="rating-count">
-                                    <h5 class="digit">{{ ratingCalculation(json_decode($data->activeReviewDetails, true)) }}</h5> 
+                                <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                    <h5 class="digit">{{ $rating }}</h5> 
                                     <div class="icon">
                                         <i class="material-icons md-light">star</i>
                                     </div>
@@ -266,9 +269,9 @@
 
                         <div class="rating-short-links">
                             @if (count($data->activeReviewDetails) > 3)
-                            <a href="" class="badge text-bg-dark rounded-0">
+                            <span class="badge text-bg-dark rounded-0">
                                 <p class="mb-0 text-light">Top 3 reviews</p>
-                            </a>
+                            </span>
                             @endif
                             <a href="{{ route('front.product.review.index', $data->slug) }}" class="badge text-bg-light rounded-0">
                                 <p class="mb-0">View all reviews</p>

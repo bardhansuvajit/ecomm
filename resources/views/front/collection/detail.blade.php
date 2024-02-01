@@ -148,17 +148,21 @@
                                             </div>
 
                                             @if ($product->activeReviewDetails)
-                                            @if (ratingCalculation(json_decode($product->activeReviewDetails, true)))
-                                                <div class="rating">
-                                                    <div class="rating-count">
-                                                        <h5 class="digit">{{ ratingCalculation(json_decode($product->activeReviewDetails, true)) }}</h5> 
-                                                        <div class="icon">
-                                                            <i class="material-icons md-light">star</i>
+                                                @php
+                                                    $rating = ratingCalculation(json_decode($product->activeReviewDetails, true));
+                                                @endphp
+
+                                                @if ($rating)
+                                                    <div class="rating">
+                                                        <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                                            <h5 class="digit">{{ $rating }}</h5> 
+                                                            <div class="icon">
+                                                                <i class="material-icons md-light">star</i>
+                                                            </div>
                                                         </div>
+                                                        <div class="review-count">({{ indianMoneyFormat(count($product->activeReviewDetails)) }})</div>
                                                     </div>
-                                                    <div class="review-count">({{ indianMoneyFormat(count($product->activeReviewDetails)) }})</div>
-                                                </div>
-                                            @endif
+                                                @endif
                                             @endif
 
                                             @php

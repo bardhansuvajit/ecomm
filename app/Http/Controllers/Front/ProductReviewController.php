@@ -47,7 +47,8 @@ class ProductReviewController extends Controller
             $product = $data['data'];
 
             if (auth()->guard('web')->check()) {
-                return view('front.review.create', compact('product'));
+                $check = $this->productReviewRepository->check(auth()->guard('web')->user()->id, $product->id);
+                return view('front.review.create', compact('product', 'check'));
             } else {
                 return redirect()->route('front.error.401', ['login' => 'true', 'redirect' => route('front.product.review.create', $slug)]);
             }

@@ -14,7 +14,7 @@ class ProductReviewRepository implements ProductReviewInterface
         $data = ProductReview::where('product_id', $productId)
         ->where('status', 1)
         ->latest('id')
-        ->paginate(5);
+        ->paginate(15);
 
         if (count($data) > 0) {
             $response = [
@@ -26,6 +26,28 @@ class ProductReviewRepository implements ProductReviewInterface
             $response = [
                 'status' => 'failure',
                 'message' => 'No reviews found'
+            ];
+        }
+
+        return $response;
+    }
+
+    public function check(int $userId, int $productId): array
+    {
+        $data = ProductReview::where('product_id', $productId)
+        ->where('user_id', $userId)
+        ->first();
+
+        if (!empty($data)) {
+            $response = [
+                'status' => 'success',
+                'message' => 'Review exists for the user',
+                'data' => $data
+            ];
+        } else {
+            $response = [
+                'status' => 'failure',
+                'message' => 'Review does not exist for the user'
             ];
         }
 
