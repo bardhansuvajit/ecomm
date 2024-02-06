@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-hover">
+                        <table class="table table-sm table-hover mb-3">
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
@@ -48,15 +48,17 @@
                                     <tr>
                                         <td>{{ $index + $data->firstItem() }}</td>
                                         <td>{{ strtoupper($item->page) }}</td>
-                                        <td class="d-flex">
-                                            <div class="btn-group">
-                                                <a href="{{ route('admin.content.seo.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-
-                                                <a href="{{ route('admin.content.seo.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="btn-group">
+                                                    <a href="{{ route('admin.content.seo.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+    
+                                                    <a href="{{ route('admin.content.seo.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-hover">
+                        <table class="table table-sm table-hover mb-3">
                             <thead>
                                 <tr>
                                     <th style="width: 10px">#</th>
@@ -110,19 +110,21 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="d-flex">
-                                            <div class="btn-group">
-                                                <a href="{{ route('admin.product.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-
-                                                <a href="{{ route('admin.product.setup.category.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-
-                                                <a href="{{ route('admin.product.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="btn-group">
+                                                    <a href="{{ route('admin.product.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+    
+                                                    <a href="{{ route('admin.product.setup.category.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+    
+                                                    <a href="{{ route('admin.product.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>

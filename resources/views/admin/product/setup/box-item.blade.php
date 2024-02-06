@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover mb-3">
         <thead>
             <tr>
                 <th style="width: 10px">#</th>
@@ -63,16 +63,18 @@
                             </div>
                         </div>
                     </td>
-                    <td class="d-flex">
-                        <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch{{$item->id}}" {{ ($item->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.boxitem.status', $item->id) }}')">
-                            <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
-                        </div>
-
-                        <div class="btn-group">
-                            <a href="{{ route('admin.product.setup.boxitem.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                    <td>
+                        <div class="d-flex">
+                            <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch{{$item->id}}" {{ ($item->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.boxitem.status', $item->id) }}')">
+                                <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
+                            </div>
+    
+                            <div class="btn-group">
+                                <a href="{{ route('admin.product.setup.boxitem.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </div>
                         </div>
                     </td>
                 </tr>
