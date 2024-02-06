@@ -22,7 +22,6 @@ class CreatePaymentMethodsTable extends Migration
             $table->tinyInteger('stage')->default(0)->comment('1: live | 0: test');
             $table->string('image');
             $table->text('details');
-            $table->tinyInteger('checked')->default(0)->comment('1: active | 0: inactive');
 
             $table->string('test_key1', 200);
             $table->string('live_key1', 200);

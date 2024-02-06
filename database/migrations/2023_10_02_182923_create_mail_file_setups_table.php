@@ -29,7 +29,7 @@ class CreateMailFileSetupsTable extends Migration
         $data = [
             'type' => 'forgot-password',
             'subject' => 'Forgot password',
-            'from_mail' => 'no-reply',
+            'mail_from' => 'no-reply',
             'blade_file' => 'forgot-password',
         ];
 

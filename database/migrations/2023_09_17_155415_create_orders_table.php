@@ -38,7 +38,7 @@ class CreateOrdersTable extends Migration
 
             $table->double('final_order_amount', 10, 2);
 
-            $table->bigInteger('txn_id')->default('')->comment('online payment only');
+            $table->bigInteger('txn_id')->nullable()->comment('online payment only');
             $table->string('ip_address', 100);
             $table->string('latitude', 100)->default('');
             $table->string('longitude', 100)->default('');
