@@ -20,7 +20,7 @@ class ProductFeatureController extends Controller
             $query->where('title', 'like', '%'.$keyword.'%');
         });
 
-        $productList = $query->whereIn('status', showInFrontendProductStatusID())->orderBy('title')->paginate(25);
+        $productList = $query->whereIn('status', showInFrontendProductStatusID())->orderBy('title')->paginate(applicationSettings()->pagination_items_per_page);
         $productFeatures = ProductFeature::pluck('product_id')->toArray();
 
         return view('admin.product.feature.index', compact('productList', 'productFeatures'));

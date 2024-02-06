@@ -14,7 +14,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <p class="small text-muted font-weight-bold">Showing {{$data->firstItem()}}-{{$data->lastItem()}} out of {{$data->total()}}</p>
+                            </div>
                             <div class="col-md-6">
                                 <form action="" method="get">
                                     <div class="d-flex justify-content-end">
@@ -99,7 +101,7 @@
                                             @php
                                                 $rating = ratingCalculation(json_decode($item->activeReviewDetails, true));
                                             @endphp
-                                            <a href="{{ route('admin.product.review.index', $item->id) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor($rating) }}">{{ $rating }} <i class="fas fa-star"></i> </a>
+                                            <a href="{{ route('admin.review.list.all', ['product' => $item->id]) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor($rating) }}">{{ $rating }} <i class="fas fa-star"></i> </a>
                                         </td>
                                         <td>
                                             <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.product.status', $item->id) }}">

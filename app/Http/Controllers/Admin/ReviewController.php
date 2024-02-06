@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Interfaces\UserInterface;
+use App\Interfaces\ProductInterface;
 
 use App\Models\ProductReview;
 use App\Models\Product;
@@ -13,16 +14,18 @@ use App\Models\Product;
 class ReviewController extends Controller
 {
     private UserInterface $userRepository;
+    private ProductInterface $productRepository;
 
-    public function __construct(UserInterface $userRepository)
+    public function __construct(UserInterface $userRepository, ProductInterface $productRepository)
     {
         $this->userRepository = $userRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function index(Request $request)
     {
         $status = $request->status ?? '';
-        $category = $request->category ?? '';
+        $product = $request->product ?? '';
         $keyword = $request->keyword ?? '';
 
         $query = ProductReview::query();
@@ -33,13 +36,17 @@ class ReviewController extends Controller
             ->orWhere('phone_number', 'like', '%'.$keyword.'%')
             ->orWhere('review', 'like', '%'.$keyword.'%');
         });
+        $query->when($product, function($query) use ($product) {
+            $query->where('product_id', $product);
+        });
         $query->when($status, function($query) use ($status) {
             $query->where('status', $status);
         });
 
-        $data = $query->latest('id')->paginate(25);
+        $data = $query->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
+        $activeProducts = $this->productRepository->activeProductsList();
 
-        return view('admin.review.index', compact('data'));
+        return view('admin.review.index', compact('data', 'activeProducts'));
     }
 
     public function create(Request $request)

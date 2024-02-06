@@ -102,9 +102,9 @@ Route::name('admin.')->group(function() {
                 });
             });
 
-            Route::prefix('review')->name('review.')->group(function() {
-                Route::get('/{id}', [ProductReviewController::class, 'index'])->name('index');
-            });
+            // Route::prefix('review')->name('review.')->group(function() {
+            //     Route::get('/{id}', [ProductReviewController::class, 'index'])->name('index');
+            // });
 
             Route::prefix('feature')->name('feature.')->group(function() {
                 Route::get('/', [ProductFeatureController::class, 'index'])->name('all');

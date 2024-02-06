@@ -20,7 +20,7 @@ class BlogFeatureController extends Controller
             $query->where('title', 'like', '%'.$keyword.'%');
         });
 
-        $blogsList = $query->where('status', 1)->orderBy('title')->paginate(25);
+        $blogsList = $query->where('status', 1)->orderBy('title')->paginate(applicationSettings()->pagination_items_per_page);
 
         $blogFeatures = BlogFeature::pluck('blog_id')->toArray();
 

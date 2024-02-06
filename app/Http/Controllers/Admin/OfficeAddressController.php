@@ -30,7 +30,7 @@ class OfficeAddressController extends Controller
             $query->where('status', $status);
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.officeaddress.index', compact('data'));
     }

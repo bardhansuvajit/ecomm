@@ -18,7 +18,7 @@ class SeoController extends Controller
             $query->where('page', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->paginate(25);
+        $data = $query->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.seo.index', compact('data'));
     }

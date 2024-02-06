@@ -23,7 +23,7 @@ class BlogController extends Controller
             $query->where('title', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->latest('id')->paginate(25);
+        $data = $query->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.blog.index', compact('data'));
     }

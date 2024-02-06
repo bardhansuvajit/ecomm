@@ -14,7 +14,7 @@ class ProductReviewRepository implements ProductReviewInterface
         $data = ProductReview::where('product_id', $productId)
         ->where('status', 1)
         ->latest('id')
-        ->paginate(15);
+        ->paginate(applicationSettings()->pagination_items_per_page);
 
         if (count($data) > 0) {
             $response = [

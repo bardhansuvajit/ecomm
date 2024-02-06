@@ -17,7 +17,7 @@ class CouponRepository implements CouponInterface
     public function check(string $code) : array
     {
         $response = [];
-        // return Order::orderBy('id', 'desc')->paginate(25);
+        // return Order::orderBy('id', 'desc')->paginate(applicationSettings()->pagination_items_per_page);
         $coupon = Coupon::where('code', $code)->first();
         $currentDateTime = date('Y-m-d H:i:s');
 
@@ -259,7 +259,7 @@ class CouponRepository implements CouponInterface
             ->orWhere('user_max_no_of_usage', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         $response = [
             'status' => 'success',

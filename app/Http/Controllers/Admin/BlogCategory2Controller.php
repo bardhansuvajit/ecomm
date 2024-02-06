@@ -19,7 +19,7 @@ class BlogCategory2Controller extends Controller
             $query->where('title', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.blog.category2.index', compact('data'));
     }

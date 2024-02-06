@@ -13,7 +13,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $seo = SeoPage::where('page', 'blog')->first();
-        $data = Blog::where('status', 1)->latest('id')->paginate(9);
+        $data = Blog::where('status', 1)->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
         return view('front.blog.index', compact('data', 'seo'));
     }
 

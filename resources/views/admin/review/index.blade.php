@@ -14,10 +14,20 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <p class="small text-muted font-weight-bold">Showing {{$data->firstItem()}}-{{$data->lastItem()}} out of {{$data->total()}}</p>
+                            </div>
                             <div class="col-md-6">
                                 <form action="" method="get">
                                     <div class="d-flex justify-content-end">
+                                        <div class="form-group ml-2">
+                                            <select name="product" id="product" class="form-select form-select-sm" style="width: 150px;">
+                                                <option value="">Select product...</option>
+                                                @foreach ($activeProducts['data'] as $product)
+                                                    <option value="{{ $product->id }}" {{ (request()->input('product') == $product->id) ? 'selected' : '' }}>{{ $product->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="form-group ml-2">
                                             <input type="search" class="form-control form-control-sm" name="keyword" id="keyword" value="{{ request()->input('keyword') }}" placeholder="Search something...">
                                         </div>
@@ -33,7 +43,6 @@
                                         </div>
                                     </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>

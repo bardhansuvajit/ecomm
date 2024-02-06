@@ -41,7 +41,7 @@ class UserController extends Controller
             $query->where('status', $status);
         });
 
-        $data = $query->latest('id')->paginate(25);
+        $data = $query->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.user.index', compact('data'));
     }

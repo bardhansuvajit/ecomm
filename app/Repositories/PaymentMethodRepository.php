@@ -18,7 +18,7 @@ class PaymentMethodRepository implements PaymentMethodInterface
             ->orWhere('value', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         $response = [
             'status' => 'success',

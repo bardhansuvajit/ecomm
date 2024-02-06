@@ -38,7 +38,7 @@ class WishlistRepository implements WishlistInterface
 
     public function findByUser(int $userId) : array
     {
-        $data = ProductWishlist::where('user_id', $userId)->paginate(10);
+        $data = ProductWishlist::where('user_id', $userId)->paginate(applicationSettings()->pagination_items_per_page);
 
         $response = [
             'status' => 'success',

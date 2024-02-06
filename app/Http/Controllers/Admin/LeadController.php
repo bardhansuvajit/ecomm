@@ -23,7 +23,7 @@ class LeadController extends Controller
             ->orWhere('address', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->latest('id')->paginate(25);
+        $data = $query->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.lead.index', compact('data'));
     }

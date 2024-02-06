@@ -78,7 +78,7 @@ class CollectionController extends Controller
         ->where('products.status', 1)
         ->orderBy($orderBy, $sortBy)
         ->groupBy('products.id')
-        ->paginate(12);
+        ->paginate(30);
 
         if (!empty($category)) {
             return view('front.category.index', compact('category', 'products', 'request'));

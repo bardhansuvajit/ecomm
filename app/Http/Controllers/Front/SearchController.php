@@ -96,7 +96,7 @@ class SearchController extends Controller
         ->where('status', 1)
         ->orWhere('status', 3)
         ->orWhere('status', 4)
-        ->paginate(12);
+        ->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('front.search.index', compact('products', 'request'));
     }

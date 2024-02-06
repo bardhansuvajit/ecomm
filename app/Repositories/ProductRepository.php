@@ -101,7 +101,7 @@ class ProductRepository implements ProductInterface
     /*
     public function listAll()
     {
-        return Product::orderBy('id', 'desc')->paginate(25);
+        return Product::orderBy('id', 'desc')->paginate(applicationSettings()->pagination_items_per_page);
     }
 
     public function listActive()

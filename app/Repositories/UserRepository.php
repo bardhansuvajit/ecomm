@@ -10,7 +10,7 @@ class UserRepository implements UserInterface
 {
     public function listAll()
     {
-        return User::orderBy('id', 'desc')->paginate(25);
+        return User::orderBy('id', 'desc')->paginate(applicationSettings()->pagination_items_per_page);
     }
 
     public function listActive(string $sortBy = "id", string $orderBy = "desc")

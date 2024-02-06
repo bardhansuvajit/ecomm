@@ -18,7 +18,7 @@ class BlogTagController extends Controller
             $query->where('title', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.blog.tag.index', compact('data'));
     }

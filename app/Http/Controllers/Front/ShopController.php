@@ -33,7 +33,7 @@ class ShopController extends Controller
         ->where('products.status', 1)
         ->orderBy($orderBy, $sortBy)
         ->groupBy('products.id')
-        ->paginate(12);
+        ->paginate(applicationSettings()->pagination_items_per_page);
 
         $seo = SeoPage::where('page', 'shop')->first();
         return view('front.shop.index', compact('seo', 'products', 'request'));

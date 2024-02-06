@@ -14,7 +14,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <p class="small text-muted font-weight-bold">Showing {{$data->firstItem()}}-{{$data->lastItem()}} out of {{$data->total()}}</p>
+                            </div>
                             <div class="col-md-6">
                                 <form action="" method="get">
                                     <div class="d-flex justify-content-end">

@@ -357,7 +357,7 @@ class OrderRepository implements OrderInterface
             ->orWhere('final_order_amount', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->latest('id')->paginate(25);
+        $data = $query->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
 
         $response = [
             'status' => 'success',
@@ -369,7 +369,7 @@ class OrderRepository implements OrderInterface
 
     public function findByUserId(int $userId) : array
     {
-        $data = Order::where('user_id', $userId)->latest('id')->paginate(10);
+        $data = Order::where('user_id', $userId)->latest('id')->paginate(applicationSettings()->pagination_items_per_page);
 
         if (count($data) > 0) {
             $response = [

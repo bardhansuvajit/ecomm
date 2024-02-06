@@ -27,7 +27,7 @@ class CategoryHighlightController extends Controller
             $query->where('status', $status);
         });
 
-        $data = $query->where('category_id', $id)->where('level', 1)->orderBy('position')->paginate(25);
+        $data = $query->where('category_id', $id)->where('level', 1)->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
         $catDetail = ProductCategory1::findOrFail($id);
 
         return view('admin.category-highlight.index', compact('data', 'catDetail', 'id'));

@@ -20,7 +20,7 @@ class CollectionController extends Controller
             ->orWhere('detailed_desc', 'like', '%'.$keyword.'%');
         });
 
-        $data = $query->orderBy('position')->paginate(25);
+        $data = $query->orderBy('position')->paginate(applicationSettings()->pagination_items_per_page);
 
         return view('admin.collection.index', compact('data'));
     }

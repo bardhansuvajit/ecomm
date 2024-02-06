@@ -22,6 +22,7 @@ class CreateApplicationSettingsTable extends Migration
             $table->tinyInteger('tax_on_order')->default(1)->comment('1: enable | 0: disable');
             $table->tinyInteger('delivery_expect_in_days')->default(1);
             $table->tinyInteger('cart_max_product_qty')->default(5);
+            $table->tinyInteger('pagination_items_per_page')->default(15);
 
             $table->integer('position')->default(1);
             $table->tinyInteger('status')->default(1)->comment('1: active | 0: inactive');
@@ -34,6 +35,7 @@ class CreateApplicationSettingsTable extends Migration
             'min_cart_value_shipping_charge' => 1,
             'tax_on_order' => 1,
             'delivery_expect_in_days' => 5,
+            'pagination_items_per_page' => 15
         ];
 
         DB::table('application_settings')->insert($data);
