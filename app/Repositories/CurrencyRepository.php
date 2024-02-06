@@ -37,8 +37,7 @@ class CurrencyRepository implements CurrencyInterface
             ->orWhere('country', 'like', '%'.$keyword.'%')
             ->orWhere('full_name', 'like', '%'.$keyword.'%')
             ->orWhere('short_name', 'like', '%'.$keyword.'%')
-            ->orWhere('entity', 'like', '%'.$keyword.'%')
-            ->orWhere('icon', 'like', '%'.$keyword.'%');
+            ->orWhere('entity', 'like', '%'.$keyword.'%');
         });
 
         $data = $query->orderBy('position')->paginate(25);

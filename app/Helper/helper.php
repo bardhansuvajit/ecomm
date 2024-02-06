@@ -536,8 +536,8 @@ if(!function_exists('cartDetails')) {
             'guestToken' => (string) $guestToken,
             'totalCartAmount' => $totalCartAmount,
             'currencyId' => (int) $currency_id,
-            'currencyIcon' => (string) '<i class="'.$currency.'"></i>',
-            'currencyIconClass' => (string) $currency,
+            // 'currencyIcon' => (string) '<i class="'.$currency.'"></i>',
+            // 'currencyIconClass' => (string) $currency,
             'currencyEntity' => (string) $currencyData->currencyDetails->entity,
 
             'taxApplicable' => (int) $taxApplicable,

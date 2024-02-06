@@ -24,7 +24,6 @@ class CreateCurrenciesTable extends Migration
             $table->string('full_name');
             $table->string('short_name', 100);
             $table->string('entity');
-            $table->string('icon');
             $table->string('image')->nullable();
 
             // application shipping charge
@@ -39,8 +38,8 @@ class CreateCurrenciesTable extends Migration
         });
 
         $data = [
-            ['name' => 'rupee', 'country' => 'India', 'country_full_name' => 'India', 'flag' => 'uploads/static-flag/in.svg', 'full_name' => 'Indian rupee', 'short_name' => 'INR', 'entity' => '&#8377;', 'icon' => 'fas fa-rupee', 'minimum_cart_amount' => 999, 'shipping_amount' => 40, 'order_tax_percentage' => 5, 'position' => 1],
-            ['name' => 'dollar', 'country' => 'USA', 'country_full_name' => 'United States of America', 'flag' => 'uploads/static-flag/us.svg', 'full_name' => 'US dollar', 'short_name' => 'USD', 'entity' => '&#36;', 'icon' => 'fas fa-dollar', 'minimum_cart_amount' => 12.99, 'shipping_amount' => 0.79, 'order_tax_percentage' => 0.06, 'position' => 2],
+            ['name' => 'rupee', 'country' => 'India', 'country_full_name' => 'India', 'flag' => 'uploads/static-flag/in.svg', 'full_name' => 'Indian rupee', 'short_name' => 'INR', 'entity' => '&#8377;', 'minimum_cart_amount' => 999, 'shipping_amount' => 40, 'order_tax_percentage' => 5, 'position' => 1],
+            ['name' => 'dollar', 'country' => 'USA', 'country_full_name' => 'United States of America', 'flag' => 'uploads/static-flag/us.svg', 'full_name' => 'US dollar', 'short_name' => 'USD', 'entity' => '&#36;', 'minimum_cart_amount' => 12.99, 'shipping_amount' => 0.79, 'order_tax_percentage' => 0.06, 'position' => 2],
         ];
 
         DB::table('currencies')->insert($data);

@@ -74,7 +74,7 @@ class OrderRepository implements OrderInterface
             $guestToken = cartDetails($resp['data'])['guestToken'];
             $totalCartAmount = cartDetails($resp['data'])['totalCartAmount'];
             $currencyId = cartDetails($resp['data'])['currencyId'];
-            $currencyIcon = cartDetails($resp['data'])['currencyIcon'];
+            // $currencyIcon = cartDetails($resp['data'])['currencyIcon'];
             $taxApplicable = cartDetails($resp['data'])['taxApplicable'];
             $taxPercentage = cartDetails($resp['data'])['taxPercentage'];
             $taxCharge = cartDetails($resp['data'])['taxCharge'];

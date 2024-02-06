@@ -182,7 +182,7 @@ class CouponRepository implements CouponInterface
             if ($minimumCartAmountDetails->minimum_cart_amount > $cartData['totalCartAmount']) {
                 $comparisonAmount = (int) $minimumCartAmountDetails->minimum_cart_amount - $cartData['totalCartAmount'];
 
-                $respMessage = 'Please add '.$cartData['currencyIcon'].' '.$comparisonAmount.' more to cart';
+                $respMessage = 'Please add '.$cartData['currencyEntity'].$comparisonAmount.' more to cart';
 
                 $response = [
                     'status' => 'failure',
