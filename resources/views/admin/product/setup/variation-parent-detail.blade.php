@@ -35,14 +35,14 @@
 
                 <div class="buttons mt-3">
                     <div class="btn-group">
-                        <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">
+                        <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
                             <input type="checkbox" class="custom-control-input" id="customSwitch{{$child_variation->id}}" {{ ($child_variation->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.child.status', $child_variation->id) }}')">
                             <label class="custom-control-label" for="customSwitch{{$child_variation->id}}"></label>
                         </div>
 
-                        <a href="" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>
 
-                        <a href="{{ route('admin.product.setup.variation.child.delete', $child_variation->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')"><i class="fa fa-trash"></i></a>
+                        <a href="{{ route('admin.product.setup.variation.child.delete', $child_variation->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </div>

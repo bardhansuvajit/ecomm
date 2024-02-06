@@ -96,7 +96,6 @@ class CouponController extends Controller
                 $data = (object) [];
                 $data->currencies = $currencies['data'];
                 $data->products = $products['data'];
-    
                 $data->item = $resp['data'];
                 return view('admin.coupon.edit', compact('data'));
             }

@@ -66,9 +66,9 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            {{-- <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li> --}}
-                            <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Edit profile</a></li>
+                            {{-- <li class="nav-item"><a class="nav-link active" href="#activity" data-bs-toggle="tab">Activity</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#timeline" data-bs-toggle="tab">Timeline</a></li> --}}
+                            <li class="nav-item"><a class="nav-link active" href="#settings" data-bs-toggle="tab">Edit profile</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin.profile.password.index') }}">Change password</a></li>
                         </ul>
                     </div>
@@ -77,7 +77,7 @@
                             {{-- <div class="tab-pane" id="activity">
                                 <div class="post">
                                     <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user">
                                     <span class="username">
                                         <a href="#">Jonathan Burke Jr.</a>
                                         <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="post clearfix">
                                     <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
+                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="user">
                                     <span class="username">
                                         <a href="#">Sarah Ross</a>
                                         <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="post">
                                     <div class="user-block">
-                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
+                                    <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="user">
                                     <span class="username">
                                         <a href="#">Adam Jones</a>
                                         <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>

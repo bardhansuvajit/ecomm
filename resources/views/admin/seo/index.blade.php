@@ -22,7 +22,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary">
                                                     <i class="fa fa-filter"></i>
                                                 </button>
-                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-toggle="tooltip" title="Clear filter">
+                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="Clear filter">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>
@@ -48,11 +48,11 @@
                                         <td>{{ strtoupper($item->page) }}</td>
                                         <td class="d-flex">
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.content.seo.detail', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
+                                                <a href="{{ route('admin.content.seo.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.content.seo.edit', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
+                                                <a href="{{ route('admin.content.seo.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                             </div>

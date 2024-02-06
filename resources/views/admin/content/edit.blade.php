@@ -16,7 +16,7 @@
                             <div class="col-md-12 text-right">
                                 {{-- <a href="{{ route('front.content.contactus.index') }}" class="btn btn-sm btn-primary" target="_blank"> View public page <i class="fa fa-chevron-right"></i></a> --}}
 
-                                <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">
+                                <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
                                     <input type="checkbox" class="custom-control-input" id="customSwitch{{$data->id}}" {{ ($data->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.content.status', $data->id) }}')">
                                     <label class="custom-control-label" for="customSwitch{{$data->id}}"></label>
                                 </div>

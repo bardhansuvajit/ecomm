@@ -44,7 +44,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary">
                                                     <i class="fa fa-filter"></i>
                                                 </button>
-                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-toggle="tooltip" title="Clear filter">
+                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="Clear filter">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>
@@ -110,15 +110,15 @@
                                         </td>
                                         <td class="d-flex">
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.product.detail', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
+                                                <a href="{{ route('admin.product.detail', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.product.setup.category.edit', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
+                                                <a href="{{ route('admin.product.setup.category.edit', $item->id) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.product.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
+                                                <a href="{{ route('admin.product.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </div>

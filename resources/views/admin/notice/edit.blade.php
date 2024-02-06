@@ -27,7 +27,7 @@
                                         <br>
                                     @endif
 
-                                    <label for="image">Image</label>
+                                    <label for="image">Image <span class="text-muted">(Optional)</span></label>
                                     <input type="file" class="form-control" name="image" id="image">
                                     {!! imageUploadNotice('banner')['html'] !!}
                                     @error('image') <p class="small text-danger">{{ $message }}</p> @enderror

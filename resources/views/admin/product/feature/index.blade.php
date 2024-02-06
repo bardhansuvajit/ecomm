@@ -63,7 +63,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary">
                                                     <i class="fa fa-filter"></i>
                                                 </button>
-                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-toggle="tooltip" title="Clear filter">
+                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="Clear filter">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>

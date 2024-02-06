@@ -378,7 +378,7 @@ Route::name('admin.')->group(function() {
         });
 
         // office
-        Route::prefix('office')->name('office.')->group(function() {
+        Route::prefix('application')->name('office.')->group(function() {
             // information
             Route::prefix('information')->name('information.')->group(function() {
                 Route::get('/detail', [OfficeInformationController::class, 'detail'])->name('detail');

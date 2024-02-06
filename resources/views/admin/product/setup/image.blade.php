@@ -35,10 +35,10 @@
         <div class="col-12 mb-3">
             <ul class="nav nav-pills" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a href="javascript: void(0)" class="nav-link active" id="all-tab" data-toggle="tab" data-target="#all">All images</a>
+                    <a href="javascript: void(0)" class="nav-link active" id="all-tab" data-bs-toggle="tab" data-target="#all">All images</a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript: void(0)" class="nav-link"id="detailed-tab" data-toggle="tab" data-target="#detailed">Detailed</a>
+                    <a href="javascript: void(0)" class="nav-link"id="detailed-tab" data-bs-toggle="tab" data-target="#detailed">Detailed</a>
                 </li>
             </ul>
         </div>
@@ -116,13 +116,13 @@
                                 @endif
                             </td>
                             <td class="d-flex">
-                                <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">
+                                <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
                                     <input type="checkbox" class="custom-control-input" id="customSwitch{{$image->id}}" {{ ($image->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.images.status', $image->id) }}')">
                                     <label class="custom-control-label" for="customSwitch{{$image->id}}"></label>
                                 </div>
 
                                 <div class="btn-group">
-                                    <a href="{{ route('admin.product.setup.images.delete', $image->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
+                                    <a href="{{ route('admin.product.setup.images.delete', $image->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </div>

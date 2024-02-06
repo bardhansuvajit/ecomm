@@ -18,7 +18,22 @@
                         <form action="{{ route('admin.management.notice.store') }}" method="post" enctype="multipart/form-data">@csrf
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    <label for="image">Image <span class="text-muted">*</span></label>
+                                    <label for="type">Notice for <span class="text-muted">*</span></label>
+                                    <div class="btn-group-vertical">
+                                        <input type="radio" class="btn-check" id="btncheck1-0" value="0" name="category1_id[0]" 
+                                        {{ (collect()->contains(0)) ? 'checked' : '' }}>
+                                        <label class="btn btn-light" for="btncheck1-0">Entire application</label>
+                                        {{-- @foreach ($activeCategories1 as $index => $cat1)
+                                            <input type="checkbox" class="btn-check category1s" id="btncheck1-{{$index}}" value="{{ $cat1->id }}" name="category1_id[{{$index}}]" 
+                                            {{ (collect($category1s)->contains($cat1->id)) ? 'checked' : '' }} 
+                                            onclick="fetchCategories(2)"
+                                            >
+                                            <label class="btn btn-light" for="btncheck1-{{$index}}">{{ $cat1->title }}</label>
+                                        @endforeach --}}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="image">Image <span class="text-muted">(Optional)</span></label>
                                     <input type="file" class="form-control" name="image" id="image">
                                     {!! imageUploadNotice('notice')['html'] !!}
                                     @error('image') <p class="small text-danger">{{ $message }}</p> @enderror

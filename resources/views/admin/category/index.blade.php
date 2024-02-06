@@ -27,7 +27,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary">
                                                     <i class="fa fa-filter"></i>
                                                 </button>
-                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-toggle="tooltip" title="Clear filter">
+                                                <a href="{{ url()->current() }}" class="btn btn-sm btn-light" data-bs-toggle="tooltip" title="Clear filter">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>
@@ -79,21 +79,21 @@
                                             {{ $item->productsDetails->count() }}
                                         </td>
                                         <td class="d-flex">
-                                            <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">
+                                            <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
                                                 <input type="checkbox" class="custom-control-input" id="customSwitch{{$item->id}}" {{ ($item->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.category.status', [$level, $item->id]) }}')">
                                                 <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
                                             </div>
 
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.product.category.detail', [$level, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
+                                                <a href="{{ route('admin.product.category.detail', [$level, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="View">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.product.category.edit', [$level, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
+                                                <a href="{{ route('admin.product.category.edit', [$level, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.product.category.delete', [$level, $item->id]) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
+                                                <a href="{{ route('admin.product.category.delete', [$level, $item->id]) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </div>

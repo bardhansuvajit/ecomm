@@ -34,7 +34,7 @@
 
                         <p class="small text-muted mb-0">Password @if($data->default_password_set == 1) <span class="badge badge-danger">Default password set</span>@endif </p>
                         <p class="">
-                            <a href="#resetPassword" data-toggle="modal" class="btn btn-sm btn-primary">Reset</a>
+                            <a href="#resetPassword" data-bs-toggle="modal" class="btn btn-sm btn-primary">Reset</a>
                         </p>
 
                         <p class="small text-muted mb-0">Gender</p>

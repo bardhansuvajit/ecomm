@@ -41,7 +41,7 @@ class NoticeController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
             'text' => 'required|string|min:2',
             'link' => 'nullable|url|min:2',
         ], [

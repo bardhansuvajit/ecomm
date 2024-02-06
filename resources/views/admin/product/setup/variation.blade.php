@@ -5,7 +5,7 @@
 @if (count($data->variationParents) > 0)
 <div class="row mb-3">
     <div class="col-md-12 text-right">
-        <button data-target="#createVariationModal" data-toggle="modal" class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create new</button>
+        <button data-target="#createVariationModal" data-bs-toggle="modal" class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create new</button>
     </div>
 </div>
 
@@ -41,19 +41,19 @@
                     </div>
                     <div class="col-2 text-right">
                         <div class="btn-group">
-                            <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Create">
+                            <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Create">
                                 <i class="fa fa-plus"></i>
                             </a>
 
-                            <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Detail">
+                            <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Detail">
                                 <i class="fa fa-eye"></i>
                             </a>
 
-                            <a href="{{ route('admin.product.setup.variation.parent.edit', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
+                            <a href="{{ route('admin.product.setup.variation.parent.edit', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
 
-                            <a href="{{ route('admin.product.setup.variation.parent.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')">
+                            <a href="{{ route('admin.product.setup.variation.parent.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
@@ -68,7 +68,7 @@
 <div class="row mb-3">
     <div class="col-md-12 text-center">
         <p class="small text-muted my-5">No variations found...</p>
-        <button data-target="#createVariationModal" data-toggle="modal" class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create new</button>
+        <button data-target="#createVariationModal" data-bs-toggle="modal" class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create new</button>
     </div>
 </div>
 @endif

@@ -33,7 +33,8 @@ class ProductRepository implements ProductInterface
 
     public function activeProductsList(): array
     {
-        $data = Product::where('status', 1)->orderBy('title')->get();
+        $frontShowProsuctsID = showInFrontendProductStatusID();
+        $data = Product::whereIn('status', $frontShowProsuctsID)->orderBy('title')->get();
 
         if (count($data) > 0) {
             $response = [

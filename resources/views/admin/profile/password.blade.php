@@ -67,7 +67,7 @@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link" href="{{ route('admin.profile.index') }}">Edit profile</a></li>
-                            <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Change password</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#settings" data-bs-toggle="tab">Change password</a></li>
                         </ul>
                     </div>
                     <div class="card-body">

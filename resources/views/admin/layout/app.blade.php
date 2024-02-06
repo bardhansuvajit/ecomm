@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('backend-assets/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend-assets/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend-assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend-assets/css/style.css') }}">
 
     @yield('style')
@@ -52,7 +53,7 @@
             </li> --}}
 
             {{-- <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
+                <a class="nav-link" data-bs-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">15</span>
                 </a>
@@ -87,26 +88,32 @@
                     <i class="fas fa-th-large"></i>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-user"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
-                            <div class="media">
-                                <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle" alt="Image">
-
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        {{ auth()->guard('admin')->user()->name }}
-                                    </h3>
-                                    <p class="text-sm">{{ auth()->guard('admin')->user()->username }}</p>
-                                    <p class="text-sm text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
-                                </div>
-                            </div>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                            <i class="fas fa-user"></i>
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item dropdown-footer" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                            <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
+                                <div class="media">
+                                    @if (!empty(auth()->guard('admin')->user()->image_small) && file_exists(auth()->guard('admin')->user()->image_small))
+                                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle" alt="Image">
+                                    @else
+                                        <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="img-size-50 mr-3 img-circle">
+                                    @endif
+
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">
+                                            {{ auth()->guard('admin')->user()->name }}
+                                        </h3>
+                                        <p class="text-sm">{{ auth()->guard('admin')->user()->username }}</p>
+                                        <p class="text-sm text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item dropdown-footer" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -114,14 +121,21 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="{{ url('/') }}" class="brand-link text-center" target="_blank">
-                <img src="{{ asset($officeInfo->primary_logo) }}" alt="site-logo" class="" style="height: 43px;opacity: .8">
-                {{-- <span class="brand-text font-weight-light">Admin</span> --}}
+                @if (!empty($officeInfo->primary_logo) && file_exists($officeInfo->primary_logo))
+                    <img src="{{ asset($officeInfo->primary_logo) }}" alt="site-logo" class="" style="height: 43px;opacity: .8">
+                @else
+                    <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" style="height: 43px; width: 200px">
+                @endif
             </a>
 
             <div class="sidebar">
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="user-panel mt-2 pb-2 d-flex">
                     <div class="image">
-                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-circle elevation-2" alt="User Image">
+                        @if (!empty(auth()->guard('admin')->user()->image_small) && file_exists(auth()->guard('admin')->user()->image_small))
+                            <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-circle elevation-2" alt="user">
+                        @else
+                            <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="rounded-circle" style="height: 30px;width: 30px">
+                        @endif
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
@@ -382,7 +396,7 @@
                         <li class="nav-item {{ (request()->is('admin/office*')) ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ (request()->is('admin/office*')) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-building"></i>
-                                <p>Office <i class="right fas fa-angle-left"></i></p>
+                                <p>Application <i class="right fas fa-angle-left"></i></p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
@@ -473,8 +487,10 @@
     <form action="{{ route('admin.logout') }}" id="logout-form" method="post" class="d-none">@csrf</form>
 
     <script src="{{ asset('backend-assets/plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('backend-assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="{{ asset('backend-assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
     <script src="{{ asset('backend-assets/js/adminlte.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="{{ asset('backend-assets/js/bootstrap.min.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('backend-assets/js/custom.js') }}"></script>
