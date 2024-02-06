@@ -22,10 +22,13 @@
                             <div class="d-flex mb-3">
                                 <div class="image-holder mr-3">
                                     <a href="{{ route('admin.product.detail', $data->productDetails->id) }}">
-                                    @if (count($data->productDetails->frontImageDetails) > 0)
-                                        <img src="{{ asset($data->productDetails->frontImageDetails[0]->img_large) }}" style="height:50px">
+                                    @if (
+                                        (count($data->productDetails->frontImageDetails) > 0) && 
+                                        file_exists($data->productDetails->frontImageDetails[0]->img_medium)
+                                    )
+                                        <img src="{{ asset($data->productDetails->frontImageDetails[0]->img_medium) }}" style="height:50px">
                                     @else
-                                        <img src="{{ asset('frontend-assets/img/logo.png') }}" style="height:50px">
+                                        <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" style="height:50px">
                                     @endif
                                     </a>
                                 </div>

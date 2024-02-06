@@ -386,7 +386,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.management.instagrampost.list.all') }}" class="nav-link {{ (request()->is('admin/management/instagrampost*')) ? 'active' : '' }}">
+                                    <a href="{{ route('admin.management.instagram.post.list.all') }}" class="nav-link {{ (request()->is('admin/management/instagram*')) ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Instagram post</p>
                                     </a>
@@ -434,7 +434,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
-                                Logout
+                                <p>Logout</p>
                             </a>
                         </li>
                         <li class="nav-item">

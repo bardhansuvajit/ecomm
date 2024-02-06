@@ -351,15 +351,28 @@ Route::name('admin.')->group(function() {
             });
 
             // instagram post
-            Route::prefix('instagrampost')->name('instagrampost.')->group(function() {
-                Route::get('/', [InstagramPostController::class, 'index'])->name('list.all');
-                Route::get('/create', [InstagramPostController::class, 'create'])->name('create');
-                Route::post('/store', [InstagramPostController::class, 'store'])->name('store');
-                Route::get('/detail/{id}', [InstagramPostController::class, 'detail'])->name('detail');
-                Route::get('/edit/{id}', [InstagramPostController::class, 'edit'])->name('edit');
-                Route::post('/update', [InstagramPostController::class, 'update'])->name('update');
-                Route::get('/delete/{id}', [InstagramPostController::class, 'delete'])->name('delete');
-                Route::get('/status/{id}', [InstagramPostController::class, 'status'])->name('status');
+            Route::prefix('instagram')->name('instagram.')->group(function() {
+                // post
+                Route::prefix('post')->name('post.')->group(function() {
+                    Route::get('/', [InstagramController::class, 'post'])->name('list.all');
+                });
+
+                // setup
+                Route::prefix('setup')->name('setup.')->group(function() {
+                    Route::get('/', [InstagramController::class, 'setup'])->name('index');
+                });
+
+
+
+
+
+                // Route::get('/create', [InstagramPostController::class, 'create'])->name('create');
+                // Route::post('/store', [InstagramPostController::class, 'store'])->name('store');
+                // Route::get('/detail/{id}', [InstagramPostController::class, 'detail'])->name('detail');
+                // Route::get('/edit/{id}', [InstagramPostController::class, 'edit'])->name('edit');
+                // Route::post('/update', [InstagramPostController::class, 'update'])->name('update');
+                // Route::get('/delete/{id}', [InstagramPostController::class, 'delete'])->name('delete');
+                // Route::get('/status/{id}', [InstagramPostController::class, 'status'])->name('status');
             });
 
             // social media

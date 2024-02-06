@@ -35,7 +35,7 @@ class CreateOfficeInformationTable extends Migration
         $data = [
             'full_name' => 'Full company name',
             'pretty_name' => 'Pretty name',
-            'primary_logo' => 'frontend-assets/img/logo.png',
+            'primary_logo' => 'backend-assets/images/placeholder.jpg',
         ];
 
         DB::table('office_information')->insert($data);

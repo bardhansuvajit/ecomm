@@ -85,12 +85,14 @@
                                                 <td>
                                                     <label for="customCheck{{$index}}">
                                                     <div class="media">
-                                                        @if (count($product->frontImageDetails) > 0)
-                                                            <img src="{{ asset($product->frontImageDetails[0]->img_large) }}" alt="image" class="img-thumbnail mr-3" style="height: 70px">
+                                                        @if (
+                                                        (count($product->frontImageDetails) > 0) && 
+                                                        file_exists($product->frontImageDetails[0]->img_medium)
+                                                        )
+                                                            <img src="{{ asset($product->frontImageDetails[0]->img_medium) }}" alt="image" class="img-thumbnail mr-3" style="height: 70px">
                                                         @else
                                                             <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" alt="image" class="img-thumbnail mr-3" style="height: 70px">
                                                         @endif
-                                                        {{-- <img src="{{ asset($product->image_small) }}" alt="image" class="img-thumbnail mr-3" style="height: 70px"> --}}
 
                                                         <div class="media-body">
                                                             <a href="{{ route('admin.product.detail', $product->id) }}" target="_blank"><p class="text-muted mb-2">{{ $product->title }}</p></a>

@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Interfaces\CountryInterface;
 
 use App\Models\Notice;
 
 class NoticeController extends Controller
 {
+    private CountryInterface $countryRepository;
+
+    public function __construct(CountryInterface $countryRepository)
+    {
+        $this->countryRepository = $countryRepository;
+    }
+
     public function index(Request $request)
     {
         $status = $request->status ?? '';
@@ -33,7 +41,8 @@ class NoticeController extends Controller
 
     public function create(Request $request)
     {
-        return view('admin.notice.create');
+        $shippingAvailableCountries = $this->countryRepository->listShippingOnly();
+        return view('admin.notice.create', compact('shippingAvailableCountries'));
     }
 
     public function store(Request $request)

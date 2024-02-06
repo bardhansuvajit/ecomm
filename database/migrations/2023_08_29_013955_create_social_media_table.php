@@ -18,7 +18,9 @@ class CreateSocialMediaTable extends Migration
             $table->id();
 
             $table->string('type')->comment('facebook, instagram...');
-            $table->text('svg_image')->nullable();
+            $table->text('svg_image_org')->nullable();
+            $table->text('svg_image_dark')->nullable();
+            $table->text('svg_image_light')->nullable();
             $table->text('link');
             $table->string('color')->nullable();
             $table->integer('position')->default(1);

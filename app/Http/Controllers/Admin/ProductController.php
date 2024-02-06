@@ -67,7 +67,7 @@ class ProductController extends Controller
                     'title' => $product->productDetail->title,
                     'short_desc' => $product->productDetail->short_description,
                     'link' => route('admin.product.detail', $product->product_id),
-                    'image' => ( count($product->productDetail->frontImageDetails) > 0 ) ? asset($product->productDetail->frontImageDetails[0]->img_medium) : asset('backend-assets/images/placeholder.jpg'),
+                    'image' => ( (count($product->productDetail->frontImageDetails) > 0) && file_exists($product->productDetail->frontImageDetails[0]->img_medium) ) ? asset($product->productDetail->frontImageDetails[0]->img_medium) : asset('backend-assets/images/placeholder.jpg'),
                 ];
             }
 

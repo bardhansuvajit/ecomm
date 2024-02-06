@@ -175,7 +175,7 @@ class CartController extends Controller
                 if (count($cartItem->productDetails->frontImageDetails) > 0) {
                     $imgPath = asset($cartItem->productDetails->frontImageDetails[0]->img_large);
                 } else {
-                    $imgPath = asset('frontend-assets/img/logo.png');
+                    $imgPath = asset('backend-assets/images/placeholder.jpg');
                 }
 
                 $cartProductsList[] = [

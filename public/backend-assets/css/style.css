@@ -2,6 +2,10 @@ a {
     text-decoration: none;
 }
 
+.small, small {
+    font-size: 0.68em;
+}
+
 .brand-link {
     padding: 0.4125rem 0.5rem;
 }
@@ -115,8 +119,6 @@ a {
     background-size: contain;
   }
   .star-rating input {
-    -moz-appearance: none;
-    -webkit-appearance: none;
     opacity: 0;
     display: inline-block;
     /* width: 20%; remove this */
@@ -229,16 +231,15 @@ a {
 
 
 /* button group */
-.btn-check {
+/* .btn-check {
     position: absolute;
     clip: rect(0,0,0,0);
     pointer-events: none;
-}
-.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+} */
+/* .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
     color: #fff;
     background-color: #ababab;
-    /* border-color: #818181; */
-}
+} */
 .bg-inactive {
     background-color: #d7dbdf !important;
 }

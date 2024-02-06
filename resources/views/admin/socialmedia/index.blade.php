@@ -54,7 +54,7 @@
                                         <td>{{ $index + $data->firstItem() }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <img src="{{ asset($item->svg_image) }}" alt="" height="50" class="mr-3">
+                                                <img src="{{ asset($item->svg_image_org) }}" alt="" height="50" class="mr-3">
                                                 <p class="text-muted mb-0">{{ strtoupper($item->type) }}</p>
                                             </div>
                                         </td>

@@ -40,7 +40,7 @@
                                         @if (count($data->frontImageDetails) > 0)
                                             <img src="{{ asset($data->frontImageDetails[0]->img_large) }}" style="height:50px">
                                         @else
-                                            {{-- <img src="{{ asset('frontend-assets/img/logo.png') }}" style="height:50px"> --}}
+                                            {{-- <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" style="height:50px"> --}}
                                         @endif
                                         </a>
                                     </div>

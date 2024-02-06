@@ -174,7 +174,7 @@
                                                     @if (count($item->productDetails->frontImageDetails) > 0)
                                                         <img src="{{ asset($item->productDetails->frontImageDetails[0]->img_small) }}" height="50" class="mr-3">
                                                     @else
-                                                        <img src="{{ asset('frontend-assets/img/logo.png') }}" height="50" class="mr-3">
+                                                        <img src="{{ asset('backend-assets/images/placeholder.jpg') }}" height="50" class="mr-3">
                                                     @endif
                                                     <div class="media-body">
                                                         <a href="{{ route('admin.product.detail', $item->productDetails->id) }}">

@@ -19,18 +19,31 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="type">Notice for <span class="text-muted">*</span></label>
-                                    <div class="btn-group-vertical">
+                                    
+                                    <div class="btn-container">
+                                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                            <input type="radio" class="btn-check" name="btnradio" id="btnradio00" autocomplete="off" checked>
+                                            <label class="btn btn-outline-primary" for="btnradio00">Entire application</label>
+    
+                                            @foreach ($shippingAvailableCountries['data'] as $countryIndex => $country)
+                                                <input type="radio" class="btn-check" name="btnradio" id="btnradio{{$countryIndex}}" autocomplete="off">
+                                                <label class="btn btn-outline-primary" for="btnradio{{$countryIndex}}">{{ $country->name }}</label>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="btn-group-vertical">
                                         <input type="radio" class="btn-check" id="btncheck1-0" value="0" name="category1_id[0]" 
                                         {{ (collect()->contains(0)) ? 'checked' : '' }}>
                                         <label class="btn btn-light" for="btncheck1-0">Entire application</label>
-                                        {{-- @foreach ($activeCategories1 as $index => $cat1)
+                                        @foreach ($activeCategories1 as $index => $cat1)
                                             <input type="checkbox" class="btn-check category1s" id="btncheck1-{{$index}}" value="{{ $cat1->id }}" name="category1_id[{{$index}}]" 
                                             {{ (collect($category1s)->contains($cat1->id)) ? 'checked' : '' }} 
                                             onclick="fetchCategories(2)"
                                             >
                                             <label class="btn btn-light" for="btncheck1-{{$index}}">{{ $cat1->title }}</label>
-                                        @endforeach --}}
-                                    </div>
+                                        @endforeach
+                                    </div> --}}
                                 </div>
                                 <div class="col-md-6">
                                     <label for="image">Image <span class="text-muted">(Optional)</span></label>
