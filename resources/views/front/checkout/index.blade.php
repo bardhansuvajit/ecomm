@@ -359,7 +359,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div id="addDeliveryAddress">
+                                        <div id="addDeliveryAddress" class="remove-cancel show-account">
                                             @include('front.quick.delivery-address-add')
                                         </div>
                                         <div id="addBillingAddress"></div>

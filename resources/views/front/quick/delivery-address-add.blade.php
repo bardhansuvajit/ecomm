@@ -127,8 +127,11 @@
                 <div class="redirect-buttons">
                     <div class="d-flex">
                         @if (strpos(url()->current(), 'checkout') !== false)
-                            <a data-bs-toggle="collapse" href="#addDeliveryAddress" aria-controls="addDeliveryAddress" class="btn btn-sm btn-light rounded-0">Cancel</a>
+                            <a data-bs-toggle="collapse" href="#addDeliveryAddress" aria-controls="addDeliveryAddress" class="btn btn-sm btn-light rounded-0 cancel-btn">Cancel</a>
                         @endif
+
+                        {{-- displaying only, when no address added for account --}}
+                        <a data-bs-toggle="collapse" href="#collapseAccount" aria-controls="collapseAccount" class="btn btn-sm btn-light rounded-0 opt-account">Account</a>
 
                         <input type="hidden" name="type2" value="delivery">
                         <button type="submit" class="btn btn-sm btn-dark rounded-0">Deliver here</button>

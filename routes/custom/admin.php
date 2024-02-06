@@ -77,7 +77,13 @@ Route::name('admin.')->group(function() {
 
                 Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');
                 Route::get('/variation/delete/{id}', [ProductSetupController::class, 'variationParentDelete'])->name('variation.parent.delete');
+                Route::get('/variation/{id}/detail/{parentId}', [ProductSetupController::class, 'variationParentDetail'])->name('variation.parent.detail');
+                Route::get('/variation/{id}/edit/{parentId}', [ProductSetupController::class, 'variationParentEdit'])->name('variation.parent.edit');
+
                 Route::get('/variation/{id}/create/{parentId}/child', [ProductSetupController::class, 'variationChildCreate'])->name('variation.child.create');
+                Route::get('/variation/status/{childId}', [ProductSetupController::class, 'variationChildStatus'])->name('variation.child.status');
+                Route::post('/variation/{id}/parent/{parentId}/position', [ProductSetupController::class, 'variationChildPosition'])->name('variation.child.position');
+                Route::get('/variation/child/delete/{id}', [ProductSetupController::class, 'variationChildDelete'])->name('variation.child.delete');
 
                 Route::prefix('store')->name('store.')->group(function() {
                     Route::post('/category', [ProductSetupController::class, 'categoryStore'])->name('category');

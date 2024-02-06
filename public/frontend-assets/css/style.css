@@ -1249,6 +1249,15 @@ footer .tags-holder .text {
 #create-review .btn i.material-icons {
     font-size: inherit;
 }
+.remove-cancel .cancel-btn {
+    display: none;
+}
+.opt-account {
+    display: none;
+}
+.show-account .opt-account {
+    display: inline-block;
+}
 
 .star-rating {
     font-size: 0;

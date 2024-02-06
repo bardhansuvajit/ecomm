@@ -4,7 +4,7 @@
 @section('product-setup')
 <div class="row mb-3">
     <div class="col-md-10">
-        <h5 class="text-primary font-weight-bold">Create new Variation under {{ $parent_variation->title }}</h5>
+        <h5 class="text-primary">Create new Variation under <strong><i>{{ $parent_variation->title }}</i></strong></h5>
     </div>
     <div class="col-md-2 text-right">
         <a href="{{ route('admin.product.setup.variation', $data->id) }}" class="btn btn-primary btn-sm"> <i class="fa fa-chevron-left"></i> Back</a>
@@ -40,7 +40,7 @@
 
             <hr>
 
-            <h5 class="text-primary font-weight-bold">Product related information (Optional)</h5>
+            <h5 class="text-primary">Product related information (Optional)</h5>
 
             <div class="form-group row">
                 <div class="col-md-12">

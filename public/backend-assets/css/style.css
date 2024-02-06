@@ -235,3 +235,6 @@
     background-color: #ababab;
     /* border-color: #818181; */
 }
+.bg-inactive {
+    background-color: #d7dbdf !important;
+}

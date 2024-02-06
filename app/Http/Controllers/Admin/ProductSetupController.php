@@ -100,6 +100,13 @@ class ProductSetupController extends Controller
         return view('admin.product.setup.variation', compact('request', 'data'));
     }
 
+    public function variationParentDetail(Request $request, $id, $variationParentId)
+    {
+        $data = Product::findOrFail($id);
+        $parent_variation = ProductVariationParent::findOrFail($variationParentId);
+        return view('admin.product.setup.variation-parent-detail', compact('request', 'data', 'parent_variation'));
+    }
+
     public function variationChildCreate(Request $request, $id, $variationParentId)
     {
         $data = Product::findOrFail($id);
@@ -1015,6 +1022,46 @@ class ProductSetupController extends Controller
     public function variationParentDelete(Request $request, $id)
     {
         ProductVariationParent::where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Variation deleted')->withInput($request->all());
+    }
+
+    public function variationChildPosition(Request $request)
+    {
+        $request->validate([
+            'position' => 'required|array',
+            'position.*' => 'required|integer|min:1'
+        ]);
+
+        $count = 1;
+        foreach($request->position as $position) {
+            $data = ProductVariationChild::findOrFail($position);
+            $data->position = $count;
+            $data->save();
+
+            $count++;
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Position updated',
+        ]);
+    }
+
+    public function variationChildStatus(Request $request, $id)
+    {
+        $data = ProductVariationChild::findOrFail($id);
+        $data->status = ($data->status == 1) ? 0 : 1;
+        $data->update();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Status updated',
+        ]);
+    }
+
+    public function variationChildDelete(Request $request, $id)
+    {
+        ProductVariationChild::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Variation deleted')->withInput($request->all());
     }
 

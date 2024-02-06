@@ -19,7 +19,7 @@
                         <h5 class="{{ (count($item->frontVariationChildern) == 0) ? 'text-danger font-weight-bold' : '' }} ">{{$item->title}}</h5>
 
                         @if ((count($item->frontVariationChildern) == 0))
-                            <p class="small card-text">No variations found under {{$item->title}}. Will not be displayed in Frontend. <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}">Add new</a></p>
+                            <p class="small card-text">No variations found under <i>{{$item->title}}</i>. It will not be displayed in Frontend. <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}">Add new</a></p>
                         @endif
 
                         <div class="btn-group">
@@ -35,13 +35,9 @@
                             @endforeach
                         </div>
 
-                        {{-- <div class="variation-child">
-                            @foreach ($item->frontVariationChildern as $child_variation)
-                                {{$child_variation->title}}
-                            @endforeach
-                        </div> --}}
-
-                        {{-- <p class="card-text">Content</p> --}}
+                        @if ((count($item->frontVariationChildern) > 0))
+                            <p class="small text-muted">Go to <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}">details</a> to edit, delete & change position</p>
+                        @endif
                     </div>
                     <div class="col-2 text-right">
                         <div class="btn-group">
@@ -49,15 +45,15 @@
                                 <i class="fa fa-plus"></i>
                             </a>
 
-                            <a href="{{ route('admin.review.detail', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
+                            <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Detail">
                                 <i class="fa fa-eye"></i>
                             </a>
 
-                            <a href="{{ route('admin.review.edit', $item->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
+                            <a href="{{ route('admin.product.setup.variation.parent.edit', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
 
-                            <a href="{{ route('admin.product.setup.variation.parent.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
+                            <a href="{{ route('admin.product.setup.variation.parent.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
