@@ -56,9 +56,21 @@
                                 <div class="col-md-4">
                                     <label for="expiry_date">
                                         Expiry date <span class="text-muted">*</span>
-                                        {!! (date('Y-m-d') > $data->item->expiry_date) ? '<span class="badge badge-danger">EXPIRED</span>' : '' !!}
+                                        @php
+                                            $dateDiff = dateDiff($data->item->expiry_date, date('Y-m-d'));
 
-                                        {!! (date('Y-m-d') == $data->item->expiry_date) ? '<span class="badge badge-danger">LAST DAY</span>' : '' !!}
+                                            if ($dateDiff == 0) {
+                                                echo "<span class='badge badge-danger'>EXPIRING TODAY</span>";
+                                            } elseif ($dateDiff == 1) {
+                                                echo "<span class='badge badge-danger'>Expires tomorrow</span>";
+                                            } elseif ($dateDiff > 1 && $dateDiff < 4) {
+                                                echo "<span class='badge badge-danger'>$dateDiff days left</span>";
+                                            } elseif ($dateDiff > 3) {
+                                                echo "<span class='badge badge-dark'>$dateDiff days left</span>";
+                                            } else {
+                                                echo "<span class='badge badge-danger'>EXPIRED</span>";
+                                            }
+                                        @endphp
                                     </label>
                                     <input type="date" class="form-control" name="expiry_date" id="expiry_date" placeholder="" value="{{ old('expiry_date') ? old('expiry_date') : $data->item->expiry_date }}">
                                     @error('expiry_date') <p class="small text-danger">{{ $message }}</p> @enderror

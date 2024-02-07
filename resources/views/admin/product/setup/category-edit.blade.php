@@ -136,7 +136,7 @@
                         id: '{{$request->id}}',
                     },
                     beforeSend: function() {
-                        toastFire('info', 'Please wait...');
+                        toastFire('info', 'Fetching categories...');
                     },
                     success: function(result) {
                         let content = '';

@@ -93,13 +93,13 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
                             <i class="fas fa-user"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
                                 <div class="media">
                                     @if (!empty(auth()->guard('admin')->user()->image_small) && file_exists(auth()->guard('admin')->user()->image_small))
-                                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle" alt="Image">
+                                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle mt-3" alt="Image">
                                     @else
-                                        <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="img-size-50 mr-3 img-circle">
+                                        <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="img-size-50 mr-3 img-circle mt-3">
                                     @endif
 
                                     <div class="media-body">
@@ -107,12 +107,12 @@
                                             {{ auth()->guard('admin')->user()->name }}
                                         </h3>
                                         <p class="text-sm">{{ auth()->guard('admin')->user()->username }}</p>
-                                        <p class="text-sm text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
+                                        <p class="small text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
                                     </div>
                                 </div>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item dropdown-footer" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
+                            <a class="dropdown-item dropdown-footer text-danger font-weight-bold text-end" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
                         </div>
                     </div>
                 </li>
@@ -138,7 +138,7 @@
                         @endif
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
+                        <a href="{{ route('admin.profile.index') }}" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
                     </div>
                 </div>
 
@@ -438,8 +438,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.database.reset.index') }}" class="nav-link {{ (request()->is('admin/profile*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-user"></i>
+                            <a href="{{ route('admin.database.reset.index') }}" class="nav-link {{ (request()->is('admin/database*')) ? 'active' : '' }}" onclick="return confirm('Are you sure ?')">
+                                <i class="nav-icon fas fa-ban text-danger"></i>
                                 <p>Reset DB</p>
                             </a>
                         </li>

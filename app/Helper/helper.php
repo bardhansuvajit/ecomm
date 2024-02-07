@@ -728,6 +728,14 @@ if (!function_exists('showInFrontendProductStatusID')) {
     }
 }
 
+// date difference
+if (!function_exists('dateDiff')) {
+    function dateDiff($date1, $date2) {
+        $datediff = strtotime($date1) - strtotime($date2);
+        return round($datediff / (60 * 60 * 24));
+    }
+}
+
 // send mail helper
 function SendMail($data)
 {
