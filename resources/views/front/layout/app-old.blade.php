@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta name="robots" content="noodp">
         <meta property="og:type" content="website">
-        <meta name="og_site_name" property="og:site_name" content="torzo.in">
+        <meta name="og_site_name" property="og:site_name" content="">
         <title>@yield('page-title')</title>
 
         <link rel="stylesheet" href="{{ asset('frontend-assets/css/bootstrap.min.css') }}">
