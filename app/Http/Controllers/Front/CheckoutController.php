@@ -77,9 +77,8 @@ class CheckoutController extends Controller
             $data->states = $this->stateRepository->stateListByCountry(101)['data'];
 
             return view('front.checkout.index', compact('data', 'mobileCheck'));
-
         } else {
-            return redirect()->back();
+            return redirect()->route('front.home');
         }
     }
 

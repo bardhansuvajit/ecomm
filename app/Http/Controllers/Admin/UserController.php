@@ -78,13 +78,15 @@ class UserController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $data = $this->userRepository->findById($id);
+        $user = $this->userRepository->findById($id);
+        $data = $user['data'];
         return view('admin.user.detail', compact('data'));
     }
 
     public function edit(Request $request, $id)
     {
-        $data = $this->userRepository->findById($id);
+        $user = $this->userRepository->findById($id);
+        $data = $user['data'];
         return view('admin.user.edit', compact('data'));
     }
 

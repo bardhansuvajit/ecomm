@@ -491,9 +491,10 @@
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
             <script>
+            console.log(finalAmount)
             var options = {
-                "key": "{{$key1}}", // Enter the Key ID generated from the Dashboard
-                "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "key": "{{$key1}}",
+                "amount": finalAmount,
                 "currency": "INR",
                 "name": "{{$payment_method->company_name_display}}",
                 "description": "{{$payment_method->description}}",

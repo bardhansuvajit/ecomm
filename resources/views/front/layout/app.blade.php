@@ -231,7 +231,10 @@
             </div>
         </footer>
 
-        @include('front.quick.cart')
+        @if (!request()->is('checkout'))
+            @include('front.quick.cart')
+        @endif
+
         @include('front.quick.currency')
         @include('front.quick.coupons')
 

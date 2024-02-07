@@ -724,7 +724,7 @@ function quickCartListUpdate() {
                                         <td class="title text-muted fw-bold">PAY</td>
                                         <td class="text-end currency fw-bold">
                                             <span class="currency-icon">${result.amount.currencyEntity}</span>
-                                            <span class="amount">${result.amount.finalCartValue}</span>
+                                            <span class="amount" id="payable">${result.amount.finalCartValue}</span>
                                         </td>
                                     </tr>
                                 </tbody>
