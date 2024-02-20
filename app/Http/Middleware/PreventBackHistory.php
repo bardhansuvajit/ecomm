@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PreventBackHistory
 {
@@ -17,9 +18,20 @@ class PreventBackHistory
     public function handle(Request $request, Closure $next)
     {
         // return $next($request);
+
+
         $response = $next($request);
         return $response->header('Cache-Control','nocache,no-store,max-age=0;must-revalidate')
                         ->header('Pragma','no-cache')
                         ->header('Expires','Sun, 02 Jan 1990 00:00:00 GMT');
+
+
+        // $response = $next($request);
+        // $newResponse = new Response($response);
+        // $newResponse->headers->set('Cache-Control', 'nocache,no-store,max-age=0;must-revalidate');
+        // $newResponse->headers->set('Pragma', 'no-cache');
+        // $newResponse->headers->set('Expires', 'Sun, 02 Jan 1990 00:00:00 GMT');
+
+        // return $newResponse;
     }
 }

@@ -12,7 +12,7 @@ Route::name('admin.')->group(function() {
     });
 
     // profile
-    Route::middleware('auth:admin', 'PreventBackHistory')->group(function() {
+    Route::middleware('auth:admin', 'PreventBackHistory', 'Permission')->group(function() {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -451,6 +451,13 @@ Route::name('admin.')->group(function() {
         // database reset
         Route::get('/database/reset', [DBResetController::class, 'index'])->name('database.reset.index');
 
+    });
+
+    // error
+    Route::prefix('error')->name('error.')->group(function() {
+        Route::get('401', [ErrorController::class, 'err401'])->name('401');
+        Route::get('403', [ErrorController::class, 'err403'])->name('403');
+        Route::get('404', [ErrorController::class, 'err404'])->name('404');
     });
 
     // ckeditor custom upload adapter path
