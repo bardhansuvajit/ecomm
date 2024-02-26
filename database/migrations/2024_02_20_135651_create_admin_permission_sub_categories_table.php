@@ -30,18 +30,21 @@ class CreateAdminPermissionSubCategoriesTable extends Migration
             ['category_id' => '1', 'title' => 'read', 'position' => 2],
             ['category_id' => '1', 'title' => 'update', 'position' => 3],
             ['category_id' => '1', 'title' => 'delete', 'position' => 4],
-            ['category_id' => '1', 'title' => 'status_change', 'position' => 5],
+            ['category_id' => '1', 'title' => 'detail', 'position' => 5],
+            ['category_id' => '1', 'title' => 'status_change', 'position' => 6],
 
-            ['category_id' => '2', 'title' => 'create', 'position' => 6],
-            ['category_id' => '2', 'title' => 'read', 'position' => 7],
-            ['category_id' => '2', 'title' => 'update', 'position' => 8],
-            ['category_id' => '2', 'title' => 'delete', 'position' => 9],
-            ['category_id' => '2', 'title' => 'status_change', 'position' => 10],
+            ['category_id' => '2', 'title' => 'create', 'position' => 7],
+            ['category_id' => '2', 'title' => 'read', 'position' => 8],
+            ['category_id' => '2', 'title' => 'update', 'position' => 9],
+            ['category_id' => '2', 'title' => 'delete', 'position' => 10],
+            ['category_id' => '2', 'title' => 'detail', 'position' => 11],
+            ['category_id' => '2', 'title' => 'status_change', 'position' => 12],
 
-            ['category_id' => '3', 'title' => 'read', 'position' => 11],
-            ['category_id' => '3', 'title' => 'update', 'position' => 12],
-            ['category_id' => '3', 'title' => 'delete', 'position' => 13],
-            ['category_id' => '3', 'title' => 'status_change', 'position' => 14],
+            ['category_id' => '3', 'title' => 'read', 'position' => 13],
+            ['category_id' => '3', 'title' => 'update', 'position' => 14],
+            ['category_id' => '3', 'title' => 'delete', 'position' => 15],
+            ['category_id' => '3', 'title' => 'detail', 'position' => 16],
+            ['category_id' => '3', 'title' => 'status_change', 'position' => 17],
         ];
 
         DB::table('admin_permission_sub_categories')->insert($data);
