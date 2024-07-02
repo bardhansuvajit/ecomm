@@ -392,7 +392,7 @@
                         <div id="collapsePayment" class="accordion-collapse collapse {{$acc3_bodyClass}}" data-bs-parent="#checkoutAccordion">
                             <div class="accordion-body">
                                 @auth
-                                <form action="{{ route('front.checkout.store') }}" method="post">@csrf
+                                <form action="{{ route('front.checkout.store') }}" method="post" id="checkout-form">@csrf
                                     <div class="payment-gateway-container">
                                         <div id="available-gateways">
                                             @foreach ($data->payment_methods as $payment_method)
@@ -433,7 +433,7 @@
                                                     @endif
 
                                                     @if($payment_method->value == "razorpay")
-                                                        <button class="payment-btns payment-btn-{{$payment_method->value}} btn btn-sm btn-dark rounded-0 {{ ($payment_method->checked == 1) ? '' : 'd-none' }}" id="rzp-button1">Pay now</button>
+                                                        <button class="payment-btns payment-btn-{{$payment_method->value}} btn btn-sm btn-dark rounded-0 {{ ($payment_method->checked == 1) ? '' : 'd-none' }}" id="rzp-button1" type="button">Pay now</button>
                                                     @endif
                                                 @endforeach
                                             </div>
@@ -476,69 +476,136 @@
             $('.payment-btns').addClass('d-none');
             $('.payment-btn-'+val).removeClass('d-none');
         })
+
+        let paymentObj = {};
     </script>
 
     @foreach ($data->payment_methods as $payment_method)
-        @if($payment_method->value == "razorpay")
-            @php
-                if ($payment_method->stage == 1) {
-                    $key1 = $payment_method->live_key1;
-                } else {
-                    $key1 = $payment_method->test_key1;
-                }
-            @endphp
-
-            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-            <script>
-            $(window).on('load', function() {
-                let finalAmount = $('#payable').text()*100;
-
-                var options = {
-                    "key": "{{$key1}}",
-                    "amount": finalAmount,
-                    "currency": "INR",
-                    "name": "{{$payment_method->company_name_display}}",
-                    "description": "{{$payment_method->description}}",
-                    "image": "{{asset($payment_method->image_square)}}",
-                    // "order_id": "order_IluGWxBm9U8zJ8", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                    "handler": function (response){
-                        // console.log('razorpay_payment_id>> '+response.razorpay_payment_id);
-                        // console.log('razorpay_order_id>> '+response.razorpay_order_id);
-                        // console.log('razorpay_signature>> '+response.razorpay_signature)
-
-                        // console.log(response);
-                        $('input[name="razorpay_payment_id"]').val(response.razorpay_payment_id);
-                        $('.checkout-form').submit();
-                    },
-                    "prefill": {
-                        "name": "Gaurav Kumar",
-                        "email": "gaurav.kumar@example.com",
-                        "contact": "9000090000"
-                    },
-                    "theme": {
-                        "color": "{{$payment_method->theme_color}}"
+        @if(auth()->guard('web')->check())
+            @if($payment_method->value == "razorpay")
+                @php
+                    if ($payment_method->stage == 1) {
+                        $key1 = $payment_method->live_key1;
+                    } else {
+                        $key1 = $payment_method->test_key1;
                     }
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function (response){
-                    alert(response.error.code);
-                    alert(response.error.description);
-                    alert(response.error.source);
-                    alert(response.error.step);
-                    alert(response.error.reason);
-                    alert(response.error.metadata.order_id);
-                    alert(response.error.metadata.payment_id);
+                @endphp
+
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                <script>
+                $(window).on('load', function() {
+                    const currency = "INR";
+                    const payableAmount = $('#payable').text();
+                    const finalAmountPaisa = payableAmount*100;
+                    const finalAmountRZP = finalAmountPaisa.toFixed(0);
+
+                    var options = {
+                        "key": "{{$key1}}",
+                        "amount": finalAmountRZP,
+                        "currency": currency,
+                        "name": "{{$payment_method->company_name_display}}",
+                        "description": "{{$payment_method->description}}",
+                        // "image": "{{asset($payment_method->image_square)}}",
+                        "image": "https://placehold.co/100x100",
+                        // "order_id": "order_IluGWxBm9U8zJ8", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "handler": function (response){
+                            // console.log('razorpay_payment_id>> '+response.razorpay_payment_id);
+                            // console.log('razorpay_order_id>> '+response.razorpay_order_id);
+                            // console.log('razorpay_signature>> '+response.razorpay_signature)
+
+                            // console.log(response);
+                            $('input[name="razorpay_payment_id"]').val(response.razorpay_payment_id);
+
+                            paymentObj = {
+                                'method': "online-payment",
+                                'vendor': "razorpay",
+                                'currency': currency,
+                                'calculated_amount': payableAmount,
+                                'payable_amount': finalAmountRZP,
+                                'user_id': "{{auth()->guard('web')->user()->id}}",
+                                'type': "payment-success",
+                                'message': "Amount sent to razorpay",
+                                'payload': response
+                            }
+                            console.log(paymentObj)
+
+                            $('#checkout-form').submit();
+                        },
+                        "modal": {
+                            "ondismiss": function(){
+                                // alert('Transaction cancelled by user.');
+                                paymentObj = {
+                                    'method': "online-payment",
+                                    'vendor': "razorpay",
+                                    'currency': currency,
+                                    'calculated_amount': payableAmount,
+                                    'payable_amount': finalAmountRZP,
+                                    'user_id': "{{auth()->guard('web')->user()->id}}",
+                                    'type': "payment-cancelled",
+                                    'message': "Transaction cancelled by user.",
+                                    'payload': ""
+                                }
+                                console.log(paymentObj)
+                            }
+                        },
+                        "prefill": {
+                            "name": "{{auth()->guard('web')->user()->first_name}} {{auth()->guard('web')->user()->last_name}}",
+                            "email": "{{auth()->guard('web')->user()->email}}",
+                            "contact": "{{auth()->guard('web')->user()->mobile_no}}"
+                        },
+                        "theme": {
+                            "color": "{{$payment_method->theme_color}}"
+                        }
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on('payment.failed', function (response) {
+                        // setup a transaction detail info & upload in DB
+                        paymentObj = {
+                            'method': "online-payment",
+                            'vendor': "razorpay",
+                            'currency': currency,
+                            'calculated_amount': payableAmount,
+                            'payable_amount': finalAmountRZP,
+                            'user_id': "{{auth()->guard('web')->user()->id}}",
+                            'type': "payment-failed",
+                            'message': response.error.description,
+                            'payload': response
+                        }
+                        console.log(paymentObj)
+                        // console.error(response)
+
+                        // alert('code>> '+response.error.code);
+                        // alert('description>> '+response.error.description);
+                        // alert('source>> '+response.error.source);
+                        // alert('step>> '+response.error.step);
+                        // alert('reason>> '+response.error.reason);
+                        // alert('order_id>> '+response.error.metadata.order_id);
+                        // alert('payment_id>> '+response.error.metadata.payment_id);
+                    });
+
+                    document.getElementById('rzp-button1').onclick = function(e){
+                        if ($('input[name="payment_method"]:checked').val() == "razorpay") {
+                            rzp1.open();
+                            paymentObj = {
+                                'method': "online-payment",
+                                'vendor': "razorpay",
+                                'currency': currency,
+                                'calculated_amount': payableAmount,
+                                'payable_amount': finalAmountRZP,
+                                'user_id': "{{auth()->guard('web')->user()->id}}",
+                                'type': "payment-started",
+                                'message': "user has started payment and opened the payment modal",
+                                'payload': ""
+                            }
+                            console.log(paymentObj)
+                            e.preventDefault();
+                        }
+                    }
                 });
-
-                document.getElementById('rzp-button1').onclick = function(e){
-                    if ($('input[name="payment_method"]:checked').val() == "razorpay") {
-                        rzp1.open();
-                        e.preventDefault();
-                    }
-                }
-            });
-            </script>
+                </script>
+            @endif
         @endif
     @endforeach
+
 @endsection

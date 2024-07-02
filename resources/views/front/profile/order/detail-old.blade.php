@@ -176,7 +176,11 @@
 
             <div class="row mt-4">
                 <div class="col-md-12 text-center">
-                    <button onclick="generatePDF()" class="btn btn-sm btn-dark rounded-0">Invoice</button>
+                    <a href="javascript:demoFromHTML()" class="btn btn-sm btn-dark rounded-0">Invoice</a>
+
+                    <div id="content"></div>
+
+                    {{-- <a href="javascript: void(0)" class="btn btn-sm btn-dark rounded-0" onclick="downloadInvoice()">Invoice</a> --}}
                 </div>
             </div>
         </section>
@@ -186,69 +190,60 @@
 @endsection
 
 @section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
-
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.min.js"></script> --}}
+    {{-- <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 
     <script>
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        function demoFromHTML() {
+            // Landscape export, 2×4 inches
+            // const doc = new jsPDF({
+            //     orientation: "landscape",
+            //     unit: "in",
+            //     format: [4, 2]
+            // });
 
-            doc.setFontSize(20);
-            doc.text('Invoice', 14, 22);
+            // doc.text("Hello world!", 1, 1);
+            // doc.save("two-by-four.pdf");
 
-            doc.setFontSize(10);
-            doc.text('Company Details', 14, 30);
-            doc.text('Company Name: {{ applicationSettings()->application_name }}', 14, 35);
-            doc.text('Address: lorem ipsum dolor sit', 14, 40);
-            doc.text('Email: test@test.com', 14, 45);
-            doc.text('Phone: 022-0222-2222', 14, 50);
+            var pdf = new jsPDF('p', 'pt', 'letter');
+            // source can be HTML-formatted string, or a reference
+            // to an actual DOM element from which the text will be scraped.
+            source = $('#content')[0];
 
-            doc.text('Customer Details', 14, 60);
-            doc.text('Name: {{ $data->user_full_name }}', 14, 65);
-            doc.text('Address: {{ $data->address }}', 14, 70);
-            doc.text('Email: {{ $data->user_email }}', 14, 75);
-            doc.text('Phone: {{ $data->user_phone_no }}', 14, 80);
-
-            doc.text('Invoice Details', 14, 90);
-            doc.text('Invoice Date: {{ $data->created_at }}', 14, 95);
-            doc.text('Due Date: {{ $data->due_date }}', 14, 100);
-            doc.text('Order Number: {{ $data->order_no }}', 14, 105);
-
-            const headers = [["Description", "Quantity", "Unit Price", "Total"]];
-            const data = [
-                @foreach ($data->orderProducts as $item)
-                ["{!! $item->product_title !!}", "{{ $item->qty }}", "{{ $item->selling_price }}", "{{ $item->qty * $item->selling_price }}"],
-                @endforeach
-            ];
-
-            doc.autoTable({
-                head: headers,
-                body: data,
-                startY: 110,
-                theme: 'grid',
-                headStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0]
-                },
-                bodyStyles: {
-                    fillColor: [255, 255, 255],
-                    textColor: [0, 0, 0]
-                },
-                styles: {
-                    lineColor: [0, 0, 0],
-                    lineWidth: 0.01
+            // we support special element handlers. Register them with jQuery-style 
+            // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+            // There is no support for any other type of selectors 
+            // (class, of compound) at this time.
+            specialElementHandlers = {
+                // element with id of "bypass" - jQuery style selector
+                '#bypassme': function (element, renderer) {
+                    // true = "handled elsewhere, bypass text extraction"
+                    return true
                 }
-            });
+            };
+            margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+            // all coords and widths are in jsPDF instance's declared units
+            // 'inches' in this case
+            pdf.fromHTML(
+                source, // HTML string or DOM elem ref.
+                margins.left, // x coord
+                margins.top, { // y coord
+                    'width': margins.width, // max width of content on PDF
+                    'elementHandlers': specialElementHandlers
+                },
 
-            // Add total amount
-            doc.text('Total Amount', 14, doc.autoTable.previous.finalY + 10);
-            doc.text('{{ $data->final_order_amount }}', 14, doc.autoTable.previous.finalY + 15);
-
-            // Save the PDF
-            doc.save('invoice.pdf');
+                function (dispose) {
+                    // dispose: object with X, Y of the last line add to the PDF 
+                    //          this allow the insertion of new lines after html
+                    pdf.save('Test.pdf');
+                }, margins
+            );
         }
     </script>
 @endsection
