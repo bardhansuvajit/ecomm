@@ -10,7 +10,11 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="profile-user-img img-fluid img-circle" alt="Image">
+                            @if (!empty(auth()->guard('admin')->user()->image_small) && file_exists(auth()->guard('admin')->user()->image_small))
+                                <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="profile-user-img img-fluid img-circle" alt="Image">
+                            @else
+                                <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="profile-user-img img-fluid img-circle" alt="Image">
+                            @endif
                         </div>
 
                         <h3 class="profile-username text-center">{{ auth()->guard('admin')->user()->name }}</h3>

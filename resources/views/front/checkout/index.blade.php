@@ -491,53 +491,53 @@
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
             <script>
-            console.log(finalAmount)
-            var options = {
-                "key": "{{$key1}}",
-                "amount": finalAmount,
-                "currency": "INR",
-                "name": "{{$payment_method->company_name_display}}",
-                "description": "{{$payment_method->description}}",
-                "image": "{{asset($payment_method->image_square)}}",
-                // "order_id": "order_IluGWxBm9U8zJ8", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                "handler": function (response){
-                    // console.log('razorpay_payment_id>> '+response.razorpay_payment_id);
-                    // console.log('razorpay_order_id>> '+response.razorpay_order_id);
-                    // console.log('razorpay_signature>> '+response.razorpay_signature)
+            $(window).on('load', function() {
+                let finalAmount = $('#payable').text()*100;
 
-                    // console.log(response);
-                    $('input[name="razorpay_payment_id"]').val(response.razorpay_payment_id);
-                    $('.checkout-form').submit();
-                },
-                "prefill": {
-                    "name": "Gaurav Kumar",
-                    "email": "gaurav.kumar@example.com",
-                    "contact": "9000090000"
-                },
-                "notes": {
-                    "address": "Razorpay Corporate Office"
-                },
-                "theme": {
-                    "color": "{{$payment_method->theme_color}}"
+                var options = {
+                    "key": "{{$key1}}",
+                    "amount": finalAmount,
+                    "currency": "INR",
+                    "name": "{{$payment_method->company_name_display}}",
+                    "description": "{{$payment_method->description}}",
+                    "image": "{{asset($payment_method->image_square)}}",
+                    // "order_id": "order_IluGWxBm9U8zJ8", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    "handler": function (response){
+                        // console.log('razorpay_payment_id>> '+response.razorpay_payment_id);
+                        // console.log('razorpay_order_id>> '+response.razorpay_order_id);
+                        // console.log('razorpay_signature>> '+response.razorpay_signature)
+
+                        // console.log(response);
+                        $('input[name="razorpay_payment_id"]').val(response.razorpay_payment_id);
+                        $('.checkout-form').submit();
+                    },
+                    "prefill": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000"
+                    },
+                    "theme": {
+                        "color": "{{$payment_method->theme_color}}"
+                    }
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on('payment.failed', function (response){
+                    alert(response.error.code);
+                    alert(response.error.description);
+                    alert(response.error.source);
+                    alert(response.error.step);
+                    alert(response.error.reason);
+                    alert(response.error.metadata.order_id);
+                    alert(response.error.metadata.payment_id);
+                });
+
+                document.getElementById('rzp-button1').onclick = function(e){
+                    if ($('input[name="payment_method"]:checked').val() == "razorpay") {
+                        rzp1.open();
+                        e.preventDefault();
+                    }
                 }
-            };
-            var rzp1 = new Razorpay(options);
-            rzp1.on('payment.failed', function (response){
-                alert(response.error.code);
-                alert(response.error.description);
-                alert(response.error.source);
-                alert(response.error.step);
-                alert(response.error.reason);
-                alert(response.error.metadata.order_id);
-                alert(response.error.metadata.payment_id);
             });
-
-            document.getElementById('rzp-button1').onclick = function(e){
-                if ($('input[name="payment_method"]:checked').val() == "razorpay") {
-                    rzp1.open();
-                    e.preventDefault();
-                }
-            }
             </script>
         @endif
     @endforeach

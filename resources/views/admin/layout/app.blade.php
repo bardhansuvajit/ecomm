@@ -31,53 +31,53 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-            {{-- <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                <form class="form-inline">
-                    <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                        <i class="fas fa-times"></i>
-                        </button>
+                {{-- <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                    <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                            <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                            <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        </div>
+                    </form>
                     </div>
-                    </div>
-                </form>
-                </div>
-            </li> --}}
+                </li> --}}
 
-            {{-- <li class="nav-item dropdown">
-                <a class="nav-link" data-bs-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    <span class="float-right text-muted text-sm">3 mins</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-users mr-2"></i> 8 friend requests
-                    <span class="float-right text-muted text-sm">12 hours</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-file mr-2"></i> 3 new reports
-                    <span class="float-right text-muted text-sm">2 days</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li> --}}
+                {{-- <li class="nav-item dropdown">
+                    <a class="nav-link" data-bs-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
@@ -93,13 +93,13 @@
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
                             <i class="fas fa-user"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end">
                             <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
                                 <div class="media">
                                     @if (!empty(auth()->guard('admin')->user()->image_small) && file_exists(auth()->guard('admin')->user()->image_small))
-                                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle" alt="Image">
+                                        <img src="{{ asset(auth()->guard('admin')->user()->image_small) }}" class="img-size-50 mr-3 img-circle mt-3" alt="Image">
                                     @else
-                                        <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="img-size-50 mr-3 img-circle">
+                                        <img src="{{ asset('backend-assets/images/user2-160x160.jpg') }}" class="img-size-50 mr-3 img-circle mt-3">
                                     @endif
 
                                     <div class="media-body">
@@ -107,12 +107,12 @@
                                             {{ auth()->guard('admin')->user()->name }}
                                         </h3>
                                         <p class="text-sm">{{ auth()->guard('admin')->user()->username }}</p>
-                                        <p class="text-sm text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
+                                        <p class="small text-muted" title="Last profile updated"><i class="far fa-clock mr-1"></i> {{ h_date(auth()->guard('admin')->user()->updated_at) }}</p>
                                     </div>
                                 </div>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item dropdown-footer" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
+                            <a class="dropdown-item dropdown-footer text-danger font-weight-bold text-end" href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('logout-form').submit()">Logout</a>
                         </div>
                     </div>
                 </li>
@@ -138,7 +138,7 @@
                         @endif
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
+                        <a href="{{ route('admin.profile.index') }}" class="d-block">{{ auth()->guard('admin')->user()->name }}</a>
                     </div>
                 </div>
 
@@ -438,8 +438,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.database.reset.index') }}" class="nav-link {{ (request()->is('admin/profile*')) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-user"></i>
+                            <a href="{{ route('admin.database.reset.index') }}" class="nav-link {{ (request()->is('admin/database*')) ? 'active' : '' }}" onclick="return confirm('Are you sure ?')">
+                                <i class="nav-icon fas fa-ban text-danger"></i>
                                 <p>Reset DB</p>
                             </a>
                         </li>

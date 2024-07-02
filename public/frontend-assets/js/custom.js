@@ -1074,6 +1074,9 @@ function qtyUpdate(id) {
         },
         success: function(result) {
             if (result.status == 200) {
+                if(currentPage() == "checkout") {
+                    location.reload();
+                }
                 quickCartListUpdate();
                 toastFire('success', result.message);
             } else {

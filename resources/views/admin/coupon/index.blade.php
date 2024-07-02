@@ -89,10 +89,23 @@
                                             </p>
                                         </td>
                                         <td>
-                                            {!! (date('Y-m-d') > $item->expiry_date) ? '<span class="badge badge-danger">EXPIRED</span>' : '' !!}
-                                            {!! (date('Y-m-d') == $item->expiry_date) ? '<span class="badge badge-danger">LAST DAY</span>' : '' !!}
+                                            @php
+                                                $dateDiff = dateDiff($item->expiry_date, date('Y-m-d'));
 
-                                            <p class="text-dark mb-1">
+                                                if ($dateDiff == 0) {
+                                                    echo "<span class='badge badge-danger'>EXPIRING TODAY</span>";
+                                                } elseif ($dateDiff == 1) {
+                                                    echo "<span class='badge badge-danger'>Expires tomorrow</span>";
+                                                } elseif ($dateDiff > 1 && $dateDiff < 4) {
+                                                    echo "<span class='badge badge-danger'>$dateDiff days left</span>";
+                                                } elseif ($dateDiff > 3) {
+                                                    echo "<span class='badge badge-dark'>$dateDiff days left</span>";
+                                                } else {
+                                                    echo "<span class='badge badge-danger'>EXPIRED</span>";
+                                                }
+                                            @endphp
+
+                                            <p class="small text-dark mb-1">
                                                 {{ h_date_only($item->start_date) }} - 
                                                 {{ h_date_only($item->expiry_date) }}
                                             </p>
