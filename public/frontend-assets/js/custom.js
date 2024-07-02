@@ -460,6 +460,9 @@ function cartAdd(type, productId, userId, route) {
         qty = $('input[name="product_qty"]').val();
     }
 
+    // check for variation
+    console.log($('input[name="prodVar"]').val());
+
     $.ajax({
         url: route,
         method : 'post',

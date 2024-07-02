@@ -73,6 +73,7 @@ class ProductRepository implements ProductInterface
             ON pc.category_id = c3.id AND pc.level = 3
             LEFT JOIN product_category4s AS c4
             ON pc.category_id = c4.id AND pc.level = 4
+            WHERE product_id = ".$data->id."
             ORDER BY pc.level");
 
             // add to watchlist

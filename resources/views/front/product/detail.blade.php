@@ -143,6 +143,22 @@
             @endif
             @endif
 
+            {{-- variation --}}
+            @if (count($data->variationParents) > 0)
+                @foreach ($data->variationParents as $vParent)
+                    @if ((count($vParent->frontVariationChildern) > 0))
+                        <div id="variation" class="mt-3">
+                            <p class="small text-muted mb-2">{{ $vParent->title }}</p>
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
+                                    <input type="radio" class="btn-check" name="prodVar" id="prodVar{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-dark" for="prodVar{{$varChildIndex}}">{{ $vChild->title }}</label>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
 
             @if ($data->statusDetail->show_price_in_detail_page == 1)
                 @if (count($pricing) > 0)

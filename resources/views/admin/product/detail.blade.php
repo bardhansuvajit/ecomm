@@ -24,7 +24,7 @@
                         <p class="small text-muted mb-0">Status</p>
                         <div class="row">
                             <div class="col-md-3">
-                                <select name="status" id="status" class="form-control form-control-sm mb-4 w-50" data-route="{{ route('admin.product.status', $data->id) }}">
+                                <select name="status" id="status" class="form-select form-select-sm mb-4 w-50" data-route="{{ route('admin.product.status', $data->id) }}">
                                     @foreach ($statuses as $status)
                                         <option value="{{ $status->id }}" {{ ($data->status == $status->id) ? 'selected' : '' }}>{{ $status->name }}</option>
                                     @endforeach
@@ -51,11 +51,11 @@
                         <p class="text-dark">{{ ($data->type == 1) ? 'Product' : 'Kit' }}</p>
 
                         <p class="small text-muted mb-0">Category</p>
-                        <div class="row">
-                            <div class="col-md-3"><p>{!! productCategories($data->id, 1, 'vertical') !!}</p></div>
-                            <div class="col-md-3"><p>{!! productCategories($data->id, 2, 'vertical') !!}</p></div>
-                            <div class="col-md-3"><p>{!! productCategories($data->id, 3, 'vertical') !!}</p></div>
-                            <div class="col-md-3"><p>{!! productCategories($data->id, 4, 'vertical') !!}</p></div>
+                        <div class="d-flex">
+                            <p class="me-3">{!! productCategories($data->id, 1, 'vertical') !!}</p>
+                            <p class="me-3">{!! productCategories($data->id, 2, 'vertical') !!}</p>
+                            <p class="me-3">{!! productCategories($data->id, 3, 'vertical') !!}</p>
+                            <p class="me-3">{!! productCategories($data->id, 4, 'vertical') !!}</p>
                         </div>
 
                         <p class="small text-muted mb-0">Title</p>
@@ -83,52 +83,56 @@
 
                         <p class="small text-muted mb-0">Pricing</p>
                         @if (!empty($data->pricing) && count($data->pricing) > 0)
-                            @foreach ($data->pricing as $pricing)
-                                <h5 class="text-primary font-weight-bold">
-                                    {!! $pricing->currency->entity !!} - 
-                                    <span>{{ strtoupper($pricing->currency->name) }}</span>
-                                    <small class="text-muted">({{ $pricing->currency->full_name }})</small>
-                                </h5>
-
-                                <div class="row">
+                            <div class="row">
+                                @foreach ($data->pricing as $pricing)
                                     <div class="col-md-3">
-                                        <table class="table table-sm table-striped table-hover mb-3">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Cost</td>
-                                                    <td>
-                                                        {!! $pricing->currency->entity !!}
-                                                        {{ $pricing->cost }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>MRP</td>
-                                                    <td>
-                                                        @if ($pricing->mrp > 0)
-                                                            {!! $pricing->currency->entity !!}
-                                                            {{ $pricing->mrp }}
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Selling price</td>
-                                                    <td>
-                                                        {!! $pricing->currency->entity !!}
-                                                        {{ $pricing->selling_price }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Profit/ unit sell:</td>
-                                                    <td>
-                                                        {!! $pricing->currency->entity !!}
-                                                        {{ sprintf('%0.2f', $pricing->selling_price - $pricing->cost) }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <h5 class="text-primary font-weight-bold">
+                                            {!! $pricing->currency->entity !!} - 
+                                            <span>{{ strtoupper($pricing->currency->name) }}</span>
+                                            <small class="text-muted">({{ $pricing->currency->full_name }})</small>
+                                        </h5>
+    
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table table-sm table-striped table-hover mb-3">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Cost</td>
+                                                            <td>
+                                                                {!! $pricing->currency->entity !!}
+                                                                {{ $pricing->cost }}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>MRP</td>
+                                                            <td>
+                                                                @if ($pricing->mrp > 0)
+                                                                    {!! $pricing->currency->entity !!}
+                                                                    {{ $pricing->mrp }}
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Selling price</td>
+                                                            <td>
+                                                                {!! $pricing->currency->entity !!}
+                                                                {{ $pricing->selling_price }}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Profit/ unit sell:</td>
+                                                            <td>
+                                                                {!! $pricing->currency->entity !!}
+                                                                {{ sprintf('%0.2f', $pricing->selling_price - $pricing->cost) }}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         @else
                             <p class="text-danger font-weight-bold">NA</p>
                         @endif

@@ -79,6 +79,7 @@ Route::name('admin.')->group(function() {
                 Route::get('/variation/delete/{id}', [ProductSetupController::class, 'variationParentDelete'])->name('variation.parent.delete');
                 Route::get('/variation/{id}/detail/{parentId}', [ProductSetupController::class, 'variationParentDetail'])->name('variation.parent.detail');
                 Route::get('/variation/{id}/edit/{parentId}', [ProductSetupController::class, 'variationParentEdit'])->name('variation.parent.edit');
+                Route::post('/variation/update', [ProductSetupController::class, 'variationParentUpdate'])->name('variation.parent.update');
 
                 Route::get('/variation/{id}/create/{parentId}/child', [ProductSetupController::class, 'variationChildCreate'])->name('variation.child.create');
                 Route::get('/variation/status/{childId}', [ProductSetupController::class, 'variationChildStatus'])->name('variation.child.status');

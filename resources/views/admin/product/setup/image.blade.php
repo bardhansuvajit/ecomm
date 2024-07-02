@@ -35,10 +35,10 @@
         <div class="col-12 mb-3">
             <ul class="nav nav-pills" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a href="javascript: void(0)" class="nav-link active" id="all-tab" data-bs-toggle="tab" data-target="#all">All images</a>
+                    <a href="javascript: void(0)" class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all">All images</a>
                 </li>
                 <li class="nav-item">
-                    <a href="javascript: void(0)" class="nav-link"id="detailed-tab" data-bs-toggle="tab" data-target="#detailed">Detailed</a>
+                    <a href="javascript: void(0)" class="nav-link"id="detailed-tab" data-bs-toggle="tab" data-bs-target="#detailed">Detailed</a>
                 </li>
             </ul>
         </div>

@@ -107,6 +107,13 @@ class ProductSetupController extends Controller
         return view('admin.product.setup.variation-parent-detail', compact('request', 'data', 'parent_variation'));
     }
 
+    public function variationParentEdit(Request $request, $id, $variationParentId)
+    {
+        $data = Product::findOrFail($id);
+        $parent_variation = ProductVariationParent::findOrFail($variationParentId);
+        return view('admin.product.setup.variation-parent-edit', compact('request', 'data', 'parent_variation'));
+    }
+
     public function variationChildCreate(Request $request, $id, $variationParentId)
     {
         $data = Product::findOrFail($id);
@@ -974,6 +981,27 @@ class ProductSetupController extends Controller
         $data->save();
 
         return redirect()->back()->with('success', 'New Variation added');
+    }
+
+    public function variationParentUpdate(Request $request)
+    {
+        // dd($request->all());
+
+        $request->validate([
+            'id' => 'required|integer|min:1',
+            'title' => 'required|string|min:1|max:255',
+            'short_desc' => 'nullable|string|min:2|max:1000',
+            'detailed_desc' => 'nullable|string|min:2|max:10000',
+        ]);
+
+        $item = ProductVariationParent::findOrFail($request->id);
+        $item->title = $request->title;
+        $item->short_desc = $request->short_desc ?? '';
+        $item->detailed_desc = $request->detailed_desc ?? '';
+
+        $item->save();
+
+        return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'Product box item setup successfull');
     }
 
     public function variationChild(Request $request)
