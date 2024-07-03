@@ -187,6 +187,11 @@ Route::name('front.')->group(function() {
             Route::post('review/post', [ProductReviewController::class, 'upload'])->name('upload');
         });
 
+        // variation
+        Route::name('variation.')->prefix('product')->group(function() {
+            Route::get('/variation/{id}', [ProductVariationController::class, 'detail'])->name('detail');
+        });
+
         // detail by slug
         Route::get('{slug}', [ProductController::class, 'detail'])->name('detail');
     });

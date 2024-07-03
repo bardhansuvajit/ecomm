@@ -149,10 +149,11 @@
                     @if ((count($vParent->frontVariationChildern) > 0))
                         <div id="variation" class="mt-3">
                             <p class="small text-muted mb-2">{{ $vParent->title }}</p>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <div class="btn-group variation-btn-group" role="group">
                                 @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
                                     <input type="radio" class="btn-check" name="prodVar" id="prodVar{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
-                                    <label class="btn btn-outline-dark" for="prodVar{{$varChildIndex}}">{{ $vChild->title }}</label>
+
+                                    <label class="btn btn-outline-dark" for="prodVar{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
                                 @endforeach
                             </div>
                         </div>

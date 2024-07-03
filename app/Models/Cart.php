@@ -18,4 +18,9 @@ class Cart extends Model
     {
         return $this->belongsTo('App\Models\Coupon', 'coupon_code', 'id');
     }
+
+    public function variationDetail()
+    {
+        return $this->belongsTo('App\Models\ProductVariationChild', 'variation_child_id', 'id');
+    }
 }

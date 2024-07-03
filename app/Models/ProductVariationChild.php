@@ -14,4 +14,9 @@ class ProductVariationChild extends Model
     {
         return $this->belongsTo('App\Models\ProductVariationParent', 'parent_id', 'id');
     }
+
+    public function pricingDetails()
+    {
+        return $this->hasMany('App\Models\ProductPricing', 'variation_child_id', 'id');
+    }
 }

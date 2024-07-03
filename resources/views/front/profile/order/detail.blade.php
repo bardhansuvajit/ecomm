@@ -189,8 +189,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-
-
     <script>
         function generatePDF() {
             const { jsPDF } = window.jspdf;
@@ -243,12 +241,10 @@
                 }
             });
 
-            // Add total amount
             doc.text('Total Amount', 14, doc.autoTable.previous.finalY + 10);
             doc.text('{{ $data->final_order_amount }}', 14, doc.autoTable.previous.finalY + 15);
 
-            // Save the PDF
-            doc.save('invoice.pdf');
+            doc.save('{{ $data->order_no }}-{{ date("Y-m-d H:i:s") }}.pdf');
         }
     </script>
 @endsection

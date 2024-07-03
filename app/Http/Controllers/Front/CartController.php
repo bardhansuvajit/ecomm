@@ -84,11 +84,15 @@ class CartController extends Controller
                 $mrp = $pricingDetails['mrp'];
                 $discount = discountCalculate($sellingPrice, $mrp);
 
+                // variation
+                $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
+
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
+                    'childVarTitle' => $variationDetail,
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
                     'qty' => $cartItem->qty,

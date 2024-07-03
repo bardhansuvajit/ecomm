@@ -19,4 +19,9 @@ class ProductVariationParent extends Model
     {
         return $this->hasMany('App\Models\ProductVariationChild', 'parent_id', 'id')->where('status', 1)->orderBy('position');
     }
+
+    public function productDetail()
+    {
+        return $this->belongsTo('App\Models\Product', 'product_id', 'id');
+    }
 }

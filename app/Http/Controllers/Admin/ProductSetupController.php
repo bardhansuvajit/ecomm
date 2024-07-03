@@ -118,7 +118,9 @@ class ProductSetupController extends Controller
     {
         $data = Product::findOrFail($id);
         $parent_variation = ProductVariationParent::findOrFail($variationParentId);
-        return view('admin.product.setup.variation-child-create', compact('request', 'data', 'parent_variation', 'variationParentId'));
+        $currencies = Currency::where('status', 1)->orderBy('position')->get();
+        $productCurrencies = ProductPricing::where('product_id', $id)->get();
+        return view('admin.product.setup.variation-child-create', compact('request', 'data', 'parent_variation', 'variationParentId', 'currencies', 'productCurrencies'));
     }
 
     public function categoryEdit(Request $request, $id)
@@ -294,17 +296,17 @@ class ProductSetupController extends Controller
                 $checkPricing = ProductPricing::where('product_id', $request->product_id)->where('currency_id', $currency)->first();
 
                 if (!empty($checkPricing)) {
-                    $data = ProductPricing::findOrFail($checkPricing->id);
+                    $pricing = ProductPricing::findOrFail($checkPricing->id);
                 } else {
-                    $data = new ProductPricing();
+                    $pricing = new ProductPricing();
                 }
 
-                $data->product_id = $request->product_id;
-                $data->currency_id = $currency;
-                $data->cost = $request->cost[$currencyIndex] ?? null;
-                $data->mrp = $request->mrp[$currencyIndex] ?? null;
-                $data->selling_price = $request->selling_price[$currencyIndex];
-                $data->save();
+                $pricing->product_id = $request->product_id;
+                $pricing->currency_id = $currency;
+                $pricing->cost = $request->cost[$currencyIndex] ?? null;
+                $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
+                $pricing->selling_price = $request->selling_price[$currencyIndex];
+                $pricing->save();
             }
 
             DB::commit();
@@ -314,32 +316,6 @@ class ProductSetupController extends Controller
         }
 
         return redirect()->route('admin.product.setup.images', $request->product_id)->with('success', 'Product price setup successfull');
-
-        /*
-        $request->validate([
-            'product_id' => 'required|integer|min:1',
-            'cost' => 'nullable|integer|min:1',
-            'mrp' => 'nullable|integer|min:1|gt:selling_price',
-            'selling_price' => 'required|integer|min:1|gt:cost',
-        ]);
-
-        DB::beginTransaction();
-
-        try {
-            $product = Product::findOrFail($request->product_id);
-            $product->cost = $request->cost;
-            $product->mrp = $request->mrp;
-            $product->selling_price = $request->selling_price;
-
-            $product->save();
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollback();
-            throw $th;
-        }
-
-        return redirect()->route('admin.product.setup.images', $product->id)->with('success', 'Product price setup successfull');
-        */
     }
 
     public function imagesUpdate(Request $request)
@@ -1016,8 +992,23 @@ class ProductSetupController extends Controller
             'short_description' => 'nullable|string|min:2|max:1000',
 
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
+
+            'currency_id' => 'required|array|min:1',
+            'currency_id.*' => 'required|integer|min:1',
+
+            'cost' => 'nullable|array',
+            'cost.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1',
+            'mrp' => 'nullable|array|min:1',
+            'mrp.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:selling_price.*',
+            'selling_price' => 'nullable|array',
+            'selling_price.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:cost.*',
         ], [
             'image' => 'The image must not be greater than 1MB.',
+            'cost.*.integer' => 'Cost must be an integer',
+            'mrp.*.integer' => 'MRP must be an integer',
+            'mrp.*.gt' => 'The MRP must be greater than selling price',
+            'selling_price.*.integer' => 'Selling price must be an integer',
+            'selling_price.*.gt' => 'The selling price must be greater than cost',
         ]);
 
         $chk = ProductVariationChild::where('parent_id', $request->parent_id)->where('title', $request->title)->first();
@@ -1026,25 +1017,59 @@ class ProductSetupController extends Controller
             return redirect()->back()->with('failure', 'This variation already exists')->withInput($request->all());
         }
 
-        $data = new ProductVariationChild();
-        $data->parent_id = $request->parent_id;
-        $data->title = $request->title;
-        $data->product_title = $request->product_title ?? '';
-        $data->position = positionSet('product_variation_children');
+        DB::beginTransaction();
 
-        // image upload
-        if (isset($request->image)) {
-            $fileUpload = fileUpload($request->image, 'variation');
+        try {
+            $data = new ProductVariationChild();
+            $data->parent_id = $request->parent_id;
+            $data->title = $request->title;
+            $data->product_title = $request->product_title ?? '';
+            $data->position = positionSet('product_variation_children');
 
-            $data->image_small = $fileUpload['file'][0];
-            $data->image_medium = $fileUpload['file'][1];
-            $data->image_large = $fileUpload['file'][2];
-            $data->image_org = $fileUpload['file'][3];
+            // image upload
+            if (isset($request->image)) {
+                $fileUpload = fileUpload($request->image, 'variation');
+
+                $data->image_small = $fileUpload['file'][0];
+                $data->image_medium = $fileUpload['file'][1];
+                $data->image_large = $fileUpload['file'][2];
+                $data->image_org = $fileUpload['file'][3];
+            }
+
+            $data->save();
+
+            // currency
+            if (!empty($request->selling_price[0])) {
+                foreach($request->currency_id as $currencyIndex => $currency) {
+                    // check if pricing already exists
+                    // $checkPricing = ProductPricing::where('product_id', $request->product_id)->where('currency_id', $currency)->first();
+    
+                    // if (!empty($checkPricing)) {
+                    //     $pricing = ProductPricing::findOrFail($checkPricing->id);
+                    // } else {
+                        $pricing = new ProductPricing();
+                    // }
+    
+                    $pricing->product_id = $request->product_id;
+                    $pricing->currency_id = $currency;
+                    $pricing->variation_child_id = $data->id;
+                    $pricing->cost = $request->cost[$currencyIndex] ?? null;
+                    $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
+                    $pricing->selling_price = $request->selling_price[$currencyIndex] ?? 0;
+                    $pricing->save();
+                }
+            }
+
+            DB::commit();
+
+            // dd($data);
+
+            return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'New Variation added');
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
         }
-
-        $data->save();
-
-        return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'New Variation added');
     }
 
     public function variationParentDelete(Request $request, $id)

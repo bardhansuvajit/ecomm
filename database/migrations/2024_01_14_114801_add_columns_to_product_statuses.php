@@ -35,6 +35,8 @@ class AddColumnsToProductStatuses extends Migration
     {
         Schema::table('product_statuses', function (Blueprint $table) {
             $table->dropColumn('purchase');
+            $table->dropColumn('show_price_in_detail_page');
+            $table->dropColumn('show_price_in_out_page');
         });
     }
 }

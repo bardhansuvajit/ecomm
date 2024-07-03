@@ -455,13 +455,16 @@ $(document).on('change', 'input[name="global-currency"]', function(e) {
 // global currency update ends
 
 function cartAdd(type, productId, userId, route) {
-    var qty = 1;
+    let childVarID = 0;
+    let qty = 1;
     if($('input[name="product_qty"]').val()) {
         qty = $('input[name="product_qty"]').val();
     }
 
     // check for variation
-    // console.log($('input[name="prodVar"]').val());
+    if ($('input[name=prodVar]:checked').length > 0) {
+        childVarID = $('input[name=prodVar]:checked').val()
+    }
 
     $.ajax({
         url: route,
@@ -471,6 +474,7 @@ function cartAdd(type, productId, userId, route) {
             user_id: userId,
             product_id: productId,
             qty: qty,
+            variation_child_id: childVarID
         },
         beforeSend: function() {
             $('.buy-now').attr('disabled', 'disabled')
@@ -582,11 +586,17 @@ function quickCartListUpdate() {
                                 <div class="flex-grow-1 ms-3">
                                     <div class="title">
                                         <a href="${value.link}" target="_blank">
-                                            <p class="text-dark height-2 small">${value.title}</p>
+                                            <p class="text-dark height-2 small mb-1">${value.title}</p>
                                         </a>
-                                    </div>
+                                    </div>`;
 
-                                    <div class="pricing">
+                                if (value.childVarTitle.length > 0) {
+                                    content += 
+                                    `<p class="text-dark fw-bold height-2 small">${value.childVarTitle}</p>`;
+                                }
+
+                                content += 
+                                    `<div class="pricing">
                                         <div class="price-details">
                                             <h5 class="selling-price">
                                                 <span class="currency-icon">${value.currencyEntity}</span>
@@ -1371,6 +1381,21 @@ function cityChangeFunc(stateId) {
                 // toastFire('success', resp.message);
             } else {
                 toastFire('error', resp.message);
+            }
+        }
+    })
+}
+
+function variationContent(vid) {
+    $.ajax({
+        url: baseUrl+'/product/variation/'+vid,
+        success: function(resp) {
+            if (resp.status == 200) {
+                $('#pricing .selling-price .amount').text(resp.data.pricing_sel)
+                $('#pricing .mrp .amount').text(resp.data.pricing_mrp)
+                $('#pricing .discount span').eq(0).text(resp.data.discount)
+            } else {
+                console.error(resp.message)
             }
         }
     })

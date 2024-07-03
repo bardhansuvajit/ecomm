@@ -21,6 +21,7 @@ use App\Interfaces\WishlistInterface;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\ProductSubscriptionInterface;
 use App\Interfaces\ProductReviewInterface;
+use App\Interfaces\ProductVariationInterface;
 
 use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
@@ -39,6 +40,7 @@ use App\Repositories\WishlistRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductSubscriptionRepository;
 use App\Repositories\ProductReviewRepository;
+use App\Repositories\ProductVariationRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -66,6 +68,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CategoryInterface::class, CategoryRepository::class);
         $this->app->bind(ProductSubscriptionInterface::class, ProductSubscriptionRepository::class);
         $this->app->bind(ProductReviewInterface::class, ProductReviewRepository::class);
+        $this->app->bind(ProductVariationInterface::class, ProductVariationRepository::class);
     }
 
     /**

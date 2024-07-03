@@ -31,6 +31,16 @@
 
                 <h6 class="mb-0 font-weight-bold">{{ $child_variation->title }}</h6>
 
+                @if (!empty($child_variation->pricingDetails) && count($child_variation->pricingDetails) > 0)
+                    @foreach ($child_variation->pricingDetails as $childPrice)
+                        <p class="text-muted mb-0">
+                            <del>{!! $childPrice->currency->entity !!}{{ $childPrice->mrp }}</del>
+                            <span>{!! $childPrice->currency->entity !!}{{ $childPrice->selling_price }}</span>
+                        </p>
+                    @endforeach
+                @endif
+                <p class="small"></p>
+
                 <hr>
 
                 <div class="buttons mt-3">
@@ -47,15 +57,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- <input type="radio" class="btn-check" id="child-var-btn-{{$index}}" value="{{ $child_variation->id }}" name="child-var_id">
-        <label class="btn btn-light" for="child-var-btn-{{$index}}">
-            @if ($child_variation->image_medium)
-                <img src="{{ asset($child_variation->image_medium) }}" alt="image" class="variation-image">
-                <br>
-            @endif
-            <h6 class="mb-0 font-weight-bold">{{ $child_variation->title }}</h6>
-        </label> --}}
     @endforeach
 </div>
 @endsection

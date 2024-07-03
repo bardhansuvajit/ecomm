@@ -57,7 +57,10 @@ class CartController extends Controller
         // if user is logged in
         if ($request->user_id != 0) {
             // check if product exists in cart
-            $productExistsInCart = Cart::where('user_id', $request->user_id)->where('product_id', $request->product_id)->first();
+            $productExistsInCart = Cart::where('user_id', $request->user_id)
+            ->where('product_id', $request->product_id)
+            ->where('variation_child_id', $request->variation_child_id)
+            ->first();
 
             if (!empty($productExistsInCart)) {
                 $totalQty = $productExistsInCart->qty + $request->qty;
@@ -80,6 +83,7 @@ class CartController extends Controller
                 $cart = new Cart();
                 $cart->user_id = $request->user_id;
                 $cart->product_id = $request->product_id;
+                $cart->variation_child_id = $request->variation_child_id;
                 $cart->save_for_later = 0;
                 $cart->qty = $request->qty;
                 $cart->coupon_code = 0;
@@ -95,7 +99,10 @@ class CartController extends Controller
                 $token = $_COOKIE['_cart-token'];
 
                 // check if product exists in cart
-                $productExistsInCart = Cart::where('guest_token', $token)->where('product_id', $request->product_id)->first();
+                $productExistsInCart = Cart::where('guest_token', $token)
+                ->where('product_id', $request->product_id)
+                ->where('variation_child_id', $request->variation_child_id)
+                ->first();
 
                 if (!empty($productExistsInCart)) {
                     $totalQty = $productExistsInCart->qty + $request->qty;
@@ -131,6 +138,7 @@ class CartController extends Controller
             $cart = new Cart();
             $cart->user_id = 0;
             $cart->product_id = $request->product_id;
+            $cart->variation_child_id = $request->variation_child_id;
             $cart->save_for_later = 0;
             $cart->qty = $request->qty;
             $cart->ip = $this->ip;
