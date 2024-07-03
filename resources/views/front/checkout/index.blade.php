@@ -1,5 +1,10 @@
 @extends('front.layout.app')
 
+@section('page-title', $data->seo->page_title)
+@section('meta-title', $data->seo->meta_title)
+@section('meta-description', $data->seo->meta_desc)
+@section('meta-keywords', $data->seo->meta_keyword)
+
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -478,6 +483,12 @@
         })
 
         let paymentObj = {};
+
+        // function paymentStatUpload(obj) {
+        //     $.ajax({
+
+        //     })
+        // }
     </script>
 
     @foreach ($data->payment_methods as $payment_method)
@@ -506,8 +517,8 @@
                         "currency": currency,
                         "name": "{{$payment_method->company_name_display}}",
                         "description": "{{$payment_method->description}}",
-                        // "image": "{{asset($payment_method->image_square)}}",
-                        "image": "https://placehold.co/100x100",
+                        "image": "{{asset($payment_method->image_square)}}",
+                        // "image": "https://placehold.co/100x100",
                         // "order_id": "order_IluGWxBm9U8zJ8", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                         "handler": function (response){
                             // console.log('razorpay_payment_id>> '+response.razorpay_payment_id);

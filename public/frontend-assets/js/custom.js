@@ -461,7 +461,7 @@ function cartAdd(type, productId, userId, route) {
     }
 
     // check for variation
-    console.log($('input[name="prodVar"]').val());
+    // console.log($('input[name="prodVar"]').val());
 
     $.ajax({
         url: route,
