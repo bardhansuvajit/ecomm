@@ -16,28 +16,24 @@
             <form action="" method="get">
                 <div class="d-flex justify-content-end">
                     <div class="form-group ml-2">
-                        <select name="id" id="id" class="form-select form-select-sm" style="width: 150px;">
+                        <select name="parent" id="parent" class="form-select form-select-sm" style="width: 150px;">
                             <option value="">Select variation...</option>
-                            <option value="" {{ (request()->input('id') === null || request()->input('id') === '') ? 'selected' : '' }}>All</option>
-                            @foreach ($variations['data'] as $parent)
-                                <option value="{{ $parent->id }}" {{ (request()->input('id') == $parent->id) ? 'selected' : '' }}>{{ $parent->title }}</option>
-                            @endforeach
+                            <option value="" {{ (request()->input('parent') === null || request()->input('parent') === '') ? 'selected' : '' }}>All</option>
+                            @forelse ($variations['data'] as $parent)
+                                <option value="{{ $parent->id }}" {{ (request()->input('parent') == $parent->id) ? 'selected' : '' }}>{{ $parent->title }}</option>
+                            @empty
+                                <option value="">No data found</option>
+                            @endforelse
                         </select>
                     </div>
                     <div class="form-group ml-2">
                         <select name="category" id="category" class="form-select form-select-sm" style="width: 150px;">
                             <option value="">Select category...</option>
-                            @foreach ($categories['data'] as $category)
+                            @forelse ($categories['data'] as $category)
                                 <option value="{{ $category }}" {{ (request()->input('category') == $category) ? 'selected' : '' }}>{{ ucwords($category) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group ml-2">
-                        <select name="status" id="status" class="form-select form-select-sm" style="width: 150px;">
-                            <option value="">Select status...</option>
-                            <option value="" {{ (request()->input('status') === null || request()->input('status') === '') ? 'selected' : '' }}>All</option>
-                            <option value="1" {{ (request()->input('status') == '1') ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ (request()->input('status') == '0') ? 'selected' : '' }}>Inactive</option>
+                            @empty
+                                <option value="">No data found</option>
+                            @endforelse
                         </select>
                     </div>
                     <div class="form-group ml-2">

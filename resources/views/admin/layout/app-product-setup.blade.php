@@ -20,7 +20,6 @@
         $boxitemRoute = route('admin.product.setup.boxitem', $request->id);
         $ingredientRoute = route('admin.product.setup.ingredient', $request->id);
         $seoRoute = route('admin.product.setup.seo', $request->id);
-        // $variationRoute = route('admin.product.setup.seo', $request->id);
         $variationRoute = route('admin.product.setup.variation.index', $request->id);
     }
 @endphp

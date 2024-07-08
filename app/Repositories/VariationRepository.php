@@ -12,7 +12,7 @@ class VariationRepository implements VariationInterface
         $status = $request['status'] ?? '';
         $keyword = $request['keyword'] ?? '';
         $page = $request['page'] ?? '';
-        $id = $request['id'] ?? '';
+        $id = $request['parent'] ?? '';
 
         $query = Variation::query();
 
