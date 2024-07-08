@@ -76,6 +76,13 @@ Route::name('admin.')->group(function() {
 
                 Route::get('/seo/{id}', [ProductSetupController::class, 'seo'])->name('seo');
 
+                // product variation
+                Route::prefix('variation')->name('variation.')->group(function() {
+                    Route::get('/{id}', [ProductVariationController::class, 'index'])->name('index');
+                    Route::get('/create/{id}', [ProductVariationController::class, 'create'])->name('create');
+                    Route::post('/store', [ProductVariationController::class, 'store'])->name('store');
+                });
+
                 // Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');
                 // Route::get('/variation/delete/{id}', [ProductSetupController::class, 'variationParentDelete'])->name('variation.parent.delete');
                 // Route::get('/variation/{id}/detail/{parentId}', [ProductSetupController::class, 'variationParentDetail'])->name('variation.parent.detail');

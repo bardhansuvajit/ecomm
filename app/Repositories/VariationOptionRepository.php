@@ -31,7 +31,7 @@ class VariationOptionRepository implements VariationOptionInterface
             $query->where('category', 'like', '%'.$category.'%');
         });
 
-        $query->when($status, function($query) use ($status) {
+        $query->when(($status == 0) || ($status == 1), function($query) use ($status) {
             $query->where('status', $status);
         });
 
@@ -64,10 +64,14 @@ class VariationOptionRepository implements VariationOptionInterface
     public function store(array $req) : array
     {
         $data = new VariationOption();
-        $data->title = $req['title'];
+        $data->variation_id = $req['variation_id'];
+        $data->value = $req['value'];
+        $data->category = $req['category'] ?? 'all';
+        $data->equivalent = $req['equivalent'] ?? null;
+        $data->information = $req['information'] ?? null;
         $data->short_description = $req['short_description'] ?? null;
         $data->long_description = $req['long_description'] ?? null;
-        $data->position = positionSet('variations');
+        $data->position = positionSet('variation_options');
         $data->save();
 
         if ($data) {
@@ -115,10 +119,13 @@ class VariationOptionRepository implements VariationOptionInterface
         $data = VariationOption::find($req['id']);
 
         if (!empty($data)) {
-            $data->title = $req['title'];
+            $data->variation_id = $req['variation_id'];
+            $data->value = $req['value'];
+            $data->category = $req['category'] ?? 'all';
+            $data->equivalent = $req['equivalent'] ?? null;
+            $data->information = $req['information'] ?? null;
             $data->short_description = $req['short_description'] ?? null;
             $data->long_description = $req['long_description'] ?? null;
-            $data->position = positionSet('variations');
             $data->save();
 
             $response = [

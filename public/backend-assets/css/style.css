@@ -266,3 +266,9 @@ a {
     background-color: #a6a3a3e6;
     color: #1d1f21;
 }
+
+.btn-group-wrap {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}

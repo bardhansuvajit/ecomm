@@ -37,6 +37,7 @@
                                         <div class="form-group ml-2">
                                             <select name="variation" id="variation" class="form-select form-select-sm" style="width: 150px;">
                                                 <option value="">Select variation...</option>
+                                                <option value="" {{ (request()->input('variation') === null || request()->input('variation') === '') ? 'selected' : '' }}>All</option>
                                                 @foreach ($variations['data'] as $parent)
                                                     <option value="{{ $parent->id }}" {{ (request()->input('variation') == $parent->id) ? 'selected' : '' }}>{{ $parent->title }}</option>
                                                 @endforeach

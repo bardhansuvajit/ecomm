@@ -91,15 +91,15 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductIngredient', 'product_id', 'id')->where('status', 1)->orderBy('position');
     }
 
-    public function variationParents()
-    {
-        return $this->hasMany('App\Models\ProductVariationParent', 'product_id', 'id')->orderBy('position');
-    }
+    // public function variationParents()
+    // {
+    //     return $this->hasMany('App\Models\ProductVariationParent', 'product_id', 'id')->orderBy('position');
+    // }
 
-    public function frontVariationParents()
-    {
-        return $this->hasMany('App\Models\ProductVariationParent', 'product_id', 'id')->where('status', 1)->orderBy('position');
-    }
+    // public function frontVariationParents()
+    // {
+    //     return $this->hasMany('App\Models\ProductVariationParent', 'product_id', 'id')->where('status', 1)->orderBy('position');
+    // }
 
     public function wishlistDetail()
     {

@@ -15,7 +15,7 @@ class Variation extends Model
     }
 
     public function activeOptions() {
-        return $this->hasMany('App\Models\VariationOption', 'variation_id', 'id')->where('status', 1);
+        return $this->hasMany('App\Models\VariationOption', 'variation_id', 'id')->where('status', 1)->orderBy('category')->orderBy('position');
     }
 
     public function activeOptionsLimited() {

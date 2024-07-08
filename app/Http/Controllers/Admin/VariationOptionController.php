@@ -32,7 +32,8 @@ class VariationOptionController extends Controller
 
     public function create(Request $request)
     {
-        return view('admin.variation-option.create');
+        $variations = $this->variationRepository->listActive(['title', 'asc']);
+        return view('admin.variation-option.create', compact('variations'));
     }
 
     public function store(Request $request)
@@ -40,7 +41,11 @@ class VariationOptionController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'title' => 'required|string|min:1|max:255|unique:variations,title',
+            'variation_id' => 'required|integer|min:1|exists:variations,id',
+            'value' => 'required|string|min:1|max:255|unique:variation_options,value',
+            'category' => 'nullable|string|min:2',
+            'equivalent' => 'nullable|string|min:2',
+            'information' => 'nullable|string|min:2',
             'short_description' => 'nullable|string|min:2|max:1000',
             'long_description' => 'nullable|string|min:2',
         ]);
@@ -48,7 +53,7 @@ class VariationOptionController extends Controller
         $resp = $this->variationOptionRepository->store($request->all());
 
         if ($resp['status'] == 'success') {
-            return redirect()->route('admin.product.variation.list')->with($resp['status'], $resp['message']);
+            return redirect()->route('admin.product.variation.option.list')->with($resp['status'], $resp['message']);
         } else {
             return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
         }
@@ -71,8 +76,9 @@ class VariationOptionController extends Controller
         $resp = $this->variationOptionRepository->detail($id);
 
         if ($resp['status'] == 'success') {
+            $variations = $this->variationRepository->listActive(['title', 'asc']);
             $data = $resp['data'];
-            return view('admin.variation-option.edit', compact('data'));
+            return view('admin.variation-option.edit', compact('data', 'variations'));
         } else {
             return redirect()->route('admin.error.404')->with($resp['status'], $resp['message']);
         }
@@ -82,7 +88,11 @@ class VariationOptionController extends Controller
     {
         $request->validate([
             'id' => 'required|integer|min:1',
-            'title' => 'required|string|min:1|max:255|unique:variations,title',
+            'variation_id' => 'required|integer|min:1|exists:variations,id',
+            'value' => 'required|string|min:1|max:255',
+            'category' => 'nullable|string|min:2',
+            'equivalent' => 'nullable|string|min:2',
+            'information' => 'nullable|string|min:2',
             'short_description' => 'nullable|string|min:2|max:1000',
             'long_description' => 'nullable|string|min:2',
         ]);
@@ -90,7 +100,7 @@ class VariationOptionController extends Controller
         $resp = $this->variationOptionRepository->update($request->all());
 
         if ($resp['status'] == 'success') {
-            return redirect()->route('admin.product.variation.list')->with($resp['status'], $resp['message']);
+            return redirect()->route('admin.product.variation.option.list')->with($resp['status'], $resp['message']);
         } else {
             return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
         }
@@ -113,9 +123,12 @@ class VariationOptionController extends Controller
 
     public function position(Request $request)
     {
-        $resp = $this->variationOptionRepository->listPaginated($request->all(), ['position', 'asc']);
-        $data = $resp['data'] ?? [];
-        return view('admin.variation-option.position', compact('data'));
+        $variations = $this->variationRepository->listActive(['title', 'asc']);
+        $categories = $this->variationOptionRepository->categories();
+        $responsess = $this->variationOptionRepository->listPaginated($request->all(), ['position', 'asc']);
+        $data = $responsess['data'] ?? [];
+
+        return view('admin.variation-option.position', compact('data', 'variations', 'categories'));
     }
 
     public function positionUpdate(Request $request)

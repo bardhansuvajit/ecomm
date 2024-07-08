@@ -11,11 +11,17 @@ class VariationRepository implements VariationInterface
     {
         $status = $request['status'] ?? '';
         $keyword = $request['keyword'] ?? '';
+        $page = $request['page'] ?? '';
+        $id = $request['id'] ?? '';
 
         $query = Variation::query();
 
         $query->when($keyword, function($query) use ($keyword) {
             $query->where('title', 'like', '%'.$keyword.'%');
+        });
+
+        $query->when($id, function($query) use ($id) {
+            $query->where('id', $id);
         });
 
         $query->when(($status == 0) || ($status == 1), function($query) use ($status) {
@@ -28,7 +34,17 @@ class VariationRepository implements VariationInterface
             $query->latest('id');
         }
 
-        $data = $query->paginate(applicationSettings()->pagination_items_per_page);
+        if (empty($page)) {
+            $data = $query->paginate(applicationSettings()->pagination_items_per_page);
+        } else {
+            if ($page == 'all') {
+                $data = $query->get();
+            } else {
+                $data = $query->paginate($page);
+            }
+        }
+
+        // $data = $query->paginate(applicationSettings()->pagination_items_per_page);
 
         if (count($data) > 0) {
             $response = [
@@ -135,7 +151,6 @@ class VariationRepository implements VariationInterface
             $data->title = $req['title'];
             $data->short_description = $req['short_description'] ?? null;
             $data->long_description = $req['long_description'] ?? null;
-            $data->position = positionSet('variations');
             $data->save();
 
             $response = [

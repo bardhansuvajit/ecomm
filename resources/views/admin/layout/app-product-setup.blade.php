@@ -4,7 +4,7 @@
     if (request()->is('admin/product/setup/category')) {
         $disabledClass = "disabled";
         $saveAsDraftRoute = "";
-        
+
         $categoryRoute = $titleRoute = $priceRoute = $imageRoute = $highlightRoute = $descriptionRoute = $usageRoute = $boxitemRoute = $ingredientRoute = $seoRoute = $variationRoute = "javascript: void(0)";
     } else {
         $disabledClass = "";
@@ -20,7 +20,8 @@
         $boxitemRoute = route('admin.product.setup.boxitem', $request->id);
         $ingredientRoute = route('admin.product.setup.ingredient', $request->id);
         $seoRoute = route('admin.product.setup.seo', $request->id);
-        $variationRoute = route('admin.product.setup.variation', $request->id);
+        // $variationRoute = route('admin.product.setup.seo', $request->id);
+        $variationRoute = route('admin.product.setup.variation.index', $request->id);
     }
 @endphp
 
