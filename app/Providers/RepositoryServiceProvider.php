@@ -22,6 +22,8 @@ use App\Interfaces\CategoryInterface;
 use App\Interfaces\ProductSubscriptionInterface;
 use App\Interfaces\ProductReviewInterface;
 use App\Interfaces\ProductVariationInterface;
+use App\Interfaces\VariationInterface;
+use App\Interfaces\VariationOptionInterface;
 
 use App\Repositories\AuthRepository;
 use App\Repositories\UserRepository;
@@ -41,6 +43,8 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\ProductSubscriptionRepository;
 use App\Repositories\ProductReviewRepository;
 use App\Repositories\ProductVariationRepository;
+use App\Repositories\VariationRepository;
+use App\Repositories\VariationOptionRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -69,6 +73,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductSubscriptionInterface::class, ProductSubscriptionRepository::class);
         $this->app->bind(ProductReviewInterface::class, ProductReviewRepository::class);
         $this->app->bind(ProductVariationInterface::class, ProductVariationRepository::class);
+        $this->app->bind(VariationInterface::class, VariationRepository::class);
+        $this->app->bind(VariationOptionInterface::class, VariationOptionRepository::class);
     }
 
     /**

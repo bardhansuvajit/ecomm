@@ -12,7 +12,8 @@ Route::name('admin.')->group(function() {
     });
 
     // profile
-    Route::middleware('auth:admin', 'PreventBackHistory', 'Permission')->group(function() {
+    // Route::middleware('auth:admin', 'PreventBackHistory', 'Permission')->group(function() {
+    Route::middleware('auth:admin', 'PreventBackHistory')->group(function() {
         Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -75,16 +76,19 @@ Route::name('admin.')->group(function() {
 
                 Route::get('/seo/{id}', [ProductSetupController::class, 'seo'])->name('seo');
 
-                Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');
-                Route::get('/variation/delete/{id}', [ProductSetupController::class, 'variationParentDelete'])->name('variation.parent.delete');
-                Route::get('/variation/{id}/detail/{parentId}', [ProductSetupController::class, 'variationParentDetail'])->name('variation.parent.detail');
-                Route::get('/variation/{id}/edit/{parentId}', [ProductSetupController::class, 'variationParentEdit'])->name('variation.parent.edit');
-                Route::post('/variation/update', [ProductSetupController::class, 'variationParentUpdate'])->name('variation.parent.update');
+                // Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');
+                // Route::get('/variation/delete/{id}', [ProductSetupController::class, 'variationParentDelete'])->name('variation.parent.delete');
+                // Route::get('/variation/{id}/detail/{parentId}', [ProductSetupController::class, 'variationParentDetail'])->name('variation.parent.detail');
+                // Route::get('/variation/{id}/edit/{parentId}', [ProductSetupController::class, 'variationParentEdit'])->name('variation.parent.edit');
+                // Route::post('/variation/update', [ProductSetupController::class, 'variationParentUpdate'])->name('variation.parent.update');
+                // Route::get('/variation/status/{parentId}', [ProductSetupController::class, 'variationParentStatus'])->name('variation.parent.status');
+                // Route::get('/variation/position/{id}', [ProductSetupController::class, 'variationParentPosition'])->name('variation.parent.position');
+                // Route::post('/variation/parent/{id}/parent/{parentId}/position', [ProductSetupController::class, 'variationParentPositionUpdate'])->name('variation.parent.position.update');
 
-                Route::get('/variation/{id}/create/{parentId}/child', [ProductSetupController::class, 'variationChildCreate'])->name('variation.child.create');
-                Route::get('/variation/status/{childId}', [ProductSetupController::class, 'variationChildStatus'])->name('variation.child.status');
-                Route::post('/variation/{id}/parent/{parentId}/position', [ProductSetupController::class, 'variationChildPosition'])->name('variation.child.position');
-                Route::get('/variation/child/delete/{id}', [ProductSetupController::class, 'variationChildDelete'])->name('variation.child.delete');
+                // Route::get('/variation/{id}/create/{parentId}/child', [ProductSetupController::class, 'variationChildCreate'])->name('variation.child.create');
+                // Route::get('/variation/status/{childId}', [ProductSetupController::class, 'variationChildStatus'])->name('variation.child.status');
+                // Route::post('/variation/{id}/parent/{parentId}/position', [ProductSetupController::class, 'variationChildPosition'])->name('variation.child.position');
+                // Route::get('/variation/child/delete/{id}', [ProductSetupController::class, 'variationChildDelete'])->name('variation.child.delete');
 
                 Route::prefix('store')->name('store.')->group(function() {
                     Route::post('/category', [ProductSetupController::class, 'categoryStore'])->name('category');
@@ -98,8 +102,8 @@ Route::name('admin.')->group(function() {
                     Route::post('/description', [ProductSetupController::class, 'descriptionUpdate'])->name('description');
                     Route::post('/seo', [ProductSetupController::class, 'seoUpdate'])->name('seo');
 
-                    Route::post('/variation/parent', [ProductSetupController::class, 'variationParent'])->name('variation.parent');
-                    Route::post('/variation/child', [ProductSetupController::class, 'variationChild'])->name('variation.child');
+                    // Route::post('/variation/parent', [ProductSetupController::class, 'variationParent'])->name('variation.parent');
+                    // Route::post('/variation/child', [ProductSetupController::class, 'variationChild'])->name('variation.child');
                 });
             });
 
@@ -151,6 +155,34 @@ Route::name('admin.')->group(function() {
                     Route::get('/delete/{id}', [Category1HighlightController::class, 'delete'])->name('delete');
                     Route::get('/status/{id}', [Category1HighlightController::class, 'status'])->name('status');
                     Route::post('/position', [Category1HighlightController::class, 'position'])->name('position');
+                });
+            });
+
+            // variation
+            Route::prefix('variation')->name('variation.')->group(function() {
+                Route::get('/', [VariationController::class, 'index'])->name('list');
+                Route::get('/create', [VariationController::class, 'create'])->name('create');
+                Route::post('/store', [VariationController::class, 'store'])->name('store');
+                Route::get('/detail/{id}', [VariationController::class, 'detail'])->name('detail');
+                Route::get('/edit/{id}', [VariationController::class, 'edit'])->name('edit');
+                Route::post('/update', [VariationController::class, 'update'])->name('update');
+                Route::get('/delete/{id}', [VariationController::class, 'delete'])->name('delete');
+                Route::get('/status/{id}', [VariationController::class, 'status'])->name('status');
+                Route::get('/position', [VariationController::class, 'position'])->name('position');
+                Route::post('/position/update', [VariationController::class, 'positionUpdate'])->name('position.update');
+
+                // variation option
+                Route::prefix('option')->name('option.')->group(function() {
+                    Route::get('/', [VariationOptionController::class, 'index'])->name('list');
+                    Route::get('/create', [VariationOptionController::class, 'create'])->name('create');
+                    Route::post('/store', [VariationOptionController::class, 'store'])->name('store');
+                    Route::get('/detail/{id}', [VariationOptionController::class, 'detail'])->name('detail');
+                    Route::get('/edit/{id}', [VariationOptionController::class, 'edit'])->name('edit');
+                    Route::post('/update', [VariationOptionController::class, 'update'])->name('update');
+                    Route::get('/delete/{id}', [VariationOptionController::class, 'delete'])->name('delete');
+                    Route::get('/status/{id}', [VariationOptionController::class, 'status'])->name('status');
+                    Route::get('/position', [VariationOptionController::class, 'position'])->name('position');
+                    Route::post('/position/update', [VariationOptionController::class, 'positionUpdate'])->name('position.update');
                 });
             });
         });

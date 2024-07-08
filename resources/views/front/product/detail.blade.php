@@ -7,7 +7,41 @@
 @section('content')
 
 @php
-    $pricing = productPricing($data);
+    $pricing = [];
+
+    // dd($data->frontVariationParents);
+
+    if (count($data->frontVariationParents) > 0) {
+        $childVariationIds = [];
+
+        foreach ($data->frontVariationParents as $vParent) {
+            if (count($vParent->frontVariationChildern) > 0) {
+                $childVariationIds[] = $vParent->frontVariationChildern[0]->id;
+            } else {
+                $pricing = productPricing($data);
+            }
+        }
+
+        if (!empty($childVariationIds)) {
+            $pricing = productVariationPricing($data, $childVariationIds);
+        }
+    } else {
+        $pricing = productPricing($data);
+    }
+
+
+    /*
+    if (count($data->variationParents) > 0) {
+        foreach ($data->variationParents as $vParent) {
+            if (count($vParent->frontVariationChildern) > 0) {
+                $pricing = productVariationPricing($data, $vParent->frontVariationChildern[0]->id);
+                break;
+            }
+        }
+    } else {
+        $pricing = productPricing($data);
+    }
+    */
 @endphp
 
 <section id="primary-detail">
@@ -124,43 +158,49 @@
             @endphp
 
             @if ($data->activeReviewDetails)
-            @if ($rating)
-                <div id="rating">
-                    <div class="ratings">
-                        <div class="ratings-container">
-                            <a href="#rating-details">
-                                <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
-                                    <h5 class="digit">{{ $rating }}</h5> 
-                                    <div class="icon">
-                                        <i class="material-icons md-light">star</i>
+                @if ($rating)
+                    <div id="rating">
+                        <div class="ratings">
+                            <div class="ratings-container">
+                                <a href="#rating-details">
+                                    <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                        <h5 class="digit">{{ $rating }}</h5> 
+                                        <div class="icon">
+                                            <i class="material-icons md-light">star</i>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="review-count">({{ indianMoneyFormat(count($data->activeReviewDetails)) }} customer {{ (count($data->activeReviewDetails) > 1) ? 'ratings' : 'rating' }})</div>
-                            </a>
+                                    <div class="review-count">({{ indianMoneyFormat(count($data->activeReviewDetails)) }} customer {{ (count($data->activeReviewDetails) > 1) ? 'ratings' : 'rating' }})</div>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endif
+                @endif
             @endif
 
-            {{-- variation --}}
-            @if (count($data->variationParents) > 0)
-                @foreach ($data->variationParents as $vParent)
+            {{-- VARIATION --}}
+            @if (count($data->frontVariationParents) > 0)
+                @foreach ($data->frontVariationParents as $vParentIndex => $vParent)
                     @if ((count($vParent->frontVariationChildern) > 0))
                         <div id="variation" class="mt-3">
                             <p class="small text-muted mb-2">{{ $vParent->title }}</p>
                             <div class="btn-group variation-btn-group" role="group">
                                 @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
-                                    <input type="radio" class="btn-check" name="prodVar" id="prodVar{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
+                                    <input type="radio" class="btn-check" name="prodVar{{$vParentIndex}}" id="prodVar{{$vParentIndex}}{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
 
-                                    <label class="btn btn-outline-dark" for="prodVar{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
+                                    <label class="btn btn-outline-dark" for="prodVar{{$vParentIndex}}{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
                                 @endforeach
+                                {{-- @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
+                                    <input type="radio" class="btn-check" name="prodVar" id="prodVar{{$vParentIndex}}{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
+
+                                    <label class="btn btn-outline-dark" for="prodVar{{$vParentIndex}}{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
+                                @endforeach --}}
                             </div>
                         </div>
                     @endif
                 @endforeach
             @endif
 
+            {{-- PRICING --}}
             @if ($data->statusDetail->show_price_in_detail_page == 1)
                 @if (count($pricing) > 0)
                 <div id="pricing">

@@ -100,6 +100,12 @@ class ProductSetupController extends Controller
         return view('admin.product.setup.variation', compact('request', 'data'));
     }
 
+    public function variationParentPosition(Request $request, $id)
+    {
+        $data = Product::findOrFail($id);
+        return view('admin.product.setup.variation-parent-position', compact('request', 'data'));
+    }
+
     public function variationParentDetail(Request $request, $id, $variationParentId)
     {
         $data = Product::findOrFail($id);
@@ -977,7 +983,7 @@ class ProductSetupController extends Controller
 
         $item->save();
 
-        return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'Product box item setup successfull');
+        return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'Product variation update successfull');
     }
 
     public function variationChild(Request $request)
@@ -1041,18 +1047,11 @@ class ProductSetupController extends Controller
             // currency
             if (!empty($request->selling_price[0])) {
                 foreach($request->currency_id as $currencyIndex => $currency) {
-                    // check if pricing already exists
-                    // $checkPricing = ProductPricing::where('product_id', $request->product_id)->where('currency_id', $currency)->first();
-    
-                    // if (!empty($checkPricing)) {
-                    //     $pricing = ProductPricing::findOrFail($checkPricing->id);
-                    // } else {
-                        $pricing = new ProductPricing();
-                    // }
-    
+                    $pricing = new ProductPricing();
                     $pricing->product_id = $request->product_id;
                     $pricing->currency_id = $currency;
                     $pricing->variation_child_id = $data->id;
+                    $pricing->variation_cost_type = $request->priceType[$currencyIndex] ?? 'add';
                     $pricing->cost = $request->cost[$currencyIndex] ?? null;
                     $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
                     $pricing->selling_price = $request->selling_price[$currencyIndex] ?? 0;
@@ -1078,6 +1077,28 @@ class ProductSetupController extends Controller
         return redirect()->back()->with('success', 'Variation deleted')->withInput($request->all());
     }
 
+    public function variationParentPositionUpdate(Request $request)
+    {
+        $request->validate([
+            'position' => 'required|array',
+            'position.*' => 'required|integer|min:1'
+        ]);
+
+        $count = 1;
+        foreach($request->position as $position) {
+            $data = ProductVariationParent::findOrFail($position);
+            $data->position = $count;
+            $data->save();
+
+            $count++;
+        }
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Position updated',
+        ]);
+    }
+
     public function variationChildPosition(Request $request)
     {
         $request->validate([
@@ -1097,6 +1118,18 @@ class ProductSetupController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Position updated',
+        ]);
+    }
+
+    public function variationParentStatus(Request $request, $id)
+    {
+        $data = ProductVariationParent::findOrFail($id);
+        $data->status = ($data->status == 1) ? 0 : 1;
+        $data->update();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Status updated',
         ]);
     }
 

@@ -413,6 +413,33 @@ if (!function_exists('productPricing')) {
     }
 }
 
+// frontend product variation pricing currency wise
+if (!function_exists('productVariationPricing')) {
+    function productVariationPricing(object $product, array $childVariationIds): array {
+        $resp = [];
+        $currencyData = ipToCurrency();
+
+        if (!empty($product->pricing) && count($product->pricing) > 0) {
+            foreach($product->pricing as $singlePricing) {
+                if (in_array($singlePricing->variation_child_id, $childVariationIds) || $singlePricing->variation_child_id == 0) {
+                    if ($singlePricing->currency_id == $currencyData->currency_id) {
+                        $resp[] = [
+                            'mrp' => (float) $singlePricing->mrp, 
+                            'selling_price' => (float) $singlePricing->selling_price, 
+                            'currency' => (string) $singlePricing->currency->icon,
+                            'currency_entity' => (string) $singlePricing->currency->entity,
+                            'currency_id' => (string) $singlePricing->currency->id,
+                            'variation_child_id' => (int) $singlePricing->variation_child_id,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return !empty($resp) ? $resp[0] : $resp;
+    }
+}
+
 // rating type color
 if(!function_exists('bootstrapRatingTypeColor')) {
     function bootstrapRatingTypeColor(int $rating): string {
@@ -451,7 +478,6 @@ if(!function_exists('cartDetails')) {
         foreach ($cartContent as $cartItem) {
             // get currency details
             $data = productPricing($cartItem->productDetails);
-            // $data = productPricing($cartItem->productDetails, $currencyData->currency_id);
 
             $mrp = $data['mrp'];
             $selling_price = $data['selling_price'];

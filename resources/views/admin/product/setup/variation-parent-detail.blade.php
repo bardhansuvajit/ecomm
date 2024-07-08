@@ -32,10 +32,14 @@
                 <h6 class="mb-0 font-weight-bold">{{ $child_variation->title }}</h6>
 
                 @if (!empty($child_variation->pricingDetails) && count($child_variation->pricingDetails) > 0)
+                    @php
+                        $pricing = productPricing($data);
+                    @endphp
+
                     @foreach ($child_variation->pricingDetails as $childPrice)
                         <p class="text-muted mb-0">
-                            <del>{!! $childPrice->currency->entity !!}{{ $childPrice->mrp }}</del>
-                            <span>{!! $childPrice->currency->entity !!}{{ $childPrice->selling_price }}</span>
+                            <del>{!! $childPrice->currency->entity !!}{{ $pricing['mrp'] + $childPrice->mrp }}</del>
+                            <span>{!! $childPrice->currency->entity !!}{{ $pricing['selling_price'] + $childPrice->selling_price }}</span>
                         </p>
                     @endforeach
                 @endif

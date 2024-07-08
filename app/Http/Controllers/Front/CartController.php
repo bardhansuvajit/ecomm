@@ -10,6 +10,7 @@ use App\Interfaces\CouponInterface;
 use App\Interfaces\CartInterface;
 
 use App\Models\SeoPage;
+use App\Models\ProductVariationChild;
 
 class CartController extends Controller
 {
@@ -78,21 +79,34 @@ class CartController extends Controller
                     $imgPath = asset('uploads/static-front-missing-image/product.svg');
                 }
 
-                $pricingDetails = productPricing($cartItem->productDetails);
+                $pricingDetails = productVariationPricing($cartItem->productDetails, explode(',', $cartItem->variation_child_id));
+                // dd($pricingDetails);
                 $currencyEntity = $pricingDetails['currency_entity'];
                 $sellingPrice = $pricingDetails['selling_price'];
                 $mrp = $pricingDetails['mrp'];
                 $discount = discountCalculate($sellingPrice, $mrp);
 
                 // variation
-                $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
+                // $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
+                $variationDetailTitles = [];
+                if ($cartItem->variation_child_id != 0) {
+                    $variationChildIds = explode(',', $cartItem->variation_child_id);
+                    
+                    foreach ($variationChildIds as $childId) {
+                        $variationDetail = ProductVariationChild::find($childId);
+        
+                        if ($variationDetail) {
+                            $variationDetailTitles[] = $variationDetail->title;
+                        }
+                    }
+                }
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
-                    'childVarTitle' => $variationDetail,
+                    'childVarTitle' => implode(' ', $variationDetailTitles),
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
                     'qty' => $cartItem->qty,
@@ -230,17 +244,22 @@ class CartController extends Controller
                 // checking status to show in frontend option - Hide/ Draft
                 if($cartItem->productDetails->statusDetail->show_in_frontend == 0) continue;
 
-                $pricingDetails = productPricing($cartItem->productDetails);
+                // $pricingDetails = productPricing($cartItem->productDetails);
+                $pricingDetails = productVariationPricing($cartItem->productDetails, $cartItem->variation_child_id);
                 $currencyEntity = $pricingDetails['currency_entity'];
                 $sellingPrice = $pricingDetails['selling_price'];
                 $mrp = $pricingDetails['mrp'];
                 $discount = discountCalculate($sellingPrice, $mrp);
+
+                // variation
+                $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
+                    'childVarTitle' => $variationDetail,
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
                     'qty' => $cartItem->qty,

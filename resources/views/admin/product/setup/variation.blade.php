@@ -6,6 +6,10 @@
     <div class="row mb-3">
         <div class="col-md-12 text-right">
             <button data-bs-target="#createVariationModal" data-bs-toggle="modal" class="btn btn-primary btn-sm"> <i class="fas fa-plus"></i> Create new variation type</button>
+
+            <a href="{{ route('admin.product.setup.variation.parent.position', [$data->id]) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Parent variation position change">
+                <i class="fa fa-cog"></i> Change position
+            </a>
         </div>
     </div>
 
@@ -41,6 +45,11 @@
                         </div>
                         <div class="col-2 text-right">
                             <div class="btn-group">
+                                <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch{{$item->id}}" {{ ($item->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.child.status', $item->id) }}')">
+                                    <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
+                                </div>
+
                                 <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Create">
                                     <i class="fa fa-plus"></i>
                                 </a>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToCarts extends Migration
+class AddColumnsToProductPricings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnToCarts extends Migration
      */
     public function up()
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->string('variation_child_id', 50)->default(0)->after('product_id');
+        Schema::table('product_pricings', function (Blueprint $table) {
+            $table->enum('variation_cost_type', ['add', 'sub'])->after('variation_child_id')->default('add')->comment('add/ sub');
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnToCarts extends Migration
      */
     public function down()
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('variation_child_id');
+        Schema::table('product_pricings', function (Blueprint $table) {
+            $table->dropColumn('variation_cost_type');
         });
     }
 }

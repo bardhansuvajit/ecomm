@@ -42,13 +42,18 @@
 
             <h5 class="text-primary">Product related information (Optional)</h5>
 
-            <div class="form-group row">
+            <p>
+                <span class="text-dark fw-bold">How does it work ?</span>
+                <span class="text-muted">If there is no price change for variations, keep the pricing section blank. Else only add the extra amount that exceeds/ receeds the original product Cost/ MRP & Selling price</span>
+            </p>
+
+            {{-- <div class="form-group row">
                 <div class="col-md-12">
                     <label for="product_title">Title <span class="text-muted">(Optional - within 1000 words)</span></label>
                     <textarea name="product_title" id="product_title" class="form-control" placeholder="Enter Title">{{ old('product_title') }}</textarea>
                     @error('product_title') <p class="small text-danger">{{ $message }}</p> @enderror
                 </div>
-            </div>
+            </div> --}}
 
             @foreach ($currencies as $cIndex => $currency)
                 <input type="hidden" name="currency_id[]" value="{{ $currency->id }}">
@@ -64,6 +69,16 @@
                             <span class="text-primary">{{ strtoupper($currency->name) }}</span>    
                             <small class="text-muted">({{ $currency->full_name }})</small>    
                         </h5>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="priceType[{{ $cIndex }}]" id="btnradioAdd{{$cIndex}}" autocomplete="off" value="add" checked>
+                            <label class="btn btn-outline-primary" for="btnradioAdd{{$cIndex}}">ADD</label>
+
+                            <input type="radio" class="btn-check" name="priceType[{{ $cIndex }}]" id="btnradioSub{{$cIndex}}" autocomplete="off" value="sub">
+                            <label class="btn btn-outline-primary" for="btnradioSub{{$cIndex}}">Subtract</label>
+                        </div>
                     </div>
 
                     <div class="col-md-4">

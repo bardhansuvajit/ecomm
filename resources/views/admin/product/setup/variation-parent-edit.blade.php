@@ -2,6 +2,12 @@
 @section('page-title', 'Product - Variation edit')
 
 @section('product-setup')
+<div class="row mb-3">
+    <div class="col-md-12 text-right">
+        <a href="{{ route('admin.product.setup.variation', $data->id) }}" class="btn btn-primary btn-sm"> <i class="fa fa-chevron-left"></i> Back</a>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <form action="{{ route('admin.product.setup.variation.parent.update') }}" method="post" enctype="multipart/form-data">@csrf

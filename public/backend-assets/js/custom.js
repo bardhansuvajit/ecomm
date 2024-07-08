@@ -29,7 +29,12 @@ function toastFire(type = 'success', title) {
 }
 
 //  enable tooltip everywhere
-$('[data-toggle="tooltip"]').tooltip();
+// $('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="tooltip"]').tooltip({
+    trigger: 'hover',
+    placement: 'top',
+    html: true
+});
 
 // category create page
 $('input[name=level]').on('change', function() {

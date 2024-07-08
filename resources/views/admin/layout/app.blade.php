@@ -227,6 +227,18 @@
                                         <p>Category 4</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.product.variation.list') }}" class="nav-link {{ (request()->is('admin/product/variation*')) ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Variation</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.product.variation.option.list') }}" class="nav-link {{ (request()->is('admin/product/variation/option*')) ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Variation option</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         {{-- <li class="nav-item">
