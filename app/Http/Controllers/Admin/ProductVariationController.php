@@ -31,6 +31,19 @@ class ProductVariationController extends Controller
         return view('admin.product.variation.index', compact('request', 'data'));
     }
 
+    public function detail(Request $request, $id, $prodVarId)
+    {
+        $data = Product::findOrFail($id);
+        $resp = $this->productVariationRepository->detail($prodVarId);
+
+        if ($resp['status'] == 'success') {
+            $item = $resp['data'];
+            return view('admin.product.variation.detail', compact('request', 'data', 'item'));
+        } else {
+            return redirect()->route('admin.error.404')->with($resp['status'], $resp['message']);
+        }
+    }
+
     public function table(Request $request, $id)
     {
         $data = Product::findOrFail($id);
@@ -86,9 +99,25 @@ class ProductVariationController extends Controller
             'status' => $resp['code'],
             'message' => $resp['message'],
         ]);
+    }
 
-        // $data = Product::findOrFail($id);
-        // return view('admin.product.variation.index', compact('request', 'data'));
+    public function update(Request $request, $productId)
+    {
+        // dd($request->all());
+
+        $request->validate([
+            'image_path' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000'
+        ], [
+            'image_path.max' => 'The image must not be greater than 1MB.'
+        ]);
+
+        $resp = $this->productVariationRepository->update($request->all());
+
+        if ($resp['status'] == 'success') {
+            return redirect()->route('admin.product.setup.variation.index', $productId)->with($resp['status'], $resp['message']);
+        } else {
+            return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
+        }
     }
 
 

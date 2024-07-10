@@ -79,16 +79,19 @@ Route::name('admin.')->group(function() {
                 // product variation
                 Route::prefix('variation')->name('variation.')->group(function() {
                     Route::get('/{id}', [ProductVariationController::class, 'index'])->name('index');
-                    Route::get('/create/{id}', [ProductVariationController::class, 'create'])->name('create');
+                    Route::get('/{id}/create', [ProductVariationController::class, 'create'])->name('create');
+                    Route::post('/{id}/update', [ProductVariationController::class, 'update'])->name('update');
+                    Route::get('/{id}/detail/{prodVarId}', [ProductVariationController::class, 'detail'])->name('detail');
+                    Route::get('/{id}/remove/image/{prodVarId}', [ProductVariationController::class, 'removeImage'])->name('remove.image');
                     Route::post('/toggle', [ProductVariationController::class, 'toggle'])->name('toggle');
 
-                    Route::get('/table/{id}', [ProductVariationController::class, 'table'])->name('table');
-                    Route::get('/position/{id}', [ProductVariationController::class, 'position'])->name('position');
+                    Route::get('/{id}/table', [ProductVariationController::class, 'table'])->name('table');
+                    Route::get('/{id}/position', [ProductVariationController::class, 'position'])->name('position');
 
                     // product variation option
-                    Route::prefix('option')->name('option.')->group(function() {
-                        Route::get('/detail/{id}/setup/{prodVarId}', [ProductVariationOptionController::class, 'detail'])->name('detail');
-                    });
+                    // Route::prefix('option')->name('option.')->group(function() {
+                    //     Route::get('/detail/{id}/setup/{prodVarId}', [ProductVariationOptionController::class, 'detail'])->name('detail');
+                    // });
                 });
 
                 // Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');

@@ -22,6 +22,16 @@ class ProductVariationRepository implements ProductVariationInterface
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data found',
+                'data' => $data
+            ];
+
+            return $response;
+
+            /*
             $currencyData = ipToCurrency();
 
             if (!empty($data->pricingDetails) && count($data->pricingDetails) > 0) {
@@ -59,6 +69,7 @@ class ProductVariationRepository implements ProductVariationInterface
 
                 return $response;
             }
+            */
         } else {
             $response = [
                 'status' => 'failure',
@@ -147,5 +158,50 @@ class ProductVariationRepository implements ProductVariationInterface
             }
 
         }
+    }
+
+    public function update(array $req) : array {
+        $data = ProductVariation::find($req['id']);
+
+        if (!empty($data)) {
+            if(!empty($req['product_id'])) {
+                $data->product_id = $req['product_id'];
+            }
+
+            if(!empty($req['variation_option_id'])) {
+                $data->variation_option_id = $req['variation_option_id'];
+            }
+
+            if(!empty($req['image_status'])) {
+                $data->image_status = $req['image_status'];
+            }
+
+            // image upload
+            if (!empty($req['image_path'])) {
+                $fileUpload = fileUpload($req['image_path'], 'variation');
+                // $banner->desktop_image_small = $fileUpload['file'][0];
+                // $banner->desktop_image_medium = $fileUpload['file'][1];
+                // $banner->desktop_image_large = $fileUpload['file'][2];
+                // $banner->desktop_image_org = $fileUpload['file'][3];
+                $data->image_Path = $fileUpload['file'][1];
+            }
+
+            $data->save();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data updated',
+                'data' => $data
+            ];
+        } else {
+            $response = [
+                'code' => 400,
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+        }
+
+        return $response;
     }
 }

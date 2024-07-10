@@ -45,13 +45,24 @@
                 @foreach ($options as $option)
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $option->variationOption->value }}</h5>
-                            <p class="card-text text-muted">{{ $option->variationOption->category }}</p>
+                            <div class="d-flex">
+                                @if (!empty($option->image_path) && file_exists($option->image_path))
+                                    <div class="flex-shrink-0">
+                                        <img src="{{ asset($option->image_path) }}" style="height: 50px" class="me-2">
+                                    </div>
+                                @endif
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title">{{ $option->variationOption->value }}</h5>
+                                    <p class="card-text text-muted">{{ $option->variationOption->category }}</p>
+                                </div>
+                            </div>
 
                             <div class="d-flex">
-                                <a href="{{ route('admin.product.setup.variation.option.detail', [$request->id, $option->id]) }}" class="card-link">Detail</a>
+                                <a href="{{ route('admin.product.setup.variation.detail', [$request->id, $option->id]) }}" class="card-link">Detail</a>
+
                                 <a href="#" class="card-link">Image</a>
                                 <a href="#" class="card-link">Pricing</a>
+
                                 <div class="custom-control custom-switch ms-3" data-bs-toggle="tooltip" title="Toggle status">
                                     <input type="checkbox" class="custom-control-input" id="customSwitch{{$option->id}}" {{ ($option->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.management.partner.status', $option->id) }}')">
                                     <label class="custom-control-label" for="customSwitch{{$option->id}}"></label>

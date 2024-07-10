@@ -272,3 +272,7 @@ a {
     flex-wrap: wrap;
     gap: 5px;
 }
+
+.card-title {
+    float: none;
+}
