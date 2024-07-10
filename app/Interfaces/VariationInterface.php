@@ -3,8 +3,8 @@
 namespace App\Interfaces;
 
 interface VariationInterface {
-    public function listPaginated(array $request, ?array $orderBy);
-    public function listActive(?array $orderBy);
+    public function list(array $request, ?array $orderBy);
+    // public function listActive(?array $orderBy);
     public function store(array $req);
     public function detail(int $id);
     public function update(array $req);

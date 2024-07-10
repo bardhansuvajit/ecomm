@@ -7,7 +7,7 @@ use App\Models\VariationOption;
 
 class VariationOptionRepository implements VariationOptionInterface
 {
-    public function listPaginated(array $request, ?array $orderBy) : array
+    public function list(array $request, ?array $orderBy) : array
     {
         $status = $request['status'] ?? '';
         $keyword = $request['keyword'] ?? '';

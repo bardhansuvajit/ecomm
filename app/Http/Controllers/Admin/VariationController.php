@@ -18,8 +18,8 @@ class VariationController extends Controller
 
     public function index(Request $request)
     {
-        $resp = $this->variationRepository->listPaginated($request->all(), ['position', 'asc']);
-        // $resp = $this->variationRepository->listPaginated($request, []);
+        $resp = $this->variationRepository->list($request->all(), ['position', 'asc']);
+        // $resp = $this->variationRepository->list($request, []);
         $data = $resp['data'] ?? [];
         return view('admin.variation.index', compact('data'));
     }
@@ -107,7 +107,7 @@ class VariationController extends Controller
 
     public function position(Request $request)
     {
-        $resp = $this->variationRepository->listPaginated($request->all(), ['position', 'asc']);
+        $resp = $this->variationRepository->list($request->all(), ['position', 'asc']);
         $data = $resp['data'] ?? [];
         return view('admin.variation.position', compact('data'));
     }

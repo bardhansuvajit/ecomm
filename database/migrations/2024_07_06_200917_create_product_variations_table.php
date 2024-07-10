@@ -18,7 +18,7 @@ class CreateProductVariationsTable extends Migration
 
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('variation_option_id')->constrained('variation_options')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('dependent_option_id')->constrained('variations')->onDelete('cascade')->nullable();
+            $table->foreignId('dependent_option_id')->nullable()->constrained('variations')->onDelete('cascade');
 
             $table->integer('position')->default(1);
             $table->tinyInteger('status')->default(1)->comment('1: active | 0: inactive');

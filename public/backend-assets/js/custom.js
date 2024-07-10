@@ -112,6 +112,21 @@ function updatePosition(data, route, token) {
     })
 }
 
+function productVariationToggle(productId, optionId, route, token) {
+    $.ajax({
+        url: route,
+        type: 'post',
+        data: {'_token': token, product_id: productId, variation_option_id: optionId},
+        success: function(resp) {
+            if (resp.status == 200) {
+                toastFire('success', resp.message);
+            } else {
+                toastFire('error', resp.message);
+            }
+        }
+    })
+}
+
 // image height, width
 function imgDetails(imgPath) {
     var resp = [];

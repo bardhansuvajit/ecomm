@@ -21,10 +21,10 @@ class VariationOptionController extends Controller
 
     public function index(Request $request)
     {
-        $variations = $this->variationRepository->listActive(['title', 'asc']);
+        $variations = $this->variationRepository->list(['status' => 1, 'page' => 'all'], ['position', 'asc']);
         $categories = $this->variationOptionRepository->categories();
-        $responsess = $this->variationOptionRepository->listPaginated($request->all(), ['position', 'asc']);
-        // $responses = $this->variationOptionRepository->listPaginated($request, []);
+        $responsess = $this->variationOptionRepository->list($request->all(), ['position', 'asc']);
+        // $responses = $this->variationOptionRepository->list($request, []);
         $data = $responsess['data'] ?? [];
 
         return view('admin.variation-option.index', compact('data', 'variations', 'categories'));
@@ -32,7 +32,7 @@ class VariationOptionController extends Controller
 
     public function create(Request $request)
     {
-        $variations = $this->variationRepository->listActive(['title', 'asc']);
+        $variations = $this->variationRepository->list(['status' => 1, 'page' => 'all'], ['position', 'asc']);
         return view('admin.variation-option.create', compact('variations'));
     }
 
@@ -76,7 +76,7 @@ class VariationOptionController extends Controller
         $resp = $this->variationOptionRepository->detail($id);
 
         if ($resp['status'] == 'success') {
-            $variations = $this->variationRepository->listActive(['title', 'asc']);
+            $variations = $this->variationRepository->list(['status' => 1, 'page' => 'all'], ['position', 'asc']);
             $data = $resp['data'];
             return view('admin.variation-option.edit', compact('data', 'variations'));
         } else {
@@ -123,9 +123,9 @@ class VariationOptionController extends Controller
 
     public function position(Request $request)
     {
-        $variations = $this->variationRepository->listActive(['title', 'asc']);
+        $variations = $this->variationRepository->list(['status' => 1, 'page' => 'all'], ['position', 'asc']);
         $categories = $this->variationOptionRepository->categories();
-        $responsess = $this->variationOptionRepository->listPaginated($request->all(), ['position', 'asc']);
+        $responsess = $this->variationOptionRepository->list($request->all(), ['position', 'asc']);
         $data = $responsess['data'] ?? [];
 
         return view('admin.variation-option.position', compact('data', 'variations', 'categories'));

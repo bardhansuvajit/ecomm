@@ -3,15 +3,23 @@
 namespace App\Repositories;
 
 use App\Interfaces\ProductVariationInterface;
+use App\Interfaces\VariationOptionInterface;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\ProductVariationChild;
+use App\Models\ProductVariation;
 
 class ProductVariationRepository implements ProductVariationInterface
 {
-    public function detail($id): array
+    private VariationOptionInterface $variationOptionRepository;
+
+    public function __construct(VariationOptionInterface $variationOptionRepository)
     {
-        $data = ProductVariationChild::find($id);
+        $this->variationOptionRepository = $variationOptionRepository;
+    }
+
+    public function detail($id) : array
+    {
+        $data = ProductVariation::find($id);
 
         if (!empty($data)) {
             $currencyData = ipToCurrency();
@@ -59,5 +67,85 @@ class ProductVariationRepository implements ProductVariationInterface
         }
 
         return $response;
+    }
+
+    public function toggle(array $req) : array {
+        // check first if exists or not
+        $check = ProductVariation::where('product_id', $req['product_id'])
+        ->where('variation_option_id', $req['variation_option_id'])
+        ->first();
+
+        if (!empty($check)) {
+            $check->delete();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data removed'
+            ];
+
+            return $response;
+        } else {
+            // get parent variation of the selected option_id
+            $optionDetail = $this->variationOptionRepository->detail($req['variation_option_id']);
+
+            if ($optionDetail['status'] == 'success') {
+                // $data = $optionDetail['data'];
+
+                // check if another variation type/ parent is added
+                $chkParent = ProductVariation::select('variation_options.variation_id')
+                ->where('product_id', $req['product_id'])
+                ->join('variation_options', 'variation_options.id', '=', 'product_variations.variation_option_id')
+                ->groupBy('variation_options.variation_id')
+                ->first();
+
+                // dd($chkParent, $chkParent->variation_id, $optionDetail['data']->variation_id);
+
+                // match 2 variation parents. which is sent by ajax & which already exists
+                if (empty($chkParent) || ($optionDetail['data']->variation_id == $chkParent->variation_id)) {
+                    $data = new ProductVariation();
+                    $data->product_id = $req['product_id'];
+                    $data->variation_option_id = $req['variation_option_id'];
+                    $data->dependent_option_id = $req['dependent_option_id'] ?? NULL;
+                    $data->status = $req['status'] ?? 0;
+                    $data->save();
+
+                    if ($data) {
+                        $response = [
+                            'code' => 200,
+                            'status' => 'success',
+                            'message' => 'Data added',
+                            'data' => $data
+                        ];
+                    } else {
+                        $response = [
+                            'code' => 400,
+                            'status' => 'failure',
+                            'message' => 'Something happened',
+                        ];
+                    }
+
+                    return $response;
+                } else {
+                    $response = [
+                        'code' => 400,
+                        'status' => 'failure',
+                        'message' => 'You cannot add dependent variation from here',
+                    ];
+    
+                    return $response;
+                }
+
+            } else {
+                $response = [
+                    'code' => 400,
+                    'status' => 'failure',
+                    'message' => 'Something happened',
+                ];
+
+                return $response;
+            }
+
+        }
     }
 }

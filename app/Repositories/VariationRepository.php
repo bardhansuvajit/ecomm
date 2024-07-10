@@ -2,36 +2,53 @@
 
 namespace App\Repositories;
 use App\Interfaces\VariationInterface;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Variation;
 
 class VariationRepository implements VariationInterface
 {
-    public function listPaginated(array $request, ?array $orderBy) : array
+    public function list(array $request, ?array $orderBy) : array
     {
         $status = $request['status'] ?? '';
         $keyword = $request['keyword'] ?? '';
         $page = $request['page'] ?? '';
         $id = $request['parent'] ?? '';
+        $category = $request['category'] ?? '';
+
+        DB::enableQueryLog();
 
         $query = Variation::query();
 
         $query->when($keyword, function($query) use ($keyword) {
-            $query->where('title', 'like', '%'.$keyword.'%');
+            $query->where('variations.title', 'like', '%'.$keyword.'%');
         });
 
         $query->when($id, function($query) use ($id) {
-            $query->where('id', $id);
+            $query->where('variations.id', $id);
         });
 
+        if ($category) {
+            $query->join('variation_options', 'variation_options.variation_id', '=', 'variations.id')
+                  ->where('variation_options.category', 'like', '%'.$category.'%')
+                  ->where('variation_options.status', 1)
+                  ->groupBy('variations.id');
+        }
+
+        // $query->when($category, function($query) use ($category) {
+        //     $query->join('variation_options', 'variation_options.variation_id', '=', 'variations.id')
+        //           ->where('variation_options.category', 'like', '%'.$category.'%')
+        //           ->groupBy('variations.id');
+        // });
+
         $query->when(($status == 0) || ($status == 1), function($query) use ($status) {
-            $query->where('status', $status);
+            $query->where('variations.status', $status);
         });
 
         if (!empty($orderBy) && count($orderBy) > 0) {
-            $query->orderBy($orderBy[0], $orderBy[1] ?? 'asc');
+            $query->orderBy('variations.'.$orderBy[0], $orderBy[1] ?? 'asc');
         } else {
-            $query->latest('id');
+            $query->latest('variations.id');
         }
 
         if (empty($page)) {
@@ -44,7 +61,7 @@ class VariationRepository implements VariationInterface
             }
         }
 
-        // $data = $query->paginate(applicationSettings()->pagination_items_per_page);
+        // dd(DB::getQueryLog());
 
         if (count($data) > 0) {
             $response = [
@@ -64,6 +81,7 @@ class VariationRepository implements VariationInterface
         return $response;
     }
 
+    /*
     public function listActive(?array $orderBy) : array
     {
         $query = Variation::query()->where('status', 1);
@@ -93,6 +111,7 @@ class VariationRepository implements VariationInterface
 
         return $response;
     }
+    */
 
     public function store(array $req) : array
     {

@@ -9,27 +9,6 @@
 @php
     $pricing = [];
 
-    // dd($data->frontVariationParents);
-
-    if (count($data->frontVariationParents) > 0) {
-        $childVariationIds = [];
-
-        foreach ($data->frontVariationParents as $vParent) {
-            if (count($vParent->frontVariationChildern) > 0) {
-                $childVariationIds[] = $vParent->frontVariationChildern[0]->id;
-            } else {
-                $pricing = productPricing($data);
-            }
-        }
-
-        if (!empty($childVariationIds)) {
-            $pricing = productVariationPricing($data, $childVariationIds);
-        }
-    } else {
-        $pricing = productPricing($data);
-    }
-
-
     /*
     if (count($data->variationParents) > 0) {
         foreach ($data->variationParents as $vParent) {
@@ -178,7 +157,7 @@
             @endif
 
             {{-- VARIATION --}}
-            @if (count($data->frontVariationParents) > 0)
+            {{-- @if (count($data->frontVariationParents) > 0)
                 @foreach ($data->frontVariationParents as $vParentIndex => $vParent)
                     @if ((count($vParent->frontVariationChildern) > 0))
                         <div id="variation" class="mt-3">
@@ -189,16 +168,11 @@
 
                                     <label class="btn btn-outline-dark" for="prodVar{{$vParentIndex}}{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
                                 @endforeach
-                                {{-- @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
-                                    <input type="radio" class="btn-check" name="prodVar" id="prodVar{{$vParentIndex}}{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
-
-                                    <label class="btn btn-outline-dark" for="prodVar{{$vParentIndex}}{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
-                                @endforeach --}}
                             </div>
                         </div>
                     @endif
                 @endforeach
-            @endif
+            @endif --}}
 
             {{-- PRICING --}}
             @if ($data->statusDetail->show_price_in_detail_page == 1)

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Interfaces\VariationInterface;
 use App\Interfaces\VariationOptionInterface;
+use App\Interfaces\ProductVariationInterface;
 
 use App\Models\Product;
 
@@ -14,11 +16,13 @@ class ProductVariationController extends Controller
 {
     private VariationInterface $variationRepository;
     private VariationOptionInterface $variationOptionRepository;
+    private ProductVariationInterface $productVariationRepository;
 
-    public function __construct(VariationInterface $variationRepository, VariationOptionInterface $variationOptionRepository)
+    public function __construct(VariationInterface $variationRepository, VariationOptionInterface $variationOptionRepository, ProductVariationInterface $productVariationRepository)
     {
         $this->variationRepository = $variationRepository;
         $this->variationOptionRepository = $variationOptionRepository;
+        $this->productVariationRepository = $productVariationRepository;
     }
 
     public function index(Request $request, $id)
@@ -27,18 +31,64 @@ class ProductVariationController extends Controller
         return view('admin.product.variation.index', compact('request', 'data'));
     }
 
+    public function table(Request $request, $id)
+    {
+        $data = Product::findOrFail($id);
+        return view('admin.product.variation.table', compact('request', 'data'));
+    }
+
     public function create(Request $request, $id)
     {
         $data = Product::findOrFail($id);
 
         $moreData = array_merge($request->all(), [
             'status' => 1,
-            'page' => 'all',
+            'page' => 'all'
         ]);
-        $variations = $this->variationRepository->listPaginated($moreData, ['position', 'asc']);
-        $categories = $this->variationOptionRepository->categories();
+        $variations = $this->variationRepository->list($moreData, ['position', 'asc']);
 
-        return view('admin.product.variation.create', compact('request', 'data', 'variations', 'categories'));
+        // grouping by category
+        if (!empty($variations['data']) && count($variations['data']) > 0) {
+            $new_variations = collect($variations['data']);
+
+            $new_variations = $new_variations->map(function ($parent) {
+                $groupedOptions = $parent->activeOptions->groupBy('category');
+                $parent->groupedOptions = $groupedOptions;
+                return $parent;
+            });
+        }
+
+        $categories = $this->variationOptionRepository->categories();
+        $all_variations = $this->variationRepository->list(['status' => 1, 'page' => 'all'], ['position', 'asc']);
+
+        return view('admin.product.variation.create', compact('request', 'data', 'all_variations', 'variations', 'categories'));
+    }
+
+    public function toggle(Request $request)
+    {
+        // dd($request->all());
+
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|integer|min:1',
+            'variation_option_id' => 'required|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $resp = $this->productVariationRepository->toggle($request->all());
+
+        return response()->json([
+            'status' => $resp['code'],
+            'message' => $resp['message'],
+        ]);
+
+        // $data = Product::findOrFail($id);
+        // return view('admin.product.variation.index', compact('request', 'data'));
     }
 
 

@@ -115,4 +115,19 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductSubscription', 'product_id', 'id')->where('user_id', auth()->guard('web')->user()->id);
     }
+
+    public function variationOptions()
+    {
+        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id');
+    }
+
+    public function activeVariationOptions()
+    {
+        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id')->where('status', 1);
+    }
+
+    public function activeVariations()
+    {
+        return $this->hasManyThrough(VariationOption::class, ProductVariation::class, 'product_id', 'id', 'id', 'variation_option_id')->where('product_variations.status', 1);
+    }
 }

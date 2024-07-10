@@ -18,15 +18,15 @@
                     <div class="form-group ml-2">
                         <select name="parent" id="parent" class="form-select form-select-sm" style="width: 150px;">
                             <option value="">Select variation...</option>
-                            <option value="" {{ (request()->input('parent') === null || request()->input('parent') === '') ? 'selected' : '' }}>All</option>
-                            @forelse ($variations['data'] as $parent)
+                            @forelse ($all_variations['data'] as $parent)
                                 <option value="{{ $parent->id }}" {{ (request()->input('parent') == $parent->id) ? 'selected' : '' }}>{{ $parent->title }}</option>
                             @empty
                                 <option value="">No data found</option>
                             @endforelse
                         </select>
                     </div>
-                    <div class="form-group ml-2">
+
+                    {{-- <div class="form-group ml-2">
                         <select name="category" id="category" class="form-select form-select-sm" style="width: 150px;">
                             <option value="">Select category...</option>
                             @forelse ($categories['data'] as $category)
@@ -35,9 +35,10 @@
                                 <option value="">No data found</option>
                             @endforelse
                         </select>
-                    </div>
+                    </div> --}}
+
                     <div class="form-group ml-2">
-                        <input type="search" class="form-control form-control-sm" name="keyword" id="keyword" value="{{ request()->input('keyword') }}" placeholder="Search something...">
+                        <input type="search" class="form-control form-control-sm" name="keyword" id="keyword" value="{{ request()->input('keyword') }}" placeholder="Search variation...">
                     </div>
                     <div class="form-group ml-2">
                         <div class="btn-group">
@@ -54,30 +55,41 @@
         </div>
     </div>
 
-    @foreach ($variations['data'] as $parent)
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-12">
-                    <h5 class="fw-bold text-primary mb-3">{{ $parent->title }}</h5>
-                </div>
+    @if (!empty($variations['data']) && count($variations['data']) > 0)
+        @foreach ($variations['data'] as $parent)
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="fw-bold text-primary mb-3">{{ $parent->title }}</h5>
+                    </div>
 
-                <div class="col-12">
-                    <div class="btn-group btn-group-wrap">
-                        @foreach ($parent->activeOptions as $option)
-                            <input type="checkbox" class="btn-check" name="btnradio" id="btnradio{{ $option->id }}" autocomplete="off">
-                            <label class="btn btn-outline-dark" for="btnradio{{ $option->id }}">
-                                <p class="mb-1">{{ $option->value }}</p>
+                    {{-- {{ dd($data->variationOptions->pluck('')) }} --}}
 
-                                <p class="small mb-0">{{ $option->category }}</p>
-                            </label>
+                    <div class="col-12">
+                        @foreach ($parent->groupedOptions as $category => $options)
+                            <h6 class="text-secondary mt-4">{{ strtoupper($category) }}</h6>
+                            <div class="btn-group btn-group-wrap">
+                                @foreach ($options as $option)
+                                    <input type="checkbox" class="btn-check" name="btnradio" id="btnradio{{ $option->id }}" autocomplete="off" {{ collect($data->variationOptions->pluck('variation_option_id'))->contains($option->id) ? 'checked' : '' }}>
+
+                                    <label class="btn btn-outline-dark" for="btnradio{{ $option->id }}" onclick="productVariationToggle({{ $request->id }}, {{ $option->id }}, '{{ route('admin.product.setup.variation.toggle') }}', '{{ csrf_token() }}')">
+                                        <p class="mb-0">{{ $option->value }}</p>
+                                    </label>
+                                @endforeach
+                            </div>
                         @endforeach
                     </div>
                 </div>
-            </div>
 
-            @if(!$loop->last) <hr class="my-5"> @endif
+                @if(!$loop->last) <hr class="my-5"> @endif
+            </div>
+        @endforeach
+    @else
+        <div class="col-12 text-center my-5">
+            <p class="text-muted my-5">No data found</p>
         </div>
-    @endforeach
+    @endif
+
 </div>
 @endsection
 

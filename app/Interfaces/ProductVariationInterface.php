@@ -3,5 +3,6 @@
 namespace App\Interfaces;
 
 interface ProductVariationInterface {
-    public function detail($id);
+    public function detail(int $id);
+    public function toggle(array $req);
 }
