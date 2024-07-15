@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Interfaces\VariationInterface;
 use App\Interfaces\VariationOptionInterface;
 use App\Interfaces\ProductVariationInterface;
 
 use App\Models\Product;
+use App\Models\ProductPricing;
 
 class ProductVariationController extends Controller
 {
@@ -38,16 +40,11 @@ class ProductVariationController extends Controller
 
         if ($resp['status'] == 'success') {
             $item = $resp['data'];
-            return view('admin.product.variation.detail', compact('request', 'data', 'item'));
+            $productCurrencies = ProductPricing::where('product_id', $id)->get();
+            return view('admin.product.variation.detail', compact('request', 'data', 'item', 'productCurrencies'));
         } else {
             return redirect()->route('admin.error.404')->with($resp['status'], $resp['message']);
         }
-    }
-
-    public function table(Request $request, $id)
-    {
-        $data = Product::findOrFail($id);
-        return view('admin.product.variation.table', compact('request', 'data'));
     }
 
     public function create(Request $request, $id)
@@ -114,11 +111,112 @@ class ProductVariationController extends Controller
         $resp = $this->productVariationRepository->update($request->all());
 
         if ($resp['status'] == 'success') {
-            return redirect()->route('admin.product.setup.variation.index', $productId)->with($resp['status'], $resp['message']);
+            return redirect()->back()->with($resp['status'], $resp['message']);
+            // return redirect()->route('admin.product.setup.variation.index', $productId)->with($resp['status'], $resp['message']);
         } else {
             return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
         }
     }
+
+    public function status(Request $request, $prodVarId)
+    {
+        $resp = $this->productVariationRepository->status($prodVarId);
+        return response()->json([
+            'status' => $resp['code'],
+            'message' => $resp['message'],
+        ]);
+    }
+
+    public function imageRemove(Request $request, $id, $prodVarId)
+    {
+        $data = Product::findOrFail($id);
+        $resp = $this->productVariationRepository->imageRemove($prodVarId);
+
+        if ($resp['status'] == 'success') {
+            $item = $resp['data'];
+            return redirect()->back()->with($resp['status'], $resp['message']);
+        } else {
+            return redirect()->route('admin.error.404')->with($resp['status'], $resp['message']);
+        }
+    }
+
+    public function imageStatus(Request $request, $prodVarId)
+    {
+        $resp = $this->productVariationRepository->imageStatus($prodVarId);
+        return response()->json([
+            'status' => $resp['code'],
+            'message' => $resp['message'],
+        ]);
+    }
+
+    public function position(Request $request, $id)
+    {
+        $data = Product::findOrFail($id);
+        return view('admin.product.variation.position', compact('request', 'data'));
+    }
+
+    public function positionUpdate(Request $request)
+    {
+        $resp = $this->productVariationRepository->position($request->position);
+        return response()->json([
+            'status' => $resp['code'],
+            'message' => $resp['message'],
+        ]);
+    }
+
+    public function delete(Request $request, $id, $prodVarId)
+    {
+        $resp = $this->productVariationRepository->delete($prodVarId);
+        return redirect()->back()->with($resp['status'], $resp['message']);
+    }
+
+    public function updatePricing(Request $request)
+    {
+        // dd($request->all());
+
+        $request->validate([
+            'product_id' => 'required|integer|min:1',
+            'product_variation_id' => 'required|integer|min:1',
+            'currency_id' => 'required|array|min:1',
+            'currency_id.*' => 'required|integer|min:1',
+
+            'cost' => 'nullable|array',
+            'cost.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1',
+            'mrp' => 'nullable|array|min:1',
+            'mrp.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:selling_price.*',
+            'selling_price' => 'nullable|array',
+            'selling_price.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:cost.*',
+        ], [
+            'cost.*.integer' => 'Cost must be an integer',
+            'mrp.*.integer' => 'MRP must be an integer',
+            'mrp.*.gt' => 'The MRP must be greater than selling price',
+            'selling_price.*.integer' => 'Selling price must be an integer',
+            'selling_price.*.gt' => 'The selling price must be greater than cost',
+        ]);
+
+        $resp = $this->productVariationRepository->price($request->all());
+        return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -163,6 +261,14 @@ class ProductVariationController extends Controller
         $productCurrencies = ProductPricing::where('product_id', $id)->get();
         return view('admin.product.setup.variation-child-create', compact('request', 'data', 'parent_variation', 'variationParentId', 'currencies', 'productCurrencies'));
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -290,7 +396,7 @@ class ProductVariationController extends Controller
                     $pricing = new ProductPricing();
                     $pricing->product_id = $request->product_id;
                     $pricing->currency_id = $currency;
-                    $pricing->variation_child_id = $data->id;
+                    $pricing->product_variation_id = $data->id;
                     $pricing->cost = $request->cost[$currencyIndex] ?? null;
                     $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
                     $pricing->selling_price = $request->selling_price[$currencyIndex] ?? 0;

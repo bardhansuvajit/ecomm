@@ -21,6 +21,8 @@
         $pricing = productPricing($data);
     }
     */
+
+    $pricing = productPricing($data);
 @endphp
 
 <section id="primary-detail">

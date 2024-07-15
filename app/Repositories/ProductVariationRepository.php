@@ -7,6 +7,7 @@ use App\Interfaces\VariationOptionInterface;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\ProductVariation;
+use App\Models\ProductPricing;
 
 class ProductVariationRepository implements ProductVariationInterface
 {
@@ -17,8 +18,7 @@ class ProductVariationRepository implements ProductVariationInterface
         $this->variationOptionRepository = $variationOptionRepository;
     }
 
-    public function detail($id) : array
-    {
+    public function detail($id) : array {
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
@@ -176,14 +176,13 @@ class ProductVariationRepository implements ProductVariationInterface
                 $data->image_status = $req['image_status'];
             }
 
-            // image upload
             if (!empty($req['image_path'])) {
                 $fileUpload = fileUpload($req['image_path'], 'variation');
                 // $banner->desktop_image_small = $fileUpload['file'][0];
                 // $banner->desktop_image_medium = $fileUpload['file'][1];
                 // $banner->desktop_image_large = $fileUpload['file'][2];
                 // $banner->desktop_image_org = $fileUpload['file'][3];
-                $data->image_Path = $fileUpload['file'][1];
+                $data->image_path = $fileUpload['file'][1];
             }
 
             $data->save();
@@ -204,4 +203,206 @@ class ProductVariationRepository implements ProductVariationInterface
 
         return $response;
     }
+
+    public function status(int $id) : array {
+        $data = ProductVariation::find($id);
+
+        if (!empty($data)) {
+            $data->status = ($data->status == 1) ? 0 : 1;
+            $data->update();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data status updated',
+                'data' => $data
+            ];
+        } else {
+            $response = [
+                'code' => 400,
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+        }
+
+        return $response;
+    }
+
+    public function delete(int $id) : array {
+        $data = ProductVariation::find($id);
+
+        if (!empty($data)) {
+            $data->delete();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data removed'
+            ];
+        } else {
+            $response = [
+                'code' => 400,
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+        }
+
+        return $response;
+    }
+
+    public function position(array $ids) : array {
+        $count = 1;
+        foreach($ids as $id) {
+            $data = ProductVariation::find($id);
+
+            if (!empty($data)) {
+                $data->position = $count;
+                $data->save();
+
+                $count++;
+            } else {
+                $response = [
+                    'code' => 400,
+                    'status' => 'failure',
+                    'message' => 'Something happened',
+                ];
+            }
+        }
+
+        $response = [
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Position updated',
+            'data' => $data
+        ];
+
+        return $response;
+    }
+
+    public function price(array $req) : array {
+        DB::beginTransaction();
+
+        try {
+            $existingPricings = ProductPricing::where('product_id', $req['product_id'])
+            ->where('product_variation_id', $req['product_variation_id'])
+            ->get()
+            ->keyBy('currency_id');
+
+            foreach($req['currency_id'] as $currencyIndex => $currency) {
+                $pricingData = [
+                    'product_id' => $req['product_id'],
+                    'currency_id' => $currency,
+                    'product_variation_id' => $req['product_variation_id'],
+                    'cost' => $req['cost'][$currencyIndex] ?? null,
+                    'mrp' => $req['mrp'][$currencyIndex] ?? null,
+                    'selling_price' => $req['selling_price'][$currencyIndex] ?? 0
+                ];
+    
+                if ($existingPricings->has($currency)) {
+                    // Update existing pricing
+                    $existingPricings->get($currency)->update($pricingData);
+                } else {
+                    // Create new pricing
+                    ProductPricing::create($pricingData);
+                }
+            }
+    
+            DB::commit();
+            return [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data updated'
+            ];
+
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return [
+                'code' => 500,
+                'status' => 'failure',
+                'message' => $e->getMessage(),
+                'error' => $e->getMessage()
+            ];
+        }
+
+        /*
+        $chk = ProductPricing::where('product_id', $req['product_id'])
+        ->where('product_variation_id', $req['product_variation_id']);
+
+        if ($chk->exists()) {
+            $chk->delete();
+        }
+
+        if (!empty($req['selling_price'][0])) {
+            foreach($req['currency_id'] as $currencyIndex => $currency) {
+                $pricing = new ProductPricing();
+                $pricing->product_id = $req['product_id'];
+                $pricing->currency_id = $currency;
+                $pricing->product_variation_id = $req['product_variation_id'];
+                $pricing->cost = $req['cost'][$currencyIndex] ?? null;
+                $pricing->mrp = $req['mrp'][$currencyIndex] ?? null;
+                $pricing->selling_price = $req['selling_price'][$currencyIndex] ?? 0;
+                $pricing->save();
+            }
+        }
+
+        $response = [
+            'code' => 200,
+            'status' => 'success',
+            'message' => 'Data updated'
+        ];
+
+        return $response;
+        */
+    }
+
+    public function imageStatus(int $id) : array {
+        $data = ProductVariation::find($id);
+
+        if (!empty($data)) {
+            $data->image_status = ($data->image_status == 1) ? 0 : 1;
+            $data->update();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Data status updated',
+                'data' => $data
+            ];
+        } else {
+            $response = [
+                'code' => 400,
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+        }
+
+        return $response;
+    }
+
+    public function imageRemove(int $id) : array {
+        $data = ProductVariation::find($id);
+
+        if (!empty($data)) {
+            $data->image_status = 0;
+            $data->image_path = null;
+            $data->save();
+
+            $response = [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'Image removed',
+                'data' => $data
+            ];
+        } else {
+            $response = [
+                'code' => 400,
+                'status' => 'failure',
+                'message' => 'Something happened',
+            ];
+        }
+
+        return $response;
+    }
+
 }

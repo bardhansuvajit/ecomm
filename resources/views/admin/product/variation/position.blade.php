@@ -9,10 +9,7 @@
                 <a class="nav-link" href="{{ route('admin.product.setup.variation.index', $request->id) }}">List</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url()->current() }}">Table</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.product.setup.variation.position', $request->id) }}">Position</a>
+                <a class="nav-link active" href="{{ url()->current() }}">Position</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#">Trash</a>
@@ -40,41 +37,40 @@
                     <tr>
                         <th style="width: 10px">#</th>
                         <th>Name</th>
+                        <th>Variation</th>
                         <th>Category</th>
-                        <th>Image</th>
                         <th>Datetime</th>
                         <th style="width: 100px">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="sortable" data-position-update-route="{{ route('admin.product.setup.variation.position.update', $request->id) }}" data-csrf-token="{{ csrf_token() }}">
                     @foreach ($groupedVariations as $options)
                         @foreach ($options as $index => $option)
-                            <tr>
+                            <tr class="single" id="{{ $option->id }}">
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $option->variationOption->value }}</td>
-                                <td>{{ $option->variationOption->category }}</td>
                                 <td>
                                     @if (!empty($option->image_path) && file_exists($option->image_path))
-                                        SHOW IMAGE
-                                    @else
-                                        {!! imageUploadNotice('variation')['html'] !!}
-                                        Add image
+                                        <img src="{{ asset($option->image_path) }}" style="height: 50px" class="">
                                     @endif
+
+                                    {{ $option->variationOption->value }}
                                 </td>
+                                <td>{{ $option->variationOption->parent->title }}</td>
+                                <td>{{ $option->variationOption->category }}</td>
                                 <td>{{ h_date($option->created_at) }}</td>
                                 <td>
                                     <div class="d-flex">
-                                        <div class="custom-control custom-switch mt-1" data-toggle="tooltip" title="Toggle status">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitch{{$option->id}}" {{ ($option->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.variation.status', $option->id) }}')">
+                                        <div class="custom-control custom-switch" data-bs-toggle="tooltip" title="Toggle status">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitch{{$option->id}}" {{ ($option->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.status', $option->id) }}')">
                                             <label class="custom-control-label" for="customSwitch{{$option->id}}"></label>
                                         </div>
 
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.product.variation.detail', $option->id) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
+                                            <a href="{{ route('admin.product.setup.variation.detail', [$request->id, $option->id]) }}" class="btn btn-sm btn-dark" data-toggle="tooltip" title="View">
                                                 <i class="fa fa-eye"></i>
                                             </a>
 
-                                            <a href="{{ route('admin.product.variation.delete', $option->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
+                                            <a href="{{ route('admin.product.setup.variation.delete', [$request->id, $option->id]) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-toggle="tooltip" title="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </div>

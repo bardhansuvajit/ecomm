@@ -1050,7 +1050,7 @@ class ProductSetupController extends Controller
                     $pricing = new ProductPricing();
                     $pricing->product_id = $request->product_id;
                     $pricing->currency_id = $currency;
-                    $pricing->variation_child_id = $data->id;
+                    // $pricing->variation_child_id = $data->id;
                     $pricing->cost = $request->cost[$currencyIndex] ?? null;
                     $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
                     $pricing->selling_price = $request->selling_price[$currencyIndex] ?? 0;

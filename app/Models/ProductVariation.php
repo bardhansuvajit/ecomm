@@ -18,4 +18,8 @@ class ProductVariation extends Model
         return $this->belongsTo('App\Models\VariationOption', 'variation_option_id', 'id');
     }
 
+    public function pricing() {
+        return $this->hasMany('App\Models\ProductPricing', 'product_variation_id', 'id');
+    }
+
 }

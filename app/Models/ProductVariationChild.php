@@ -17,6 +17,6 @@ class ProductVariationChild extends Model
 
     public function pricingDetails()
     {
-        return $this->hasMany('App\Models\ProductPricing', 'variation_child_id', 'id');
+        return $this->hasMany('App\Models\ProductPricing', 'product_variation_id', 'id');
     }
 }

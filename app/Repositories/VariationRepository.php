@@ -198,8 +198,7 @@ class VariationRepository implements VariationInterface
             $response = [
                 'code' => 200,
                 'status' => 'success',
-                'message' => 'Data removed',
-                'data' => $data
+                'message' => 'Data removed'
             ];
         } else {
             $response = [

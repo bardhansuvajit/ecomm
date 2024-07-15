@@ -14,7 +14,7 @@ class AddColumnToCarts extends Migration
     public function up()
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->string('variation_child_id', 50)->default(0)->after('product_id');
+            $table->string('product_variation_id', 50)->default(0)->after('product_id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnToCarts extends Migration
     public function down()
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('variation_child_id');
+            $table->dropColumn('product_variation_id');
         });
     }
 }

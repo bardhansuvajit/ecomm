@@ -9,9 +9,6 @@
                 <a class="nav-link active" aria-current="page" href="{{ url()->current() }}">List</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.product.setup.variation.table', $request->id) }}">Table</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.product.setup.variation.position', $request->id) }}">Position</a>
             </li>
             <li class="nav-item">
@@ -45,26 +42,40 @@
                 @foreach ($options as $option)
                     <div class="card">
                         <div class="card-body">
-                            <div class="d-flex">
+                            <div class="d-flex mb-3">
                                 @if (!empty($option->image_path) && file_exists($option->image_path))
-                                    <div class="flex-shrink-0">
-                                        <img src="{{ asset($option->image_path) }}" style="height: 50px" class="me-2">
+                                    <div class="flex-shrink-0 me-3">
+                                        <div class="custom-control custom-switch" data-bs-toggle="tooltip" title="Toggle Image status">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitchImage{{$option->id}}" {{ ($option->image_status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.image.status', $option->id) }}')">
+
+                                            <label class="custom-control-label" for="customSwitchImage{{$option->id}}">
+                                                <img src="{{ asset($option->image_path) }}" style="height: 50px" class="">
+                                            </label>
+                                        </div>
                                     </div>
                                 @endif
                                 <div class="flex-grow-1">
-                                    <h5 class="card-title">{{ $option->variationOption->value }}</h5>
+                                    <h5 class="card-title fw-bold">{{ $option->variationOption->value }}</h5>
+
+                                    @if (count($option->pricing) > 0)
+                                        @foreach ($option->pricing as $price)
+                                            <p class="text-muted mb-0">
+                                                <del>{!! $price->currency->entity !!}{{ $price->mrp }}</del>
+                                                {!! $price->currency->entity !!}{{ $price->selling_price }}
+                                            </p>
+                                        @endforeach
+                                    @endif
+
                                     <p class="card-text text-muted">{{ $option->variationOption->category }}</p>
                                 </div>
                             </div>
 
-                            <div class="d-flex">
-                                <a href="{{ route('admin.product.setup.variation.detail', [$request->id, $option->id]) }}" class="card-link">Detail</a>
-
-                                <a href="#" class="card-link">Image</a>
-                                <a href="#" class="card-link">Pricing</a>
-
-                                <div class="custom-control custom-switch ms-3" data-bs-toggle="tooltip" title="Toggle status">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch{{$option->id}}" {{ ($option->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.management.partner.status', $option->id) }}')">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <a href="{{ route('admin.product.setup.variation.detail', [$request->id, $option->id]) }}" class="btn btn-sm btn-dark">Detail</a>
+                                </div>
+                                <div class="custom-control custom-switch" data-bs-toggle="tooltip" title="Toggle status">
+                                    <input type="checkbox" class="custom-control-input" id="customSwitch{{$option->id}}" {{ ($option->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.status', $option->id) }}')">
                                     <label class="custom-control-label" for="customSwitch{{$option->id}}"></label>
                                 </div>
                             </div>
@@ -78,67 +89,6 @@
             <p class="text-muted my-5">No data added yet</p>
         </div>
     @endif
-
-    {{-- {{ dd($data->variationOptions) }} --}}
-
-    {{-- @foreach ($data->variationParents as $item)
-    <div class="col-md-12">
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-10">
-                        <h5 class="{{ (count($item->frontVariationChildern) == 0) ? 'text-danger font-weight-bold' : '' }} ">{{$item->title}}</h5>
-
-                        @if ((count($item->frontVariationChildern) == 0))
-                            <p class="small card-text">No variations found under <i>{{$item->title}}</i>. It will not be displayed in Frontend. <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}">Add new</a></p>
-                        @endif
-
-                        <div class="btn-group">
-                            @foreach ($item->frontVariationChildern as $index => $child_variation)
-                                <input type="radio" class="btn-check" id="child-var-btn-{{$index}}" value="{{ $child_variation->id }}" name="child-var_id">
-                                <label class="btn btn-light" for="child-var-btn-{{$index}}">
-                                    @if ($child_variation->image_medium)
-                                        <img src="{{ asset($child_variation->image_medium) }}" alt="image" class="variation-image">
-                                        <br>
-                                    @endif
-                                    {{ $child_variation->title }}
-                                </label>
-                            @endforeach
-                        </div>
-
-                        @if ((count($item->frontVariationChildern) > 0))
-                            <p class="small text-muted">Go to <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}">details</a> to edit, delete & change position</p>
-                        @endif
-                    </div>
-                    <div class="col-2 text-right">
-                        <div class="btn-group">
-                            <div class="custom-control custom-switch mt-1" data-bs-toggle="tooltip" title="Toggle status">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch{{$item->id}}" {{ ($item->status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.child.status', $item->id) }}')">
-                                <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
-                            </div>
-
-                            <a href="{{ route('admin.product.setup.variation.child.create', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Create">
-                                <i class="fa fa-plus"></i>
-                            </a>
-
-                            <a href="{{ route('admin.product.setup.variation.parent.detail', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Detail">
-                                <i class="fa fa-eye"></i>
-                            </a>
-
-                            <a href="{{ route('admin.product.setup.variation.parent.edit', [$data->id, $item->id]) }}" class="btn btn-sm btn-dark" data-bs-toggle="tooltip" title="Edit">
-                                <i class="fa fa-edit"></i>
-                            </a>
-
-                            <a href="{{ route('admin.product.setup.variation.parent.delete', $item->id) }}" class="btn btn-sm btn-dark" onclick="return confirm('Are you sure ?')" data-bs-toggle="tooltip" title="Delete" onclick="return confirm('Are you sure ?')">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach --}}
 </div>
 @endsection
 

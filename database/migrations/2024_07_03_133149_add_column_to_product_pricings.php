@@ -14,7 +14,7 @@ class AddColumnToProductPricings extends Migration
     public function up()
     {
         Schema::table('product_pricings', function (Blueprint $table) {
-            $table->integer('variation_child_id')->default(0)->after('currency_id');
+            $table->integer('product_variation_id')->default(0)->after('currency_id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnToProductPricings extends Migration
     public function down()
     {
         Schema::table('product_pricings', function (Blueprint $table) {
-            $table->dropColumn('variation_child_id');
+            $table->dropColumn('product_variation_id');
         });
     }
 }

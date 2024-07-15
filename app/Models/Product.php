@@ -118,12 +118,12 @@ class Product extends Model
 
     public function variationOptions()
     {
-        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id');
+        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id')->orderBy('position', 'asc');
     }
 
     public function activeVariationOptions()
     {
-        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id')->where('status', 1);
+        return $this->hasMany('App\Models\ProductVariation', 'product_id', 'id')->where('status', 1)->orderBy('position', 'asc');
     }
 
     public function activeVariations()

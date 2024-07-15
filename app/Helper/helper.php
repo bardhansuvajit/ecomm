@@ -396,7 +396,7 @@ if (!function_exists('productPricing')) {
         $currencyData = ipToCurrency();
         if (!empty($product->pricing) && count($product->pricing) > 0) {
             foreach($product->pricing as $singlePricing) {
-                if ($singlePricing->variation_child_id == 0) {
+                // if ($singlePricing->variation_child_id == 0) {
                     if ($singlePricing->currency_id == $currencyData->currency_id) {
                         $resp = [
                             'mrp' => (float) $singlePricing->mrp, 
@@ -406,7 +406,7 @@ if (!function_exists('productPricing')) {
                             'currency_id' => (string) $singlePricing->currency->id
                         ];
                     }
-                }
+                // }
             }
         }
         return $resp;
@@ -421,7 +421,7 @@ if (!function_exists('productVariationPricing')) {
 
         if (!empty($product->pricing) && count($product->pricing) > 0) {
             foreach($product->pricing as $singlePricing) {
-                if (in_array($singlePricing->variation_child_id, $childVariationIds) || $singlePricing->variation_child_id == 0) {
+                // if (in_array($singlePricing->variation_child_id, $childVariationIds) || $singlePricing->variation_child_id == 0) {
                     if ($singlePricing->currency_id == $currencyData->currency_id) {
                         $resp[] = [
                             'mrp' => (float) $singlePricing->mrp, 
@@ -429,10 +429,10 @@ if (!function_exists('productVariationPricing')) {
                             'currency' => (string) $singlePricing->currency->icon,
                             'currency_entity' => (string) $singlePricing->currency->entity,
                             'currency_id' => (string) $singlePricing->currency->id,
-                            'variation_child_id' => (int) $singlePricing->variation_child_id,
+                            // 'variation_child_id' => (int) $singlePricing->variation_child_id,
                         ];
                     }
-                }
+                // }
             }
         }
 

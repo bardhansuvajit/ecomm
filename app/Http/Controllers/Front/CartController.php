@@ -79,7 +79,7 @@ class CartController extends Controller
                     $imgPath = asset('uploads/static-front-missing-image/product.svg');
                 }
 
-                $pricingDetails = productVariationPricing($cartItem->productDetails, explode(',', $cartItem->variation_child_id));
+                $pricingDetails = productVariationPricing($cartItem->productDetails, explode(',', $cartItem->product_variation_id));
                 // dd($pricingDetails);
                 $currencyEntity = $pricingDetails['currency_entity'];
                 $sellingPrice = $pricingDetails['selling_price'];
@@ -87,10 +87,10 @@ class CartController extends Controller
                 $discount = discountCalculate($sellingPrice, $mrp);
 
                 // variation
-                // $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
+                // $variationDetail = ($cartItem->product_variation_id != 0) ? $cartItem->variationDetail->title : '';
                 $variationDetailTitles = [];
-                if ($cartItem->variation_child_id != 0) {
-                    $variationChildIds = explode(',', $cartItem->variation_child_id);
+                if ($cartItem->product_variation_id != 0) {
+                    $variationChildIds = explode(',', $cartItem->product_variation_id);
                     
                     foreach ($variationChildIds as $childId) {
                         $variationDetail = ProductVariationChild::find($childId);
@@ -245,14 +245,14 @@ class CartController extends Controller
                 if($cartItem->productDetails->statusDetail->show_in_frontend == 0) continue;
 
                 // $pricingDetails = productPricing($cartItem->productDetails);
-                $pricingDetails = productVariationPricing($cartItem->productDetails, $cartItem->variation_child_id);
+                $pricingDetails = productVariationPricing($cartItem->productDetails, $cartItem->product_variation_id);
                 $currencyEntity = $pricingDetails['currency_entity'];
                 $sellingPrice = $pricingDetails['selling_price'];
                 $mrp = $pricingDetails['mrp'];
                 $discount = discountCalculate($sellingPrice, $mrp);
 
                 // variation
-                $variationDetail = ($cartItem->variation_child_id != 0) ? $cartItem->variationDetail->title : '';
+                $variationDetail = ($cartItem->product_variation_id != 0) ? $cartItem->variationDetail->title : '';
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
