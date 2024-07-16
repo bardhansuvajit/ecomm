@@ -80,23 +80,24 @@ Route::name('admin.')->group(function() {
                 Route::prefix('variation')->name('variation.')->group(function() {
                     Route::get('/{id}', [ProductVariationController::class, 'index'])->name('index');
                     Route::get('/{id}/create', [ProductVariationController::class, 'create'])->name('create');
+
                     Route::post('/{id}/update', [ProductVariationController::class, 'update'])->name('update');
                     Route::post('/{id}/update/pricing', [ProductVariationController::class, 'updatePricing'])->name('update.pricing');
+
                     Route::get('/{id}/detail/{prodVarId}', [ProductVariationController::class, 'detail'])->name('detail');
                     Route::get('/{id}/delete/{prodVarId}', [ProductVariationController::class, 'delete'])->name('delete');
                     Route::post('/toggle', [ProductVariationController::class, 'toggle'])->name('toggle');
                     Route::get('/status/{prodVarId}', [ProductVariationController::class, 'status'])->name('status');
 
-                    Route::get('/{id}/remove/image/{prodVarId}', [ProductVariationController::class, 'imageRemove'])->name('image.remove');
-                    Route::get('/image/status/{prodVarId}', [ProductVariationController::class, 'imageStatus'])->name('image.status');
+                    Route::get('/{id}/remove/thumb/{prodVarId}', [ProductVariationController::class, 'thumbRemove'])->name('thumb.remove');
+                    Route::get('/thumb/status/{prodVarId}', [ProductVariationController::class, 'thumbStatus'])->name('thumb.status');
 
                     Route::get('/{id}/position', [ProductVariationController::class, 'position'])->name('position');
                     Route::post('/{id}/position/update', [ProductVariationController::class, 'positionUpdate'])->name('position.update');
 
-                    // product variation option
-                    // Route::prefix('option')->name('option.')->group(function() {
-                    //     Route::get('/detail/{id}/setup/{prodVarId}', [ProductVariationOptionController::class, 'detail'])->name('detail');
-                    // });
+                    Route::post('/{id}/position/update', [ProductVariationController::class, 'positionUpdate'])->name('position.update');
+
+                    Route::post('/{id}/images', [ProductVariationController::class, 'images'])->name('images');
                 });
 
                 // Route::get('/variation/{id}', [ProductSetupController::class, 'variation'])->name('variation');

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\ProductVariation;
 use App\Models\ProductPricing;
+use App\Models\ProductImage;
 
 class ProductVariationRepository implements ProductVariationInterface
 {
@@ -320,43 +321,13 @@ class ProductVariationRepository implements ProductVariationInterface
             return [
                 'code' => 500,
                 'status' => 'failure',
-                'message' => $e->getMessage(),
+                'message' => 'Something happened',
                 'error' => $e->getMessage()
             ];
         }
-
-        /*
-        $chk = ProductPricing::where('product_id', $req['product_id'])
-        ->where('product_variation_id', $req['product_variation_id']);
-
-        if ($chk->exists()) {
-            $chk->delete();
-        }
-
-        if (!empty($req['selling_price'][0])) {
-            foreach($req['currency_id'] as $currencyIndex => $currency) {
-                $pricing = new ProductPricing();
-                $pricing->product_id = $req['product_id'];
-                $pricing->currency_id = $currency;
-                $pricing->product_variation_id = $req['product_variation_id'];
-                $pricing->cost = $req['cost'][$currencyIndex] ?? null;
-                $pricing->mrp = $req['mrp'][$currencyIndex] ?? null;
-                $pricing->selling_price = $req['selling_price'][$currencyIndex] ?? 0;
-                $pricing->save();
-            }
-        }
-
-        $response = [
-            'code' => 200,
-            'status' => 'success',
-            'message' => 'Data updated'
-        ];
-
-        return $response;
-        */
     }
 
-    public function imageStatus(int $id) : array {
+    public function thumbStatus(int $id) : array {
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
@@ -380,7 +351,7 @@ class ProductVariationRepository implements ProductVariationInterface
         return $response;
     }
 
-    public function imageRemove(int $id) : array {
+    public function thumbRemove(int $id) : array {
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
@@ -403,6 +374,49 @@ class ProductVariationRepository implements ProductVariationInterface
         }
 
         return $response;
+    }
+
+    public function images(array $req) : array {
+        DB::beginTransaction();
+
+        try {
+            if (!empty($req['images']) && count($req['images']) > 0) {
+                foreach($req['images'] as $key => $image) {
+                    $fileUpload = fileUpload($image, 'product-variation-image');
+
+                    $productItem = new ProductImage();
+                    $productItem->product_id = $req['product_id'];
+                    $productItem->product_variation_id = $req['product_variation_id'];
+                    $productItem->img_small = $fileUpload['file'][0];
+                    $productItem->img_medium = $fileUpload['file'][1];
+                    $productItem->img_large = $fileUpload['file'][2];
+                    $productItem->position = positionSet('product_images');
+                    $productItem->save();
+                }
+
+                DB::commit();
+                return [
+                    'code' => 200,
+                    'status' => 'success',
+                    'message' => 'Data updated'
+                ];
+            } else {
+                return [
+                    'code' => 400,
+                    'status' => 'failure',
+                    'message' => 'Something happened'
+                ];
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return [
+                'code' => 500,
+                'status' => 'failure',
+                'message' => 'Something happened',
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
 }

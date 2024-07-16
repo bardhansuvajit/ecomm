@@ -10,7 +10,6 @@ use App\Interfaces\CouponInterface;
 use App\Interfaces\CartInterface;
 
 use App\Models\SeoPage;
-use App\Models\ProductVariationChild;
 
 class CartController extends Controller
 {
@@ -89,17 +88,17 @@ class CartController extends Controller
                 // variation
                 // $variationDetail = ($cartItem->product_variation_id != 0) ? $cartItem->variationDetail->title : '';
                 $variationDetailTitles = [];
-                if ($cartItem->product_variation_id != 0) {
-                    $variationChildIds = explode(',', $cartItem->product_variation_id);
+                // if ($cartItem->product_variation_id != 0) {
+                //     $variationChildIds = explode(',', $cartItem->product_variation_id);
                     
-                    foreach ($variationChildIds as $childId) {
-                        $variationDetail = ProductVariationChild::find($childId);
+                //     foreach ($variationChildIds as $childId) {
+                //         $variationDetail = ProductVariationChild::find($childId);
         
-                        if ($variationDetail) {
-                            $variationDetailTitles[] = $variationDetail->title;
-                        }
-                    }
-                }
+                //         if ($variationDetail) {
+                //             $variationDetailTitles[] = $variationDetail->title;
+                //         }
+                //     }
+                // }
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,

@@ -10,7 +10,9 @@ interface ProductVariationInterface {
     public function delete(int $id);
     public function position(array $ids);
     public function price(array $req);
+    
+    public function thumbRemove(int $id);
+    public function thumbStatus(int $id);
 
-    public function imageRemove(int $id);
-    public function imageStatus(int $id);
+    public function images(array $req);
 }

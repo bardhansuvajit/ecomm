@@ -127,10 +127,10 @@ class ProductVariationController extends Controller
         ]);
     }
 
-    public function imageRemove(Request $request, $id, $prodVarId)
+    public function thumbRemove(Request $request, $id, $prodVarId)
     {
         $data = Product::findOrFail($id);
-        $resp = $this->productVariationRepository->imageRemove($prodVarId);
+        $resp = $this->productVariationRepository->thumbRemove($prodVarId);
 
         if ($resp['status'] == 'success') {
             $item = $resp['data'];
@@ -140,9 +140,9 @@ class ProductVariationController extends Controller
         }
     }
 
-    public function imageStatus(Request $request, $prodVarId)
+    public function thumbStatus(Request $request, $prodVarId)
     {
-        $resp = $this->productVariationRepository->imageStatus($prodVarId);
+        $resp = $this->productVariationRepository->thumbStatus($prodVarId);
         return response()->json([
             'status' => $resp['code'],
             'message' => $resp['message'],
@@ -198,302 +198,21 @@ class ProductVariationController extends Controller
         return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function variationParentPosition(Request $request, $id)
-    {
-        $data = Product::findOrFail($id);
-        return view('admin.product.setup.variation-parent-position', compact('request', 'data'));
-    }
-
-    public function variationParentDetail(Request $request, $id, $variationParentId)
-    {
-        $data = Product::findOrFail($id);
-        $parent_variation = ProductVariationParent::findOrFail($variationParentId);
-        return view('admin.product.setup.variation-parent-detail', compact('request', 'data', 'parent_variation'));
-    }
-
-    public function variationParentEdit(Request $request, $id, $variationParentId)
-    {
-        $data = Product::findOrFail($id);
-        $parent_variation = ProductVariationParent::findOrFail($variationParentId);
-        return view('admin.product.setup.variation-parent-edit', compact('request', 'data', 'parent_variation'));
-    }
-
-    public function variationChildCreate(Request $request, $id, $variationParentId)
-    {
-        $data = Product::findOrFail($id);
-        $parent_variation = ProductVariationParent::findOrFail($variationParentId);
-        $currencies = Currency::where('status', 1)->orderBy('position')->get();
-        $productCurrencies = ProductPricing::where('product_id', $id)->get();
-        return view('admin.product.setup.variation-child-create', compact('request', 'data', 'parent_variation', 'variationParentId', 'currencies', 'productCurrencies'));
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function variationParent(Request $request)
+    public function images(Request $request)
     {
         // dd($request->all());
 
         $request->validate([
-            'title' => 'required|string|min:2|max:1000',
             'product_id' => 'required|integer|min:1',
-        ]);
-
-        $chk = ProductVariationParent::where('product_id', $request->product_id)->where('title', $request->title)->first();
-
-        if (!empty($chk)) {
-            return redirect()->back()->with('failure', 'This variation already exists');
-        }
-
-        $data = new ProductVariationParent();
-        $data->product_id = $request->product_id;
-        $data->title = $request->title;
-        $data->position = positionSet('product_variation_parents');
-        $data->save();
-
-        return redirect()->back()->with('success', 'New Variation added');
-    }
-
-    public function variationParentUpdate(Request $request)
-    {
-        // dd($request->all());
-
-        $request->validate([
-            'id' => 'required|integer|min:1',
-            'title' => 'required|string|min:1|max:255',
-            'short_desc' => 'nullable|string|min:2|max:1000',
-            'detailed_desc' => 'nullable|string|min:2|max:10000',
-        ]);
-
-        $item = ProductVariationParent::findOrFail($request->id);
-        $item->title = $request->title;
-        $item->short_desc = $request->short_desc ?? '';
-        $item->detailed_desc = $request->detailed_desc ?? '';
-
-        $item->save();
-
-        return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'Product variation update successfull');
-    }
-
-    public function variationChild(Request $request)
-    {
-        // dd($request->all());
-
-        $request->validate([
-            'parent_id' => 'required|integer|min:1',
-            'product_id' => 'required|integer|min:1',
-            'title' => 'required|string|min:2|max:1000',
-            'product_title' => 'nullable|string|min:2|max:1000',
-            'short_description' => 'nullable|string|min:2|max:1000',
-
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
-
-            'currency_id' => 'required|array|min:1',
-            'currency_id.*' => 'required|integer|min:1',
-
-            'cost' => 'nullable|array',
-            'cost.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1',
-            'mrp' => 'nullable|array|min:1',
-            'mrp.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:selling_price.*',
-            'selling_price' => 'nullable|array',
-            'selling_price.*' => 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/|min:1|gt:cost.*',
+            'product_variation_id' => 'required|integer|min:1',
+            'images' => 'required|array|min:1',
+            'images.*' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000',
         ], [
-            'image' => 'The image must not be greater than 1MB.',
-            'cost.*.integer' => 'Cost must be an integer',
-            'mrp.*.integer' => 'MRP must be an integer',
-            'mrp.*.gt' => 'The MRP must be greater than selling price',
-            'selling_price.*.integer' => 'Selling price must be an integer',
-            'selling_price.*.gt' => 'The selling price must be greater than cost',
+            'images.max' => 'The image must not be greater than 1MB.',
         ]);
 
-        $chk = ProductVariationChild::where('parent_id', $request->parent_id)->where('title', $request->title)->first();
-
-        if (!empty($chk)) {
-            return redirect()->back()->with('failure', 'This variation already exists')->withInput($request->all());
-        }
-
-        DB::beginTransaction();
-
-        try {
-            $data = new ProductVariationChild();
-            $data->parent_id = $request->parent_id;
-            $data->title = $request->title;
-            $data->product_title = $request->product_title ?? '';
-            $data->position = positionSet('product_variation_children');
-
-            // image upload
-            if (isset($request->image)) {
-                $fileUpload = fileUpload($request->image, 'variation');
-
-                $data->image_small = $fileUpload['file'][0];
-                $data->image_medium = $fileUpload['file'][1];
-                $data->image_large = $fileUpload['file'][2];
-                $data->image_org = $fileUpload['file'][3];
-            }
-
-            $data->save();
-
-            // currency
-            if (!empty($request->selling_price[0])) {
-                foreach($request->currency_id as $currencyIndex => $currency) {
-                    $pricing = new ProductPricing();
-                    $pricing->product_id = $request->product_id;
-                    $pricing->currency_id = $currency;
-                    $pricing->product_variation_id = $data->id;
-                    $pricing->cost = $request->cost[$currencyIndex] ?? null;
-                    $pricing->mrp = $request->mrp[$currencyIndex] ?? null;
-                    $pricing->selling_price = $request->selling_price[$currencyIndex] ?? 0;
-                    $pricing->save();
-                }
-            }
-
-            DB::commit();
-
-            // dd($data);
-
-            return redirect()->route('admin.product.setup.variation', $request->product_id)->with('success', 'New Variation added');
-
-        } catch (\Throwable $th) {
-            DB::rollback();
-            throw $th;
-        }
-    }
-
-    public function variationParentDelete(Request $request, $id)
-    {
-        ProductVariationParent::where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Variation deleted')->withInput($request->all());
-    }
-
-    public function variationParentPositionUpdate(Request $request)
-    {
-        $request->validate([
-            'position' => 'required|array',
-            'position.*' => 'required|integer|min:1'
-        ]);
-
-        $count = 1;
-        foreach($request->position as $position) {
-            $data = ProductVariationParent::findOrFail($position);
-            $data->position = $count;
-            $data->save();
-
-            $count++;
-        }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Position updated',
-        ]);
-    }
-
-    public function variationChildPosition(Request $request)
-    {
-        $request->validate([
-            'position' => 'required|array',
-            'position.*' => 'required|integer|min:1'
-        ]);
-
-        $count = 1;
-        foreach($request->position as $position) {
-            $data = ProductVariationChild::findOrFail($position);
-            $data->position = $count;
-            $data->save();
-
-            $count++;
-        }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Position updated',
-        ]);
-    }
-
-    public function variationParentStatus(Request $request, $id)
-    {
-        $data = ProductVariationParent::findOrFail($id);
-        $data->status = ($data->status == 1) ? 0 : 1;
-        $data->update();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Status updated',
-        ]);
-    }
-
-    public function variationChildStatus(Request $request, $id)
-    {
-        $data = ProductVariationChild::findOrFail($id);
-        $data->status = ($data->status == 1) ? 0 : 1;
-        $data->update();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Status updated',
-        ]);
-    }
-
-    public function variationChildDelete(Request $request, $id)
-    {
-        ProductVariationChild::where('id', $id)->delete();
-        return redirect()->back()->with('success', 'Variation deleted')->withInput($request->all());
+        $resp = $this->productVariationRepository->images($request->all());
+        return redirect()->back()->with($resp['status'], $resp['message'])->withInput($request->all());
     }
 
 }

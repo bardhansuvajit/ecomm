@@ -22,4 +22,8 @@ class ProductVariation extends Model
         return $this->hasMany('App\Models\ProductPricing', 'product_variation_id', 'id');
     }
 
+    public function images() {
+        return $this->hasMany('App\Models\ProductImage', 'product_variation_id', 'id')->orderBy('position');
+    }
+
 }
