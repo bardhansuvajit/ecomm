@@ -10,8 +10,8 @@
     $pricing = [];
 
     /*
-    if (count($data->variationParents) > 0) {
-        foreach ($data->variationParents as $vParent) {
+    if (count($data->activeVariationOptions) > 0) {
+        foreach ($data->activeVariationOptions as $vParent) {
             if (count($vParent->frontVariationChildern) > 0) {
                 $pricing = productVariationPricing($data, $vParent->frontVariationChildern[0]->id);
                 break;
@@ -159,9 +159,36 @@
             @endif
 
             {{-- VARIATION --}}
-            {{-- @if (count($data->frontVariationParents) > 0)
-                @foreach ($data->frontVariationParents as $vParentIndex => $vParent)
-                    @if ((count($vParent->frontVariationChildern) > 0))
+            @if (count($data->activeVariationOptions) > 0)
+                @php
+                    $groupedVariations = $data->activeVariationOptions->groupBy(function ($option) {
+                        return $option->variationOption->variation_id;
+                    });
+                @endphp
+
+                {{-- {{ dd($groupedVariations) }} --}}
+
+                @foreach ($groupedVariations as $vIndex => $options)
+                    <div id="variation" class="mt-3">
+                        <p class="small text-muted mb-2">{{ $options->first()->variationOption->parent->title }}</p>
+                        <div class="btn-group variation-btn-group" role="group">
+
+                        @foreach ($options as $optionIndex => $option)
+                            <input type="radio" class="btn-check" name="prodVar{{$vIndex}}" id="prodVar{{$optionIndex}}" value="{{ $option->id }}" autocomplete="off" {{ ($optionIndex == 0) ? 'checked' : '' }}>
+
+                            <label class="btn btn-outline-dark" for="prodVar{{$optionIndex}}" onclick="variationContent({{ $option->id }})">
+                                {{ $option->variationOption->value }}
+
+                                @if (!empty($option->tag))
+                                    <span class="badge bg-danger variation-tag">{{ $option->tag }}</span>
+                                @endif
+                            </label>
+                        @endforeach
+
+                        </div>
+                    </div>
+                    {{-- {{$variation}} --}}
+                    {{-- @if ((count($vParent->frontVariationChildern) > 0))
                         <div id="variation" class="mt-3">
                             <p class="small text-muted mb-2">{{ $vParent->title }}</p>
                             <div class="btn-group variation-btn-group" role="group">
@@ -172,9 +199,9 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
                 @endforeach
-            @endif --}}
+            @endif
 
             {{-- PRICING --}}
             @if ($data->statusDetail->show_price_in_detail_page == 1)

@@ -1331,3 +1331,9 @@ footer .tags-holder .text {
 .star-rating.star-3 i {width: 33.33%;}
 .star-rating.star-3 i ~ i {width: 66.66%;}
 .star-rating.star-3 i ~ i ~ i {width: 100%;}
+
+.variation-tag {
+    position: absolute !important;
+    top: -20px !important;
+    right: 0 !important;
+}

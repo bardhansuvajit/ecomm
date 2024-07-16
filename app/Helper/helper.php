@@ -394,8 +394,9 @@ if (!function_exists('productPricing')) {
     function productPricing(object $product): array {
         $resp = [];
         $currencyData = ipToCurrency();
-        if (!empty($product->pricing) && count($product->pricing) > 0) {
-            foreach($product->pricing as $singlePricing) {
+        // dd($currencyData);
+        if (!empty($product->pricingNoVariation) && count($product->pricingNoVariation) > 0) {
+            foreach($product->pricingNoVariation as $singlePricing) {
                 // if ($singlePricing->variation_child_id == 0) {
                     if ($singlePricing->currency_id == $currencyData->currency_id) {
                         $resp = [

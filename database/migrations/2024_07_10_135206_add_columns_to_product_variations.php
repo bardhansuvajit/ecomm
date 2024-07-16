@@ -14,9 +14,9 @@ class AddColumnsToProductVariations extends Migration
     public function up()
     {
         Schema::table('product_variations', function (Blueprint $table) {
-            $table->tinyInteger('image_status')->after('variation_option_id')->default(0)->comment('Keep image & disable it');
-            $table->string('image_path')->nullable()->after('image_status');
-            $table->tinyInteger('pricing_same_as_initial_product')->default(1)->comment('1: active | 0: inactive')->after('image_path');
+            $table->tinyInteger('thumb_status')->after('variation_option_id')->default(0)->comment('Keep image & disable it');
+            $table->string('thumb_path')->nullable()->after('thumb_status');
+            $table->tinyInteger('pricing_same_as_initial_product')->default(1)->comment('1: active | 0: inactive')->after('thumb_path');
         });
     }
 
@@ -28,8 +28,8 @@ class AddColumnsToProductVariations extends Migration
     public function down()
     {
         Schema::table('product_variations', function (Blueprint $table) {
-            $table->dropColumn('image_status');
-            $table->dropColumn('image_path');
+            $table->dropColumn('thumb_status');
+            $table->dropColumn('thumb_path');
             $table->dropColumn('pricing_same_as_initial_product');
         });
     }

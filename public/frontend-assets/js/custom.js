@@ -1402,9 +1402,9 @@ function variationContent(vid) {
         url: baseUrl+'/product/variation/'+vid,
         success: function(resp) {
             if (resp.status == 200) {
-                $('#pricing .selling-price .amount').text(resp.data.pricing_sel)
-                $('#pricing .mrp .amount').text(resp.data.pricing_mrp)
-                $('#pricing .discount span').eq(0).text(resp.data.discount)
+                $('#pricing .selling-price .amount').text(resp.data.pricing.selling_price)
+                $('#pricing .mrp .amount').text(resp.data.pricing.mrp)
+                $('#pricing .discount span').eq(0).text(resp.data.pricing.discount)
             } else {
                 console.error(resp.message)
             }

@@ -43,13 +43,13 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex mb-3">
-                                @if (!empty($option->image_path) && file_exists($option->image_path))
+                                @if (!empty($option->thumb_path) && file_exists($option->thumb_path))
                                     <div class="flex-shrink-0 me-3">
                                         <div class="custom-control custom-switch" data-bs-toggle="tooltip" title="Toggle Image status">
-                                            <input type="checkbox" class="custom-control-input" id="customSwitchImage{{$option->id}}" {{ ($option->image_status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.image.status', $option->id) }}')">
+                                            <input type="checkbox" class="custom-control-input" id="customSwitchImage{{$option->id}}" {{ ($option->thumb_status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.image.status', $option->id) }}')">
 
                                             <label class="custom-control-label" for="customSwitchImage{{$option->id}}">
-                                                <img src="{{ asset($option->image_path) }}" style="height: 50px" class="">
+                                                <img src="{{ asset($option->thumb_path) }}" style="height: 50px" class="">
                                             </label>
                                         </div>
                                     </div>
@@ -94,6 +94,6 @@
 
 @section('script')
     <script>
-
+        
     </script>
 @endsection

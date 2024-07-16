@@ -38,17 +38,17 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
-                            @if (!empty($item->image_path) && file_exists($item->image_path))
+                            @if (!empty($item->thumb_path) && file_exists($item->thumb_path))
                                 <div class="col-md-3">
-                                    <img src="{{ asset($item->image_path) }}" alt="" width="img-thumbnail" style="height: 200px">
+                                    <img src="{{ asset($item->thumb_path) }}" alt="" width="img-thumbnail" style="height: 200px">
 
                                     <p class="text-muted">You can change thumb from here</p>
                                     <form action="{{ route('admin.product.setup.variation.update', $request->id) }}" method="post" enctype="multipart/form-data">@csrf
                                         <div class="form-group">
-                                            <label for="image_path">Thumb image <span class="text-muted">*</span></label>
-                                            <input type="file" class="form-control" name="image_path" id="image_path">
+                                            <label for="thumb_path">Thumb image <span class="text-muted">*</span></label>
+                                            <input type="file" class="form-control" name="thumb_path" id="thumb_path">
                                             {!! imageUploadNotice('variation')['html'] !!}
-                                            @error('image_path') <p class="small text-danger">{{ $message }}</p> @enderror
+                                            @error('thumb_path') <p class="small text-danger">{{ $message }}</p> @enderror
                                         </div>
 
                                         <input type="hidden" name="id" value="{{ $item->id }}">
@@ -58,7 +58,7 @@
                                             <a href="{{ route('admin.product.setup.variation.thumb.remove', [$request->id, $item->id]) }}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Remove Thumb</a>
 
                                             <div class="custom-control custom-switch ms-3 mt-1" data-bs-toggle="tooltip" title="Toggle Image status">
-                                                <input type="checkbox" class="custom-control-input" id="customSwitchImage{{$item->id}}" {{ ($item->image_status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.image.status', $item->id) }}')">
+                                                <input type="checkbox" class="custom-control-input" id="customSwitchImage{{$item->id}}" {{ ($item->thumb_status == 1) ? 'checked' : '' }} onchange="statusToggle('{{ route('admin.product.setup.variation.image.status', $item->id) }}')">
 
                                                 <label class="custom-control-label" for="customSwitchImage{{$item->id}}"></label>
                                             </div>
@@ -71,10 +71,10 @@
                                     <p class="text-muted">No thumb found for this option. You can browse &amp; upload from here </p>
                                     <form action="{{ route('admin.product.setup.variation.update', $request->id) }}" method="post" enctype="multipart/form-data">@csrf
                                         <div class="form-group">
-                                            <label for="image_path">Thumb <span class="text-muted">*</span></label>
-                                            <input type="file" class="form-control" name="image_path" id="image_path">
+                                            <label for="thumb_path">Thumb <span class="text-muted">*</span></label>
+                                            <input type="file" class="form-control" name="thumb_path" id="thumb_path">
                                             {!! imageUploadNotice('variation')['html'] !!}
-                                            @error('image_path') <p class="small text-danger">{{ $message }}</p> @enderror
+                                            @error('thumb_path') <p class="small text-danger">{{ $message }}</p> @enderror
                                         </div>
 
                                         <input type="hidden" name="id" value="{{ $item->id }}">

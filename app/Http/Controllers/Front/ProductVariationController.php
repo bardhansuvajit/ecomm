@@ -23,7 +23,7 @@ class ProductVariationController extends Controller
             return response()->json([
                 'status' => 200,
                 'message' => $data['message'],
-                'data' => $data['data']
+                'data' => $data
             ]);
         } else {
             return response()->json([

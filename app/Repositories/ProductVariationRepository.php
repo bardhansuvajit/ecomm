@@ -14,8 +14,7 @@ class ProductVariationRepository implements ProductVariationInterface
 {
     private VariationOptionInterface $variationOptionRepository;
 
-    public function __construct(VariationOptionInterface $variationOptionRepository)
-    {
+    public function __construct(VariationOptionInterface $variationOptionRepository) {
         $this->variationOptionRepository = $variationOptionRepository;
     }
 
@@ -23,12 +22,37 @@ class ProductVariationRepository implements ProductVariationInterface
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
+            $pricing = productPricing($data->product);
+            $pricingData = [
+                'mrp' => indianMoneyFormat($pricing['mrp']),
+                'selling_price' => indianMoneyFormat($pricing['selling_price']),
+                'discount' => discountCalculate($pricing['selling_price'], $pricing['mrp'])
+            ];
+            $currencyId = ipToCurrency()->currency_id;
+
+            // if pricing exists
+            if($data->pricing) {
+                foreach($data->pricing as $price) {
+                    // if currency matches
+                    if ($currencyId == $price->currency_id) {
+                        $pricingData = [
+                            'mrp' => indianMoneyFormat($price->mrp),
+                            'selling_price' => indianMoneyFormat($price->selling_price),
+                            'discount' => discountCalculate($price->selling_price, $price->mrp)
+                        ];
+                    }
+                }
+            }
+
             $response = [
                 'code' => 200,
                 'status' => 'success',
-                'message' => 'Data found',
-                'data' => $data
+                'message' => 'Data found2',
+                'data' => $data,
+                'pricing' => $pricingData,
             ];
+
+            // dd($response);
 
             return $response;
 
@@ -73,6 +97,7 @@ class ProductVariationRepository implements ProductVariationInterface
             */
         } else {
             $response = [
+                'code' => 400,
                 'status' => 'failure',
                 'message' => 'No data found'
             ];
@@ -173,17 +198,17 @@ class ProductVariationRepository implements ProductVariationInterface
                 $data->variation_option_id = $req['variation_option_id'];
             }
 
-            if(!empty($req['image_status'])) {
-                $data->image_status = $req['image_status'];
+            if(!empty($req['thumb_status'])) {
+                $data->thumb_status = $req['thumb_status'];
             }
 
-            if (!empty($req['image_path'])) {
-                $fileUpload = fileUpload($req['image_path'], 'variation');
+            if (!empty($req['thumb_path'])) {
+                $fileUpload = fileUpload($req['thumb_path'], 'variation');
                 // $banner->desktop_image_small = $fileUpload['file'][0];
                 // $banner->desktop_image_medium = $fileUpload['file'][1];
                 // $banner->desktop_image_large = $fileUpload['file'][2];
                 // $banner->desktop_image_org = $fileUpload['file'][3];
-                $data->image_path = $fileUpload['file'][1];
+                $data->thumb_path = $fileUpload['file'][1];
             }
 
             $data->save();
@@ -331,7 +356,7 @@ class ProductVariationRepository implements ProductVariationInterface
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
-            $data->image_status = ($data->image_status == 1) ? 0 : 1;
+            $data->thumb_status = ($data->thumb_status == 1) ? 0 : 1;
             $data->update();
 
             $response = [
@@ -355,8 +380,8 @@ class ProductVariationRepository implements ProductVariationInterface
         $data = ProductVariation::find($id);
 
         if (!empty($data)) {
-            $data->image_status = 0;
-            $data->image_path = null;
+            $data->thumb_status = 0;
+            $data->thumb_path = null;
             $data->save();
 
             $response = [

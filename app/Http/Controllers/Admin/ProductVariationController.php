@@ -103,9 +103,9 @@ class ProductVariationController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'image_path' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000'
+            'thumb_path' => 'required|image|mimes:jpg,jpeg,png,webp,gif,svg|max:1000'
         ], [
-            'image_path.max' => 'The image must not be greater than 1MB.'
+            'thumb_path.max' => 'The image must not be greater than 1MB.'
         ]);
 
         $resp = $this->productVariationRepository->update($request->all());

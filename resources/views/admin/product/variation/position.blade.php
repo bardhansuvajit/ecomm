@@ -49,8 +49,8 @@
                             <tr class="single" id="{{ $option->id }}">
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    @if (!empty($option->image_path) && file_exists($option->image_path))
-                                        <img src="{{ asset($option->image_path) }}" style="height: 50px" class="">
+                                    @if (!empty($option->thumb_path) && file_exists($option->thumb_path))
+                                        <img src="{{ asset($option->thumb_path) }}" style="height: 50px" class="">
                                     @endif
 
                                     {{ $option->variationOption->value }}
