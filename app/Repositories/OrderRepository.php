@@ -136,7 +136,7 @@ class OrderRepository implements OrderInterface
                     $orderProduct->mrp = productPricing($cartProduct->productDetails)['mrp'];
                     $orderProduct->selling_price = productPricing($cartProduct->productDetails)['selling_price'];
                 }
-                $orderProduct->variation_id = 0;
+                $orderProduct->variation_info = 0;
                 $orderProduct->variation_payload = '';
                 $orderProduct->qty = $cartProduct->qty;
                 $orderProduct->status = 'new';

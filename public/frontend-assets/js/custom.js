@@ -479,7 +479,7 @@ function cartAdd(type, productId, userId, route) {
             user_id: userId,
             product_id: productId,
             qty: qty,
-            variation_child_id: selectedVariations.join(',')
+            product_variation_id: selectedVariations.join(',')
         },
         beforeSend: function() {
             $('.buy-now').attr('disabled', 'disabled')
@@ -595,9 +595,9 @@ function quickCartListUpdate() {
                                         </a>
                                     </div>`;
 
-                                if (value.childVarTitle) {
+                                if (value.variationData) {
                                     content += 
-                                    `<p class="text-dark fw-bold height-2 small">${value.childVarTitle}</p>`;
+                                    `<p class="text-dark fw-bold height-2 small">${value.variationData}</p>`;
                                 }
 
                                 content += 
@@ -863,9 +863,9 @@ function quickSavedProductsListUpdate() {
                                         </a>
                                     </div>`;
 
-                                if (value.childVarTitle) {
+                                if (value.variationData) {
                                     content += 
-                                    `<p class="text-dark fw-bold height-2 small">${value.childVarTitle}</p>`;
+                                    `<p class="text-dark fw-bold height-2 small">${value.variationData}</p>`;
                                 }
 
                                 content += 
@@ -1097,8 +1097,10 @@ function qtyUpdate(id) {
             if (result.status == 200) {
                 if(currentPage() == "checkout") {
                     location.reload();
+                } else {
+                    quickCartListUpdate();
                 }
-                quickCartListUpdate();
+
                 toastFire('success', result.message);
             } else {
                 toastFire('error', result.message);

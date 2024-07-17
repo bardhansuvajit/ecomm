@@ -10,6 +10,7 @@ use App\Interfaces\CouponInterface;
 use App\Interfaces\CartInterface;
 
 use App\Models\SeoPage;
+use App\Models\ProductVariation;
 
 class CartController extends Controller
 {
@@ -78,8 +79,8 @@ class CartController extends Controller
                     $imgPath = asset('uploads/static-front-missing-image/product.svg');
                 }
 
-                $pricingDetails = productVariationPricing($cartItem->productDetails, explode(',', $cartItem->product_variation_id));
-                // dd($pricingDetails);
+                $pricingDetails = productVariationPricing($cartItem->productDetails, $cartItem->product_variation_id ?? 0);
+                // $pricingDetails = productVariationPricing($cartItem->productDetails, explode(',', $cartItem->product_variation_id));
                 $currencyEntity = $pricingDetails['currency_entity'];
                 $sellingPrice = $pricingDetails['selling_price'];
                 $mrp = $pricingDetails['mrp'];
@@ -88,31 +89,33 @@ class CartController extends Controller
                 // variation
                 // $variationDetail = ($cartItem->product_variation_id != 0) ? $cartItem->variationDetail->title : '';
                 $variationDetailTitles = [];
-                // if ($cartItem->product_variation_id != 0) {
-                //     $variationChildIds = explode(',', $cartItem->product_variation_id);
+                if ($cartItem->product_variation_id != NULL) {
+                    $variationChildIds = explode(',', $cartItem->product_variation_id);
                     
-                //     foreach ($variationChildIds as $childId) {
-                //         $variationDetail = ProductVariationChild::find($childId);
-        
-                //         if ($variationDetail) {
-                //             $variationDetailTitles[] = $variationDetail->title;
-                //         }
-                //     }
-                // }
+                    foreach ($variationChildIds as $childId) {
+                        $variationDetail = ProductVariation::find($childId);
+
+                        if ($variationDetail) {
+                            $variationDetailTitles[] = $variationDetail->variationOption->value;
+                        }
+                    }
+                }
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
-                    'childVarTitle' => implode(' ', $variationDetailTitles),
+                    'variationData' => implode(' ', $variationDetailTitles),
+                    // 'variationData' => implode(' ', $variationDetailTitles),
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
                     'qty' => $cartItem->qty,
                     'currencyEntity' => $currencyEntity,
                     'sellingPrice' => $sellingPrice,
                     'mrp' => $mrp,
-                    'discount' => $discount
+                    'discount' => $discount,
+                    'tteesstt' => $pricingDetails
                 ];
             }
 
@@ -258,7 +261,7 @@ class CartController extends Controller
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
-                    'childVarTitle' => $variationDetail,
+                    'variationData' => $variationDetail,
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
                     'qty' => $cartItem->qty,

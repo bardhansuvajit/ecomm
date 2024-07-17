@@ -9,20 +9,17 @@
 @php
     $pricing = [];
 
-    /*
+    // if there is variation
     if (count($data->activeVariationOptions) > 0) {
-        foreach ($data->activeVariationOptions as $vParent) {
-            if (count($vParent->frontVariationChildern) > 0) {
-                $pricing = productVariationPricing($data, $vParent->frontVariationChildern[0]->id);
-                break;
-            }
+        // if there is pricing
+        if (!empty($data->activeVariationOptions[0]->pricing) && count($data->activeVariationOptions[0]->pricing) > 0) {
+            $pricing = productVariationPricing($data, $data->activeVariationOptions[0]->id);
+        } else {
+            $pricing = productPricing($data);
         }
     } else {
         $pricing = productPricing($data);
     }
-    */
-
-    $pricing = productPricing($data);
 @endphp
 
 <section id="primary-detail">
@@ -166,13 +163,11 @@
                     });
                 @endphp
 
-                {{-- {{ dd($groupedVariations) }} --}}
-
                 @foreach ($groupedVariations as $vIndex => $options)
                     <div id="variation" class="mt-3">
                         <p class="small text-muted mb-2">{{ $options->first()->variationOption->parent->title }}</p>
-                        <div class="btn-group variation-btn-group" role="group">
 
+                        <div class="btn-group variation-btn-group" role="group">
                         @foreach ($options as $optionIndex => $option)
                             <input type="radio" class="btn-check" name="prodVar{{$vIndex}}" id="prodVar{{$optionIndex}}" value="{{ $option->id }}" autocomplete="off" {{ ($optionIndex == 0) ? 'checked' : '' }}>
 
@@ -184,22 +179,9 @@
                                 @endif
                             </label>
                         @endforeach
-
                         </div>
+
                     </div>
-                    {{-- {{$variation}} --}}
-                    {{-- @if ((count($vParent->frontVariationChildern) > 0))
-                        <div id="variation" class="mt-3">
-                            <p class="small text-muted mb-2">{{ $vParent->title }}</p>
-                            <div class="btn-group variation-btn-group" role="group">
-                                @foreach ($vParent->frontVariationChildern as $varChildIndex => $vChild)
-                                    <input type="radio" class="btn-check" name="prodVar{{$vParentIndex}}" id="prodVar{{$vParentIndex}}{{$varChildIndex}}" value="{{ $vChild->id }}" autocomplete="off" {{ ($varChildIndex == 0) ? 'checked' : '' }}>
-
-                                    <label class="btn btn-outline-dark" for="prodVar{{$vParentIndex}}{{$varChildIndex}}" onclick="variationContent({{ $vChild->id }})">{{ $vChild->title }}</label>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif --}}
                 @endforeach
             @endif
 

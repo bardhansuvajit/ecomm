@@ -18,6 +18,7 @@ use App\Models\BlogCategorySetup;
 use App\Models\MailLog;
 use App\Models\MailFileSetup;
 use App\Models\ProductStatus;
+use App\Models\ProductPricing;
 
 // Fetch application settings
 if(!function_exists('applicationSettings')) {
@@ -416,28 +417,33 @@ if (!function_exists('productPricing')) {
 
 // frontend product variation pricing currency wise
 if (!function_exists('productVariationPricing')) {
-    function productVariationPricing(object $product, array $childVariationIds): array {
+    function productVariationPricing(object $product, int $product_variation_id): array {
         $resp = [];
         $currencyData = ipToCurrency();
 
-        if (!empty($product->pricing) && count($product->pricing) > 0) {
-            foreach($product->pricing as $singlePricing) {
-                // if (in_array($singlePricing->variation_child_id, $childVariationIds) || $singlePricing->variation_child_id == 0) {
-                    if ($singlePricing->currency_id == $currencyData->currency_id) {
-                        $resp[] = [
-                            'mrp' => (float) $singlePricing->mrp, 
-                            'selling_price' => (float) $singlePricing->selling_price, 
-                            'currency' => (string) $singlePricing->currency->icon,
-                            'currency_entity' => (string) $singlePricing->currency->entity,
-                            'currency_id' => (string) $singlePricing->currency->id,
-                            // 'variation_child_id' => (int) $singlePricing->variation_child_id,
-                        ];
-                    }
-                // }
-            }
+        if($product_variation_id == 0) {
+            return productPricing($product);
         }
 
-        return !empty($resp) ? $resp[0] : $resp;
+        $variation_pricing = ProductPricing::where('product_variation_id', $product_variation_id)->get();
+
+        if (!empty($variation_pricing) && count($variation_pricing) > 0) {
+            foreach($variation_pricing as $singleVPricing) {
+                if ($singleVPricing->currency_id == $currencyData->currency_id) {
+                    $resp = [
+                        'mrp' => (float) $singleVPricing->mrp, 
+                        'selling_price' => (float) $singleVPricing->selling_price, 
+                        'currency' => (string) $singleVPricing->currency->icon,
+                        'currency_entity' => (string) $singleVPricing->currency->entity,
+                        'currency_id' => (string) $singleVPricing->currency->id
+                    ];
+
+                    return $resp;
+                }
+            }
+        } else {
+            return productPricing($product);
+        }
     }
 }
 
@@ -478,7 +484,11 @@ if(!function_exists('cartDetails')) {
         // cart details
         foreach ($cartContent as $cartItem) {
             // get currency details
-            $data = productPricing($cartItem->productDetails);
+            if ($cartItem->product_variation_id == null) {
+                $data = productPricing($cartItem->productDetails);
+            } else {
+                $data = productVariationPricing($cartItem->productDetails, $cartItem->product_variation_id);
+            }            
 
             $mrp = $data['mrp'];
             $selling_price = $data['selling_price'];

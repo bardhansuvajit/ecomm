@@ -14,7 +14,7 @@ class AddColumnToCarts extends Migration
     public function up()
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->string('product_variation_id', 50)->default(0)->after('product_id');
+            $table->string('product_variation_id', 50)->default(0)->nullable()->after('product_id');
         });
     }
 

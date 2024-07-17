@@ -29,7 +29,7 @@ class CreateOrderProductsTable extends Migration
             $table->double('mrp', 10, 2);
             $table->double('selling_price', 10, 2)->nullable();
 
-            $table->bigInteger('variation_id')->default(0);
+            $table->text('variation_info');
             $table->longText('variation_payload');
             $table->integer('qty')->default(1);
 

@@ -86,6 +86,11 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductPricing', 'product_id', 'id')->where('product_variation_id', 0);
     }
 
+    public function pricingWithVariation()
+    {
+        return $this->hasMany('App\Models\ProductPricing', 'product_id', 'id')->where('product_variation_id', '!=', 0);
+    }
+
     public function ingredientDetails()
     {
         return $this->hasMany('App\Models\ProductIngredient', 'product_id', 'id')->orderBy('position');
