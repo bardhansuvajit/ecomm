@@ -211,6 +211,10 @@ class ProductVariationRepository implements ProductVariationInterface
                 $data->thumb_path = $fileUpload['file'][1];
             }
 
+            if(!empty($req['tag'])) {
+                $data->tag = $req['tag'];
+            }
+
             $data->save();
 
             $response = [

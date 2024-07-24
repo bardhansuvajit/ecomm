@@ -163,6 +163,7 @@
                             </div>
                             <div class="content-section">
                                 <p class="height-2 text-dark mb-2">{{ $product->product_title }}</p>
+                                <p class="height-2 text-dark fw-bold mb-2">{{ $product->variation_info }}</p>
 
                                 <p class="text-dark">
                                     <span class="">Qty: </span>

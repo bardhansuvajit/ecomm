@@ -24,7 +24,7 @@
                 @if (!empty($resp['data']))
                     <div class="col-12">
                         @foreach ($resp['data'] as $order)
-                            <div class="single-order mb-3">
+                            <div class="single-order @if(!$loop->last) mb-3 @endif">
                                 <a href="{{ route('front.user.order.detail', $order->order_no) }}">
                                     <div class="quick-details">
                                         <div class="d-flex justify-content-between">
@@ -55,14 +55,17 @@
                                     </div>
                                     <div class="products">
                                         <div class="d-flex">
-                                            <div class="order-product">
-                                                <img src="http://127.0.0.1:8000/uploads/product-image/6UMKeN3lZ4pgc2rSsFio_medium-thumb_.jpeg" alt="" class="w-100">
-                                            </div>
+                                            @foreach ($order->orderProducts as $product)
+                                                <div class="order-product me-2">
+                                                    <img src="https://placehold.co/100x100" alt="" class="w-100">
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            <hr>
+
+                            @if(!$loop->last) <hr> @endif
                         @endforeach
                     </div>
 

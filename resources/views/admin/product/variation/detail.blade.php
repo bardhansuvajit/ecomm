@@ -153,7 +153,7 @@
 
                                 <input type="hidden" name="product_id" value="{{ $request->id }}">
                                 <input type="hidden" name="product_variation_id" value="{{ $item->id }}">
-                                <button type="submit" class="btn btn-primary">Save </button>
+                                <button type="submit" class="btn btn-primary">Upload </button>
                             </form>
                         </div>
                     </div>
@@ -168,6 +168,17 @@
                         <p class="text-muted mb-0">Category: {{ $item->variationOption->category }}</p>
                         <p class="text-muted mb-0">Equivalent: {{ $item->variationOption->equivalent }}</p>
                         <p class="text-muted">Information: {{ $item->variationOption->information }}</p>
+
+                        <form action="{{ route('admin.product.setup.variation.update', $request->id) }}" method="post" enctype="multipart/form-data">@csrf
+                            <div class="form-group">
+                                <label for="tag">Tag <span class="text-muted">(optional)</span></label>
+                                <input type="text" class="form-control" name="tag" id="tag" value="{{ $item->tag }}">
+                                @error('tag') <p class="small text-danger">{{ $message }}</p> @enderror
+                            </div>
+
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
                         {{-- <a href="#" class="btn btn-primary">Go somewhere</a> --}}
                     </div>
                 </div>
