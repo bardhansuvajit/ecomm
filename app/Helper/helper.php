@@ -19,6 +19,7 @@ use App\Models\MailLog;
 use App\Models\MailFileSetup;
 use App\Models\ProductStatus;
 use App\Models\ProductPricing;
+use App\Models\ProductVariation;
 
 // Fetch application settings
 if(!function_exists('applicationSettings')) {
@@ -447,6 +448,28 @@ if (!function_exists('productVariationPricing')) {
     }
 }
 
+// frontend product variation pricing currency wise
+if (!function_exists('variationData')) {
+    function variationData($variation_ids): string {
+        $variationDetailTitles = [];
+        if ($variation_ids != NULL) {
+            $variationChildIds = explode(',', $variation_ids);
+
+            foreach ($variationChildIds as $childId) {
+                $variationDetail = ProductVariation::find($childId);
+
+                if ($variationDetail) {
+                    $variationDetailTitles[] = $variationDetail->variationOption->value;
+                }
+            }
+
+            return implode(' ', $variationDetailTitles);
+        } else {
+            return '';
+        }
+    }
+}
+
 // rating type color
 if(!function_exists('bootstrapRatingTypeColor')) {
     function bootstrapRatingTypeColor(int $rating): string {
@@ -488,7 +511,7 @@ if(!function_exists('cartDetails')) {
                 $data = productPricing($cartItem->productDetails);
             } else {
                 $data = productVariationPricing($cartItem->productDetails, $cartItem->product_variation_id);
-            }            
+            }
 
             $mrp = $data['mrp'];
             $selling_price = $data['selling_price'];

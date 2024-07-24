@@ -19,7 +19,7 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="cat1_id">Category 1 <span class="text-muted">*</span></label>
-                                    <select name="cat1_id" id="cat1_id" class="form-control">
+                                    <select name="cat1_id" id="cat1_id" class="form-select">
                                         <option value="" selected disabled>Select...</option>
                                         @foreach ($cat1s as $cat1)
                                             <option value="{{$cat1->id}}" {{ (old('cat1_id') == $cat1->id) ? 'selected' : '' }}>{{$cat1->title}}</option>

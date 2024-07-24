@@ -94,7 +94,8 @@
                                                             @endif
                                                         </div>
                                                         <div class="details">
-                                                            <p class="small mb-1">{{ $product->product_title }}</p>
+                                                            <p class="small mb-0">{{ $product->product_title }}</p>
+                                                            <p class="small mb-1">{{ $product->variation_info }}</p>
                                                             <p class="text-dark">
                                                                 <span class="small text-muted">Qty: </span>
                                                                 <span class="font-weight-bold">{{ $product->qty }}</span>

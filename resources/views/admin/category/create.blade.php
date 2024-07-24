@@ -20,7 +20,7 @@
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="parent_id">Parent category <span class="text-muted">*</span></label>
-                                    <select name="parent_id" id="parent_id" class="form-control">
+                                    <select name="parent_id" id="parent_id" class="form-select">
                                         <option value="" selected disabled>Select...</option>
                                         @foreach ($data as $item)
                                             <option value="{{ $item->id }}">{{ $item->title }}</option>

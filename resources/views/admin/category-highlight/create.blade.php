@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="category_id">Category *</label>
-                                    <select name="category_id" id="category_id" class="form-control">
+                                    <select name="category_id" id="category_id" class="form-select">
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}" {{ ( $category->id == $id ) ? 'selected' : '' }} >{{ $category->title }}</option>
                                         @endforeach

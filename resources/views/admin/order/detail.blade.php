@@ -33,7 +33,7 @@
                         <div class="row mb-3">
                             <div class="col-md-2">
                                 <p class="small text-muted mb-0">Quick update all products status</p>
-                                <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.order.status', $data->id) }}">
+                                <select name="status" id="status" class="form-select form-select-sm" data-route="{{ route('admin.order.status', $data->id) }}">
                                     <option value="">Select...</option>
                                     @foreach ($productStatus as $status)
                                         <option value="{{ $status->value }}">{{ $status->name }}</option>
@@ -57,6 +57,7 @@
                                             </div>
                                             <div class="details">
                                                 <a href="{{ route('admin.product.detail', $product->product_id) }}" class="small mb-1">{{ $product->product_title }}</a>
+                                                <h5 class="mt-2">{{ $product->variation_info }}</h5>
                                                 <div class="d-flex justify-content-center">
                                                     <p class="text-dark mb-2">
                                                         <span class="small text-muted">Qty: </span>
@@ -84,7 +85,7 @@
                                             </div>
         
                                             <div class="status">
-                                                <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.order.product.status', $product->id) }}">
+                                                <select name="status" id="status" class="form-select form-select-sm" data-route="{{ route('admin.order.product.status', $product->id) }}">
                                                     @foreach ($productStatus as $status)
                                                         <option value="{{ $status->value }}" {{ ($status->value == $product->status) ? 'selected' : '' }}>{{ $status->name }}</option>
                                                     @endforeach

@@ -104,7 +104,7 @@
                                             <a href="{{ route('admin.review.list.all', ['product' => $item->id]) }}" class="btn btn-sm btn-{{ bootstrapRatingTypeColor($rating) }}">{{ $rating }} <i class="fas fa-star"></i> </a>
                                         </td>
                                         <td>
-                                            <select name="status" id="status" class="form-control form-control-sm" data-route="{{ route('admin.product.status', $item->id) }}">
+                                            <select name="status" id="status" class="form-select form-select-sm" data-route="{{ route('admin.product.status', $item->id) }}">
                                                 @foreach ($statuses as $status)
                                                     <option value="{{ $status->id }}" {{ ($item->status == $status->id) ? 'selected' : '' }}>{{ $status->name }}</option>
                                                 @endforeach
@@ -157,7 +157,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group ml-2">
-                    <select name="rpclProId" id="rpclProId" class="form-control form-control-sm">
+                    <select name="rpclProId" id="rpclProId" class="form-select form-select-sm">
                         <option value="" selected disabled>Select...</option>
                         @foreach ($activeProducts as $prod)
                             <option value="{{$prod->id}}">{{$prod->title}}</option>

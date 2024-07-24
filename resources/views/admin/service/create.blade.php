@@ -23,7 +23,7 @@
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <label for="category_id">Category *</label>
-                                    <select class="form-control" name="category_id" id="category_id">
+                                    <select class="form-select" name="category_id" id="category_id">
                                         <option value="" selected disabled>Select</option>
                                         @forelse ($categories as $category)
                                             <option value="{{$category->id}}" {{ (old('category_id') == $category->id) ? 'selected' : '' }}>{{$category->title}}</option>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="subcategory_id">Sub-Category</label>
-                                    <select class="form-control" name="subcategory_id" id="subcategory_id">
+                                    <select class="form-select" name="subcategory_id" id="subcategory_id">
                                         <option value="" selected disabled>Select</option>
                                         @forelse ($subcategories as $subcategory)
                                             <option value="{{$subcategory->id}}" {{ (old('subcategory_id') == $subcategory->id) ? 'selected' : '' }}>{{$subcategory->title}}</option>

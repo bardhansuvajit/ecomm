@@ -117,6 +117,7 @@ class OrderRepository implements OrderInterface
 
             // products
             foreach($resp['data'] as $cartProduct) {
+                // dd($cartProduct);
                 $orderProduct = new OrderProduct();
                 $orderProduct->order_id = $newOrder->id;
                 $orderProduct->product_id = $cartProduct->product_id;
@@ -133,10 +134,19 @@ class OrderRepository implements OrderInterface
                 $orderProduct->currency_entity = currencyDetails($currencyId)->entity;
                 $orderProduct->currency_short_name = currencyDetails($currencyId)->short_name;
                 if ($cartProduct->productDetails->pricing) {
-                    $orderProduct->mrp = productPricing($cartProduct->productDetails)['mrp'];
-                    $orderProduct->selling_price = productPricing($cartProduct->productDetails)['selling_price'];
+                    if ($cartProduct->product_variation_id == null) {
+                        // $data = productPricing($cartItem->productDetails);
+
+                        $orderProduct->mrp = productPricing($cartProduct->productDetails)['mrp'];
+                        $orderProduct->selling_price = productPricing($cartProduct->productDetails)['selling_price'];
+                    } else {
+                        // $data = productVariationPricing($cartItem->productDetails, $cartItem->product_variation_id);
+
+                        $orderProduct->mrp = productVariationPricing($cartProduct->productDetails, $cartProduct->product_variation_id)['mrp'];
+                        $orderProduct->selling_price = productVariationPricing($cartProduct->productDetails, $cartProduct->product_variation_id)['selling_price'];
+                    }
                 }
-                $orderProduct->variation_info = 0;
+                $orderProduct->variation_info = variationData($cartProduct->product_variation_id);
                 $orderProduct->variation_payload = '';
                 $orderProduct->qty = $cartProduct->qty;
                 $orderProduct->status = 'new';

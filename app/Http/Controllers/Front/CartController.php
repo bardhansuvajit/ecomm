@@ -88,25 +88,13 @@ class CartController extends Controller
 
                 // variation
                 // $variationDetail = ($cartItem->product_variation_id != 0) ? $cartItem->variationDetail->title : '';
-                $variationDetailTitles = [];
-                if ($cartItem->product_variation_id != NULL) {
-                    $variationChildIds = explode(',', $cartItem->product_variation_id);
-                    
-                    foreach ($variationChildIds as $childId) {
-                        $variationDetail = ProductVariation::find($childId);
-
-                        if ($variationDetail) {
-                            $variationDetailTitles[] = $variationDetail->variationOption->value;
-                        }
-                    }
-                }
 
                 $cartProductsList[] = [
                     'cartId' => $cartItem->id,
                     'image' => $imgPath,
                     'title' => $cartItem->productDetails->title,
                     'slug' => $cartItem->productDetails->slug,
-                    'variationData' => implode(' ', $variationDetailTitles),
+                    'variationData' => variationData($cartItem->product_variation_id),
                     // 'variationData' => implode(' ', $variationDetailTitles),
                     'link' => route('front.product.detail', $cartItem->productDetails->slug),
                     'removeLink' => route('front.cart.remove', $cartItem->id),
