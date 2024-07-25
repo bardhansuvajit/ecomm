@@ -147,7 +147,6 @@
                     <div class="image-section">
                         <div class="image-holder">
                             <img src="{{ asset($product->product_image) }}" alt="" class="w-100">
-                            {{-- <img src="http://127.0.0.1:8000/uploads/product-image/6UMKeN3lZ4pgc2rSsFio_medium-thumb_.jpeg" alt="" class="w-100"> --}}
                         </div>
                     </div>
                     <div class="content-section">

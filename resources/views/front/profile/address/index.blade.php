@@ -63,7 +63,7 @@
                                                     <a class="dropdown-item" href="{{ route('front.user.address.edit', $address->id) }}">Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('front.user.address.remove', $address->id) }}">Remove</a>
+                                                    <a class="dropdown-item" href="{{ route('front.user.address.remove', $address->id) }}" onclick="return confirm('Are you sure?')">Remove</a>
                                                 </li>
                                             </ul>
                                         </div>

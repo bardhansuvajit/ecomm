@@ -259,13 +259,67 @@ class CartRepository implements CartInterface
         if (auth()->guard('web')->check()) {
             $user_id = auth()->guard('web')->user()->id;
 
+            // 1. Update user_id for the cart items with the given guest_token
+            Cart::where('guest_token', $token)->update(['user_id' => $user_id]);
+
+            // 2. Fetch all cart items for the user
+            $productChkArray = Cart::select('id', 'product_id', 'product_variation_id', 'qty', 'ip')
+                                ->where('user_id', $user_id)
+                                ->get()
+                                ->toArray();
+
+            // 3. Make the cart items unique by product_id and keep the one with the highest quantity
+            $newCartData = makeUniqueMultidimensionalArray($productChkArray, ['product_id', 'product_variation_id']);
+
+            // 4. Remove existing cart items for the user to insert UNIQUE CART ITEMS
+            Cart::where('user_id', $user_id)->delete();
+
+            // 5. Re-insert the unique cart items
+            foreach($newCartData as $cartData) {
+                Cart::create([
+                    'user_id' => $user_id,
+                    'product_id' => $cartData['product_id'],
+                    'product_variation_id' => $cartData['product_variation_id'],
+                    'save_for_later' => 0,
+                    'qty' => $cartData['qty'],
+                    'ip' => $cartData['ip'],
+                    'guest_token' => $token,
+                    'coupon_code' => 0,
+                ]);
+            }
+
+            // 6. Return success response
+            $response = [
+                'status' => 'success',
+                'message' => 'cart user id updated',
+            ];
+        } else {
+            $response = [
+                'status' => 'failure',
+                'message' => 'User is not authenticated',
+            ];
+        }
+
+        return $response;
+    }
+
+    /*
+    public function update(string $token) : array
+    {
+        $response = [];
+
+        if (auth()->guard('web')->check()) {
+            $user_id = auth()->guard('web')->user()->id;
+
             // 1. update use id
             Cart::where('guest_token', $token)->update([
                 'user_id' => $user_id
             ]);
 
             // 2. check if same product already exists
-            $productChkArray = Cart::select('id', 'product_id', 'qty', 'ip')->where('user_id', $user_id)->get()->toArray();
+            $productChkArray = Cart::select('id', 'product_id', 'product_variation_id', 'qty', 'ip')->where('user_id', $user_id)->get()->toArray();
+
+            // dd($productChkArray);
 
             // 2.1 make the result unique & where the quantity is greater
             $newCartData = makeUniqueMultidimensionalArray($productChkArray, 'product_id');
@@ -277,6 +331,7 @@ class CartRepository implements CartInterface
                 $cart = new Cart();
                 $cart->user_id = $user_id;
                 $cart->product_id = $cartData['product_id'];
+                $cart->product_variation_id = $cartData['product_variation_id'];
                 $cart->save_for_later = 0;
                 $cart->qty = $cartData['qty'];
                 $cart->ip = $cartData['ip'];
@@ -302,6 +357,7 @@ class CartRepository implements CartInterface
 
         return $response;
     }
+    */
 
     public function countLoggedInUser(int $userId) : array {
         $cartCount = Cart::where('user_id', $userId)->where('save_for_later', 0)->count();

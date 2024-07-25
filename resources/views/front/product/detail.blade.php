@@ -175,7 +175,7 @@
                                 {{ $option->variationOption->value }}
 
                                 @if (!empty($option->tag))
-                                    <span class="badge bg-danger variation-tag">{{ $option->tag }}</span>
+                                    <span class="badge bg-danger variation-tag rounded-0">{{ $option->tag }}</span>
                                 @endif
                             </label>
                         @endforeach

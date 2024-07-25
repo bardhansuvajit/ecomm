@@ -53,15 +53,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="products">
+                                    @if ($order->orderProducts)
                                         <div class="d-flex">
                                             @foreach ($order->orderProducts as $product)
-                                                <div class="order-product me-2">
-                                                    <img src="https://placehold.co/100x100" alt="" class="w-100">
+                                                <div class="single-order-product text-center" style="width: 70px">
+                                                    <div class="quick-image-section">
+                                                        <div class="image-holder">
+                                                            <img src="{{ asset($product->product_image) }}" alt="" class="w-100">
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-section">
+                                                        <p class="height-2 text-muted fw-bold mt-2">{{ $product->variation_info }} x {{ $product->qty }}</p>
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
-                                    </div>
+                                    @endif
                                 </a>
                             </div>
 

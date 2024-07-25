@@ -735,6 +735,7 @@ if (!function_exists('indianMoneyFormat')) {
 }
 
 // return unique multidimensional array
+/*
 if (!function_exists('makeUniqueMultidimensionalArray')) {
     function makeUniqueMultidimensionalArray($array, $key) {
         $uniqueValues = [];
@@ -752,6 +753,26 @@ if (!function_exists('makeUniqueMultidimensionalArray')) {
         $resultArray = array_values($uniqueValues);
 
         return $resultArray;
+    }
+}
+*/
+
+if (!function_exists('makeUniqueMultidimensionalArray')) {
+    function makeUniqueMultidimensionalArray($array, $keys) {
+        $uniqueValues = [];
+        
+        foreach ($array as $item) {
+            $key = implode('-', array_map(function($k) use ($item) {
+                return $item[$k];
+            }, $keys));
+            $qty = $item['qty'];
+
+            if (!isset($uniqueValues[$key]) || $uniqueValues[$key]['qty'] < $qty) {
+                $uniqueValues[$key] = $item;
+            }
+        }
+        
+        return array_values($uniqueValues);
     }
 }
 

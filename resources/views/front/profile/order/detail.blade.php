@@ -158,7 +158,7 @@
                         <a href="{{ route('front.product.detail', $product->product_slug) }}" target="_blank">
                             <div class="image-section">
                                 <div class="image-holder">
-                                    <img src="http://127.0.0.1:8000/uploads/product-image/6UMKeN3lZ4pgc2rSsFio_medium-thumb_.jpeg" alt="" class="w-100">
+                                    <img src="{{ asset($product->product_image) }}" alt="" class="w-100">
                                 </div>
                             </div>
                             <div class="content-section">
@@ -182,6 +182,39 @@
             </div>
         </section>
         @endif
+
+        {{-- @if ($data->orderProducts)
+        <section id="order-products">
+            <div class="d-flex">
+                @foreach ($data->orderProducts as $product)
+                    <div class="single-order-product">
+                        <a href="{{ route('front.product.detail', $product->product_slug) }}" target="_blank">
+                            <div class="image-section">
+                                <div class="image-holder">
+                                    <img src="http://127.0.0.1:8000/uploads/product-image/6UMKeN3lZ4pgc2rSsFio_medium-thumb_.jpeg" alt="" class="w-100">
+                                </div>
+                            </div>
+                            <div class="content-section">
+                                <p class="height-2 text-dark mb-2">{{ $product->product_title }}</p>
+                                <p class="height-2 text-dark fw-bold mb-2">{{ $product->variation_info }}</p>
+
+                                <p class="text-dark">
+                                    <span class="">Qty: </span>
+                                    <span class="fw-bold">{{ $product->qty }}</span>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button onclick="generatePDF()" class="btn btn-sm btn-dark rounded-0">Invoice</button>
+                </div>
+            </div>
+        </section>
+        @endif --}}
     </div>
 </div>
 @endsection
