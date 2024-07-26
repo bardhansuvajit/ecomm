@@ -3,13 +3,21 @@
 namespace App\Repositories;
 
 use App\Interfaces\ProductInterface;
+use App\Interfaces\ActivityLogInterface;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Product;
-use App\Models\ProductWatchlist;
+
+use Jenssegers\Agent\Agent;
 
 class ProductRepository implements ProductInterface
 {
+    private ActivityLogInterface $activityLogRepository;
+
+    public function __construct(ActivityLogInterface $activityLogRepository) {
+        $this->activityLogRepository = $activityLogRepository;
+    }
+
     public function allProductsToShow(): array
     {
         $frontShowProsuctsID = showInFrontendProductStatusID();
@@ -76,12 +84,12 @@ class ProductRepository implements ProductInterface
             WHERE product_id = ".$data->id."
             ORDER BY pc.level");
 
-            // add to watchlist
-            $watchlist = new ProductWatchlist();
-            $watchlist->product_id = $data->id;
-            $watchlist->user_id = (auth()->guard('web')->check()) ? auth()->guard('web')->user()->id : '';
-            $watchlist->ip_address = ipfetch();
-            $watchlist->save();
+            // add to log
+            $this->activityLogRepository->add([
+                'id' => $data->id,
+                'category' => 'product_watchlist',
+                'trigger_type' => 'low',
+            ]);
 
             $response = [
                 'status' => 'success',

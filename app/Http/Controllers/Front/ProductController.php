@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Interfaces\ProductInterface;
 use App\Interfaces\ProductSubscriptionInterface;
+use App\Interfaces\ActivityLogInterface;
 
 use App\Models\Product;
 
@@ -13,11 +14,16 @@ class ProductController extends Controller
 {
     private ProductInterface $productRepository;
     private ProductSubscriptionInterface $productSubscriptionRepository;
+    private ActivityLogInterface $activityLogRepository;
 
-    public function __construct(ProductInterface $productRepository, ProductSubscriptionInterface $productSubscriptionRepository)
-    {
+    public function __construct(
+        ProductInterface $productRepository, 
+        ProductSubscriptionInterface $productSubscriptionRepository, 
+        ActivityLogInterface $activityLogRepository
+    ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->activityLogRepository = $activityLogRepository;
     }
 
     public function index(Request $request) {
@@ -33,7 +39,11 @@ class ProductController extends Controller
             $categories = $data['categories'];
             $data = $data['data'];
 
-            return view('front.product.detail', compact('data', 'categories'));
+            // recently viewed products
+            $user_id = auth()->guard('web')->check() ? auth()->guard('web')->user()->id : 0;
+            $recentlyViewedProducts = $this->activityLogRepository->distinctProducts($user_id, 'product_watchlist', $data->id);
+
+            return view('front.product.detail', compact('data', 'categories', 'recentlyViewedProducts'));
         } else {
             return redirect()->route('front.error.404');
         }

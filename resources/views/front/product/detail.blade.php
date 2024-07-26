@@ -431,7 +431,7 @@
     </div>
 </section>
 
-<section id="similar-products">
+{{-- <section id="similar-products">
     <h5 class="text-muted">Similar products</h5>
     <div class="swiper swiper-similar">
         <div class="swiper-wrapper">
@@ -449,15 +449,6 @@
                                     <div class="product-title">
                                         <h5>Loud &amp; Big Vamavarti (12 cms) Blowing Shankh (White)</h5>
                                     </div>
-                                    {{-- <div class="rating">
-                                        <div class="rating-count">
-                                            <h5 class="digit">3</h5> 
-                                            <div class="icon">
-                                                <i class="material-icons md-light">star</i>
-                                            </div>
-                                        </div>
-                                        <div class="review-count">(7,890)</div>
-                                    </div> --}}
                                     <div class="pricing">
                                         <h4 class="selling-price">
                                             <span class="currency-icon">₹</span>
@@ -526,13 +517,103 @@
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
-</section>
+</section> --}}
 
+@if (!empty($recentlyViewedProducts['data']))
 <section id="recently viewed">
     <h5 class="text-muted">Recently viewed</h5>
     <div class="swiper swiper-recent">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
+            @foreach ($recentlyViewedProducts['data'] as $activityLoggedData)
+                @if ($activityLoggedData->product)
+
+                    @php
+                        $product = $activityLoggedData->product;
+                        if (!in_array($product->status, showInFrontendProductStatusID())) continue;
+                    @endphp
+
+                    <div class="swiper-slide">
+                        <div class="single-product">
+                            <div class="card">
+                                <a href="{{ route('front.product.detail', $product->slug) }}">
+                                    <div class="full-container">
+                                        <div class="image-container">
+                                            <div class="image-holder">
+                                                @if (count($product->frontImageDetails) > 0)
+                                                    <img src="{{ asset($product->frontImageDetails[0]->img_medium) }}" alt="{{ $product->slug }}">
+                                                @else
+                                                    <img src="{{ asset('uploads/static-front-missing-image/product.svg') }}" alt="{{ $product->slug }}" style="height: 100px">
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="description-container">
+                                            <div class="product-title">
+                                                <h5>{{ $product->title }}</h5>
+                                            </div>
+
+                                            @if ($product->activeReviewDetails)
+                                                @php
+                                                    $rating = ratingCalculation(json_decode($product->activeReviewDetails, true));
+                                                @endphp
+
+                                                @if ($rating)
+                                                    <div class="rating">
+                                                        <div class="rating-count bg-{{bootstrapRatingTypeColor($rating)}}">
+                                                            <h5 class="digit">{{ $rating }}</h5> 
+                                                            <div class="icon">
+                                                                <i class="material-icons md-light">star</i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="review-count">({{ indianMoneyFormat(count($product->activeReviewDetails)) }})</div>
+                                                    </div>
+                                                @endif
+                                            @endif
+
+                                            @php
+                                                $pricing = productPricing($product);
+                                            @endphp
+
+                                            @if (!empty($pricing))
+                                                <div class="pricing">
+                                                    <h4 class="selling-price">
+                                                        <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
+                                                        <span class="amount">{{ indianMoneyFormat($pricing['selling_price']) }}</span>
+                                                    </h4>
+                                                    <h6 class="mrp">
+                                                        <span class="currency-icon">{!! $pricing['currency_entity'] !!}</span>
+                                                        <span class="amount">{{ indianMoneyFormat($pricing['mrp']) }}</span>
+                                                    </h6>
+                                                </div>
+                                                <div class="discount">
+                                                    <span>{{discountCalculate($pricing['selling_price'], $pricing['mrp'])}}</span>
+                                                    <span>off</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <div class="wishlist-container">
+                                    @if (auth()->guard('web')->check())
+                                        <button class="wishlist-btn wish-product-{{$product->id}} {{ ($product->wishlistDetail) ? 'active' : '' }}" onclick="wishlistToggle({{$product->id}})">
+                                            @if ($product->wishlistDetail)
+                                                <i class="material-icons">favorite</i>
+                                            @else
+                                                <i class="material-icons">favorite_border</i>
+                                            @endif
+                                        </button>
+                                    @else
+                                        <button class="wishlist-btn" onclick="wishlistToggle({{$product->id}})">
+                                            <i class="material-icons">favorite_border</i>
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+            {{-- <div class="swiper-slide">
                 <div class="single-product">
                     <div class="card">
                         <a href="#">
@@ -575,6 +656,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="swiper-slide">
                 <div class="single-product">
                     <div class="card">
@@ -589,15 +671,6 @@
                                     <div class="product-title">
                                         <h5>Shakha Pola (Pack of 2)</h5>
                                     </div>
-                                    {{-- <div class="rating">
-                                        <div class="rating-count">
-                                            <h5 class="digit">3</h5> 
-                                            <div class="icon">
-                                                <i class="material-icons md-light">star</i>
-                                            </div>
-                                        </div>
-                                        <div class="review-count">(7,890)</div>
-                                    </div> --}}
                                     <div class="pricing">
                                         <h4 class="selling-price">
                                             <span class="currency-icon">₹</span>
@@ -617,13 +690,14 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </div>
 </section>
+@endif
 
 <input type="hidden" name="_token" value="{{csrf_token()}}">
 @endsection
